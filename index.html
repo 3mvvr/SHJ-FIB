@@ -971,6 +971,7 @@
     <a onclick="showSection('responsibilities')">المسؤوليات</a>
     <a onclick="showSection('taxes')">نظام الضرائب</a>
     <a onclick="showSection('reports')">إنشاء تقرير</a>
+    <a onclick="showSection('staff')">المسؤولين والرتب</a>
     <a onclick="showSection('contact')">التواصل</a>
   </nav>
 </header>
@@ -1608,6 +1609,15 @@
   </div>
 </section>
 
+<!-- ======== STAFF ======== -->
+<section id="staff" class="page-section">
+  <div class="section-header">
+    <h2>المسؤولين والرتب</h2>
+    <span class="section-tag">CLASSIFIED</span>
+  </div>
+  <div id="staff-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:20px;padding:40px;"></div>
+</section>
+
 <!-- FOOTER -->
 <footer class="site-footer">
   <div class="footer-col">
@@ -1669,13 +1679,46 @@
   const AUTHORIZED_USERS = [
     { username: 'admin',   password: 'fib2026'   },
     { username: 'agent1',  password: 'pass1234'  },
-    { username: 'idmx',  password: 'idmx'  },
-    { username: 'HANKWILSON',  password: 'HN99FBI29'  },
+    { username: 'agent2',  password: 'pass5678'  },
     // أضف المزيد هنا بنفس الأسلوب
   ];
   // ──────────────────────────────────────────────────────────
 
-  function showError(msg) {
+  // ── قائمة المسؤولين والرتب ───────────────────────────────────
+  // أضف أو احذف مسؤولين هنا — الصورة رابط مباشر أو رابط ديسكورد CDN
+  const STAFF_LIST = [
+    { name: 'Smlth binshaddad', rank: 'مدير الـ FIB',        rankLevel: 'S', image: 'https://cdn.discordapp.com/attachments/1489711767008448573/1505315428933697707/high.webp?ex=6a0a2dbd&is=6a08dc3d&hm=7bd51082522869765dc1a9e1bd9e995cb0ee36af930a78e473823a7dc8941203&' },
+    { name: 'اسم المسؤول 2', rank: 'نائب المدير',          rankLevel: 'A', image: 'https://i.imgur.com/example2.png' },
+    { name: 'اسم المسؤول 3', rank: 'مساعد نائب المدير',          rankLevel: 'B', image: 'https://i.imgur.com/example3.png' },
+    { name: 'اسم المسؤول 3', rank: 'العميل الخاص المسؤول',          rankLevel: 'B', image: 'https://i.imgur.com/example3.png' },
+    { name: 'اسم المسؤول 3', rank: 'مساعد العميل الخاص المسؤول',          rankLevel: 'B', image: 'https://i.imgur.com/example3.png' },
+    { name: 'اسم المسؤول 3', rank: 'عملاء خاصون مشرفون',          rankLevel: 'B', image: 'https://i.imgur.com/example3.png' },
+    { name: 'اسم المسؤول 3', rank: 'عملاء خاصون',          rankLevel: 'B', image: 'https://i.imgur.com/example3.png' },
+    // أضف المزيد هنا بنفس الأسلوب:
+    // { name: 'الاسم', rank: 'الرتبة', rankLevel: 'A', image: 'رابط الصورة' },
+  ];
+  // rankLevel: S = ذهبي  |  A = أزرق  |  B = فضي  |  C = عادي
+  // ──────────────────────────────────────────────────────────
+
+  const RANK_COLORS = { S: '#c8a84b', A: '#4a9eff', B: '#a0a8b0', C: '#6a7480' };
+
+  function renderStaff() {
+    const grid = document.getElementById('staff-grid');
+    if (!grid) return;
+    grid.innerHTML = STAFF_LIST.map(s => {
+      const color = RANK_COLORS[s.rankLevel] || RANK_COLORS.C;
+      return `
+        <div style="background:rgba(13,27,42,0.9);border:1px solid rgba(200,168,75,0.2);border-top:3px solid ${color};padding:28px 24px;text-align:center;transition:all 0.2s;" onmouseover="this.style.background='rgba(26,58,92,0.4)'" onmouseout="this.style.background='rgba(13,27,42,0.9)'">
+          <img src="${s.image}" alt="${s.name}"
+            onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"
+            style="width:90px;height:90px;border-radius:50%;border:3px solid ${color};object-fit:cover;margin-bottom:16px;">
+          <div style="display:none;width:90px;height:90px;border-radius:50%;border:3px solid ${color};background:rgba(6,8,16,0.8);margin:0 auto 16px;align-items:center;justify-content:center;font-size:32px;">🦅</div>
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:3px;color:${color};margin-bottom:6px;text-transform:uppercase;">[ ${s.rankLevel} ]</div>
+          <div style="font-family:'Oswald',sans-serif;font-size:18px;font-weight:700;letter-spacing:2px;color:#f0ece0;margin-bottom:6px;">${s.name}</div>
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:1px;color:rgba(200,168,75,0.6);">${s.rank}</div>
+        </div>`;
+    }).join('');
+  }
     document.getElementById('login-error').textContent = msg;
     document.getElementById('login-error').style.display = 'block';
     document.getElementById('login-btn').disabled = false;
@@ -1734,7 +1777,7 @@
   // ── التنقل ─────────────────────────────────────────────────
   const SECTION_NAMES = {
     home:'الرئيسية', about:'عن الـ FIB', responsibilities:'المسؤوليات',
-    taxes:'نظام الضرائب', reports:'إنشاء تقرير', contact:'التواصل'
+    taxes:'نظام الضرائب', reports:'إنشاء تقرير', contact:'التواصل', staff:'المسؤولين والرتب'
   };
 
   function showSection(id) {
@@ -1901,6 +1944,7 @@
   // ── إقلاع ─────────────────────────────────────────────────
   (async function init() {
     updateReport();
+    renderStaff();
     const saved = sessionStorage.getItem('fib_user');
     if (saved) {
       currentUser = JSON.parse(saved);
