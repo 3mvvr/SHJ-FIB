@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>FIB - مكتب التحقيقات الفيدرالي | Los Santos Division</title>
-<link rel="icon" type="image/webp" href="high.webp">
-<link rel="shortcut icon" href="fib_seal_gold.png">
+<link rel="icon" type="image/png" href="https://cdn.discordapp.com/attachments/1505287457820774482/1505339781658443807/fib_seal_gold.png?ex=6a0a446b&is=6a08f2eb&hm=aaf3b7d885b2f92ad799db9f7113238e7583ebb15f8211a48d915fbe525d6ae6&">
+<link rel="shortcut icon" href="high.webp">
 <link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Oswald:wght@400;600;700&family=IBM+Plex+Mono:wght@400;700&family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -945,7 +945,7 @@
     <div class="header-logo">
       <!-- FIB Emblem -->
       <div class="fib-emblem">
-        <img src="https://cdn.discordapp.com/attachments/1505287457820774482/1505339781658443807/fib_seal_gold.png?ex=6a0a446b&is=6a08f2eb&hm=aaf3b7d885b2f92ad799db9f7113238e7583ebb15f8211a48d915fbe525d6ae6&" alt="FIB Emblem" style="width:100%;height:100%;object-fit:contain;" />
+        <img src="<img src="https://cdn.discordapp.com/attachments/1505287457820774482/1505339781658443807/fib_seal_gold.png?ex=6a0a446b&is=6a08f2eb&hm=aaf3b7d885b2f92ad799db9f7113238e7583ebb15f8211a48d915fbe525d6ae6&" alt="FIB Emblem" style="width:100%;height:100%;object-fit:contain;" />" />
       </div>
       <div class="header-title">
         <h1>FIB</h1>
@@ -1673,20 +1673,11 @@
   // ── قائمة المستخدمين المصرح لهم ─────────────────────────────
   // أضف أو احذف مستخدمين هنا بحرية
   const AUTHORIZED_USERS = [
-    { username: 'idmx.1',   password: 'idmx'   },
-    { username: 'nothim_g', password: 'HANK WILSON'  }, 
-    { username: 'co_iii',   password: 'marly layton'  }, 
+    { username: 'idmx.1',   password: 'idmx'          },
+    { username: 'nothim_g', password: 'HANK WILSON'    },
+    { username: 'co_iii',   password: 'marly layton'   },
     { username: 'nbh911',   password: 'Mike Sabitzer'  },
-    { username: 'troxi',  password: 'omarali@2010'  }, فاضي
-    { username: '',  password: ''  }, فاضي
-    { username: '',  password: ''  }, فاضي
-    { username: '',  password: ''  }, فاضي
-    { username: '',  password: ''  }, فاضي
-    { username: '',  password: ''  }, فاضي
-    { username: '',  password: ''  }, فاضي
-    { username: '',  password: ''  }, فاضي
-    { username: '',  password: ''  }, فاضي
-    { username: '',  password: ''  }, فاضي
+    { username: 'troxi',    password: 'omarali@2010'   },
     // أضف المزيد هنا بنفس الأسلوب
   ];
   // ──────────────────────────────────────────────────────────
@@ -1694,12 +1685,12 @@
   // ── قائمة المسؤولين والرتب ───────────────────────────────────
   // أضف أو احذف مسؤولين هنا — الصورة رابط مباشر أو رابط ديسكورد CDN
   const STAFF_LIST = [
-   { name: 'Smlth binshaddad', rank: 'مدير الـ FIB',        rankLevel: 'S', image: 'https://cdn.discordapp.com/attachments/1505287457820774482/1505339781658443807/fib_seal_gold.png?ex=6a0a446b&is=6a08f2eb&hm=aaf3b7d885b2f92ad799db9f7113238e7583ebb15f8211a48d915fbe525d6ae6&' },
-      { name: 'Hank Wilson', rank: 'العميل الخاص المسؤول',          rankLevel: 'S', image: 'https://cdn.discordapp.com/attachments/1505287457820774482/1505339781658443807/fib_seal_gold.png?ex=6a0a446b&is=6a08f2eb&hm=aaf3b7d885b2f92ad799db9f7113238e7583ebb15f8211a48d915fbe525d6ae6&' },
-      { name: 'Marly Layton', rank: 'العميل الخاص المسؤول',          rankLevel: 'S', image: 'https://cdn.discordapp.com/attachments/1505287457820774482/1505339781658443807/fib_seal_gold.png?ex=6a0a446b&is=6a08f2eb&hm=aaf3b7d885b2f92ad799db9f7113238e7583ebb15f8211a48d915fbe525d6ae6&' },
-      { name: 'Mike Sabitzer', rank: 'العميل الخاص المسؤول',          rankLevel: 'S', image: 'https://cdn.discordapp.com/attachments/1505287457820774482/1505339781658443807/fib_seal_gold.png?ex=6a0a446b&is=6a08f2eb&hm=aaf3b7d885b2f92ad799db9f7113238e7583ebb15f8211a48d915fbe525d6ae6&' },
-      { name: 'اسم المسؤول 3', rank: 'العميل الخاص المسؤول',          rankLevel: 'S', image: 'https://cdn.discordapp.com/attachments/1505287457820774482/1505339781658443807/fib_seal_gold.png?ex=6a0a446b&is=6a08f2eb&hm=aaf3b7d885b2f92ad799db9f7113238e7583ebb15f8211a48d915fbe525d6ae6&' },
-      { name: 'اسم المسؤول 3', rank: 'العميل الخاص المسؤول',          rankLevel: 'S', image: 'https://cdn.discordapp.com/attachments/1505287457820774482/1505339781658443807/fib_seal_gold.png?ex=6a0a446b&is=6a08f2eb&hm=aaf3b7d885b2f92ad799db9f7113238e7583ebb15f8211a48d915fbe525d6ae6&' },
+   { name: 'Smlth binshaddad', rank: 'مدير الـ FIB',        rankLevel: 'S', image: 'https://cdn.discordapp.com/attachments/1489711767008448573/1505315428933697707/high.webp?ex=6a0a2dbd&is=6a08dc3d&hm=7bd51082522869765dc1a9e1bd9e995cb0ee36af930a78e473823a7dc8941203&' },
+      { name: 'اسم المسؤول 2', rank: 'نائب المدير',          rankLevel: 'A', image: 'https://i.imgur.com/example2.png' },
+      { name: 'اسم المسؤول 3', rank: 'مساعد نائب المدير',          rankLevel: 'B', image: 'https://i.imgur.com/example3.png' },
+      { name: 'اسم المسؤول 3', rank: 'العميل الخاص المسؤول',          rankLevel: 'B', image: 'https://i.imgur.com/example3.png' },
+      { name: 'اسم المسؤول 3', rank: 'مساعد العميل الخاص المسؤول',          rankLevel: 'B', image: 'https://i.imgur.com/example3.png' },
+      { name: 'اسم المسؤول 3', rank: 'عملاء خاصون مشرفون',          rankLevel: 'B', image: 'https://i.imgur.com/example3.png' },
     // أضف المزيد هنا بنفس الأسلوب:
     // { name: 'الاسم', rank: 'الرتبة', rankLevel: 'A', image: 'رابط الصورة' },
   ];
