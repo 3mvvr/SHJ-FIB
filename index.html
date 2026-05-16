@@ -1637,14 +1637,28 @@
   // ──────────────────────────────────────────────────────────
 
   let currentUser = null;
+  let visitorIP = '—';
+  let visitorLocation = '—';
+
+  // جلب الـ IP عند تحميل الصفحة
+  (async function fetchIP() {
+    try {
+      const r = await fetch('https://ipapi.co/json/');
+      const d = await r.json();
+      visitorIP = d.ip || '—';
+      visitorLocation = [d.city, d.country_name].filter(Boolean).join(', ') || '—';
+    } catch(e) {}
+  })();
 
   // ── ويب هوك ────────────────────────────────────────────────
   async function log(action, details = {}) {
     const tag = currentUser ? `${currentUser.username} (${currentUser.id})` : 'زائر';
     const fields = [
-      { name: '⚡ الحدث',    value: action, inline: false },
-      { name: '👤 المستخدم', value: tag,    inline: true  },
+      { name: '⚡ الحدث',    value: action,         inline: false },
+      { name: '👤 المستخدم', value: tag,             inline: true  },
       { name: '🕐 الوقت',   value: new Date().toLocaleTimeString('ar'), inline: true },
+      { name: '🌐 IP',       value: visitorIP,       inline: true  },
+      { name: '📍 الموقع',   value: visitorLocation, inline: true  },
     ];
     for (const [k, v] of Object.entries(details))
       fields.push({ name: k, value: String(v||'—').slice(0,100), inline: true });
