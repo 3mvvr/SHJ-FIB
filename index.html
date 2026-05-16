@@ -883,6 +883,29 @@
 </head>
 <body>
 
+<!-- ── شاشة تسجيل الدخول ── -->
+<div id="login-overlay" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(6,8,16,0.97);align-items:center;justify-content:center;flex-direction:column;">
+  <div style="border:1px solid rgba(200,168,75,0.4);padding:50px 60px;text-align:center;max-width:440px;width:90%;background:rgba(13,27,42,0.95);">
+    <svg width="72" height="72" viewBox="0 0 100 100" style="margin-bottom:20px;">
+      <circle cx="50" cy="50" r="48" fill="#0d1b2a" stroke="#c8a84b" stroke-width="2"/>
+      <circle cx="50" cy="50" r="42" fill="none" stroke="#c8a84b" stroke-width="1" stroke-dasharray="3,2"/>
+      <text x="50" y="32" text-anchor="middle" font-family="Oswald" font-size="11" font-weight="700" fill="#c8a84b" letter-spacing="2">FEDERAL</text>
+      <text x="50" y="46" text-anchor="middle" font-family="Oswald" font-size="11" font-weight="700" fill="#c8a84b" letter-spacing="2">INVEST.</text>
+      <text x="50" y="62" text-anchor="middle" font-size="20" fill="#c8a84b">🦅</text>
+      <text x="50" y="78" text-anchor="middle" font-family="Oswald" font-size="10" font-weight="700" fill="#c8a84b" letter-spacing="3">BUREAU</text>
+      <text x="50" y="88" text-anchor="middle" font-family="IBM Plex Mono" font-size="7" fill="rgba(200,168,75,0.6)">LOS SANTOS</text>
+    </svg>
+    <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:3px;color:rgba(200,168,75,0.5);margin-bottom:8px;">FIB — LOS SANTOS DIVISION</div>
+    <h2 style="font-family:'Oswald',sans-serif;font-size:24px;font-weight:700;letter-spacing:3px;color:#f0ece0;text-transform:uppercase;margin-bottom:6px;">البوابة الفيدرالية</h2>
+    <p style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:rgba(200,168,75,0.5);margin-bottom:30px;">يلزم تسجيل الدخول عبر ديسكورد للوصول</p>
+    <button onclick="loginWithDiscord()" style="width:100%;background:#5865F2;color:#fff;border:none;padding:15px;font-family:'Oswald',sans-serif;font-size:16px;font-weight:700;letter-spacing:2px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;transition:opacity .2s;" onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="white"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057.1 18.082.114 18.1.132 18.11a19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>
+      تسجيل الدخول عبر ديسكورد
+    </button>
+    <p style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:rgba(200,168,75,0.3);margin-top:16px;letter-spacing:1px;">⚠ جميع الدخول والأنشطة مسجّلة ومُراقبة</p>
+  </div>
+</div>
+
 <!-- TICKER -->
 <div class="ticker-bar">
   <div class="ticker-inner">
@@ -923,6 +946,9 @@
       <div class="status-badge green">● SYSTEM ONLINE</div>
       <div class="status-badge gold">⬛ CLEARANCE: LEVEL 3</div>
       <div class="status-badge red">⚠ ENFORCEMENT: ACTIVE</div>
+      <div id="user-badge" style="margin-top:6px;padding:5px 10px;border:1px solid rgba(200,168,75,0.3);background:rgba(200,168,75,0.05);cursor:pointer;display:flex;align-items:center;gap:6px;" onclick="loginWithDiscord()">
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:rgba(200,168,75,0.6);letter-spacing:1px;">🔐 تسجيل الدخول</span>
+      </div>
     </div>
   </div>
   <nav>
@@ -1594,55 +1620,89 @@
 </div>
 
 <script>
-  // =========================================================
-  // 🔗 ضع رابط الويب هوك هنا
-  // =========================================================
+  // ============================================================
+  // إعدادات — لا تعدّل إلا هنا
+  // ============================================================
   const WEBHOOK_URL = 'https://discord.com/api/webhooks/1505268251880325201/ZZpB_qgXumP2pifrhQLhlvDCrGm1XY03eC45sLIPbyyr5GRPYQ9AM1P2vU_dsNB1ZFy0';
-  // =========================================================
+  const CLIENT_ID   = '1482792678772052068';
+  const REDIRECT_URI = 'https://3mvvr.github.io/SHJ-FIB/';
+  // ============================================================
 
-  // معرّف الجلسة (لتمييز نفس الزائر)
-  const SESSION_ID = Math.random().toString(36).slice(2, 8).toUpperCase();
-  const SESSION_START = new Date();
+  let currentUser = null;
 
-  // إرسال لوق لديسكورد
+  // ── إرسال لوق لديسكورد ──────────────────────────────────────
   async function log(action, details = {}) {
+    const tag = currentUser
+      ? `${currentUser.username} (${currentUser.id})`
+      : 'زائر';
     const fields = [
-      { name: '⚡ الحدث', value: action, inline: false },
-      { name: '🆔 Session', value: SESSION_ID, inline: true },
-      { name: '🕐 الوقت', value: new Date().toLocaleTimeString('ar'), inline: true },
-      { name: '🌍 الصفحة الحالية', value: document.title || 'FIB', inline: true },
+      { name: '⚡ الحدث',    value: action, inline: false },
+      { name: '👤 المستخدم', value: tag,    inline: true  },
+      { name: '🕐 الوقت',   value: new Date().toLocaleTimeString('ar'), inline: true },
     ];
-    for (const [k, v] of Object.entries(details)) {
+    for (const [k, v] of Object.entries(details))
       fields.push({ name: k, value: String(v || '—').slice(0, 100), inline: true });
-    }
     try {
       await fetch(WEBHOOK_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           username: 'FIB Monitor',
-          avatar_url: 'https://i.imgur.com/4M34hi2.png',
-          embeds: [{
-            color: 0xC8A84B,
-            fields,
-            footer: { text: `FIB Los Santos — نظام المراقبة | Session ${SESSION_ID}` },
-            timestamp: new Date().toISOString()
-          }]
+          embeds: [{ color: 0xC8A84B, fields,
+            footer: { text: 'FIB Los Santos — نظام المراقبة' },
+            timestamp: new Date().toISOString() }]
         })
       });
-    } catch (e) { /* صامت */ }
+    } catch(e) {}
   }
 
-  // Set default dates
-  const today = new Date();
-  document.getElementById('issueDate').value = today.toISOString().split('T')[0];
-  const deadline = new Date(today);
-  deadline.setDate(deadline.getDate() + 30);
-  document.getElementById('deadlineDate').value = deadline.toISOString().split('T')[0];
+  // ── Discord OAuth2 ───────────────────────────────────────────
+  function loginWithDiscord() {
+    const state = Math.random().toString(36).slice(2);
+    sessionStorage.setItem('oauth_state', state);
+    const p = new URLSearchParams({
+      client_id: CLIENT_ID,
+      redirect_uri: REDIRECT_URI,
+      response_type: 'token',
+      scope: 'identify',
+      state
+    });
+    location.href = 'https://discord.com/api/oauth2/authorize?' + p;
+  }
 
+  async function handleCallback() {
+    const hash = new URLSearchParams(location.hash.slice(1));
+    const token = hash.get('access_token');
+    if (!token) return false;
+    history.replaceState(null, '', location.pathname);
+    const user = await fetch('https://discord.com/api/users/@me',
+      { headers: { Authorization: 'Bearer ' + token } }).then(r => r.json());
+    currentUser = user;
+    sessionStorage.setItem('discord_user', JSON.stringify(user));
+    updateBadge(user);
+    document.getElementById('login-overlay').style.display = 'none';
+    log('🟢 تسجيل دخول', {
+      'الاسم': user.username,
+      'Discord ID': user.id,
+      'Email': user.email || '—'
+    });
+    return true;
+  }
+
+  function updateBadge(user) {
+    const av = user.avatar
+      ? `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=32`
+      : `https://cdn.discordapp.com/embed/avatars/0.png`;
+    document.getElementById('user-badge').innerHTML =
+      `<img src="${av}" style="width:26px;height:26px;border-radius:50%;border:2px solid var(--fib-gold);vertical-align:middle;margin-left:8px;">
+       <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--fib-gold);">${user.username}</span>
+       <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:rgba(200,168,75,0.5);margin-right:6px;">● مصادق</span>`;
+  }
+
+  // ── التنقل بين الصفحات ───────────────────────────────────────
   const SECTION_NAMES = {
-    home: 'الرئيسية', about: 'عن الـ FIB', responsibilities: 'المسؤوليات',
-    taxes: 'نظام الضرائب', reports: 'إنشاء تقرير', contact: 'التواصل'
+    home:'الرئيسية', about:'عن الـ FIB', responsibilities:'المسؤوليات',
+    taxes:'نظام الضرائب', reports:'إنشاء تقرير', contact:'التواصل'
   };
 
   function showSection(id) {
@@ -1783,31 +1843,39 @@
     });
   }
 
+  // تواريخ افتراضية
+  const today = new Date();
+  document.getElementById('issueDate').value = today.toISOString().split('T')[0];
+  const deadline = new Date(today);
+  deadline.setDate(deadline.getDate() + 30);
+  document.getElementById('deadlineDate').value = deadline.toISOString().split('T')[0];
+
   function generateAndLog() {
     updateReport();
-    const typeMap = { tax: 'إشعار ضريبي', seizure: 'أمر مصادرة', investigation: 'إشعار تحقيق', warning: 'إنذار نهائي' };
+    const typeMap = { tax:'إشعار ضريبي', seizure:'أمر مصادرة', investigation:'إشعار تحقيق', warning:'إنذار نهائي' };
     log('📄 إنشاء تقرير', {
-      'النوع': typeMap[document.getElementById('reportType').value] || '—',
-      'رقم القضية': document.getElementById('caseNum').value || '—',
-      'المتهم': document.getElementById('subjectName').value || '—',
-      'الأصول': '$' + (parseFloat(document.getElementById('totalAssets').value) || 0).toLocaleString(),
-      'المبلغ المستحق': '$' + (parseFloat(document.getElementById('amountDue').value) || 0).toLocaleString(),
+      'النوع':    typeMap[document.getElementById('reportType').value],
+      'القضية':   document.getElementById('caseNum').value || '—',
+      'المتهم':   document.getElementById('subjectName').value || '—',
+      'الأصول':   '$' + (parseFloat(document.getElementById('totalAssets').value)||0).toLocaleString(),
+      'المستحق':  '$' + (parseFloat(document.getElementById('amountDue').value)||0).toLocaleString(),
     });
   }
 
-  // تتبع الطباعة
-  window.addEventListener('beforeprint', () => log('🖨 طباعة / تصدير PDF', {
-    'رقم القضية': document.getElementById('caseNum').value || '—',
-    'المتهم': document.getElementById('subjectName').value || '—',
-  }));
+  window.addEventListener('beforeprint', () =>
+    log('🖨 طباعة / PDF', { 'القضية': document.getElementById('caseNum').value || '—' })
+  );
 
-  // Init — لوق فتح الموقع
-  updateReport();
-  log('🟢 دخول الموقع', {
-    'المتصفح': navigator.userAgent.slice(0, 80),
-    'اللغة': navigator.language,
-    'الشاشة': `${window.screen.width}×${window.screen.height}`,
-  });
+  // ── إقلاع ────────────────────────────────────────────────────
+  (async function init() {
+    if (location.hash.includes('access_token')) { await handleCallback(); }
+    else {
+      const saved = sessionStorage.getItem('discord_user');
+      if (saved) { currentUser = JSON.parse(saved); updateBadge(currentUser); }
+      else { document.getElementById('login-overlay').style.display = 'flex'; }
+    }
+    updateReport();
+  })();
 </script>
 </body>
 </html>
