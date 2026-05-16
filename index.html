@@ -1,1967 +1,1991 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FIB - مكتب التحقيقات الفيدرالي | Los Santos Division</title>
-<link rel="icon" type="image/png" href="https://cdn.discordapp.com/attachments/1505287457820774482/1505339781658443807/fib_seal_gold.png?ex=6a0a446b&is=6a08f2eb&hm=aaf3b7d885b2f92ad799db9f7113238e7583ebb15f8211a48d915fbe525d6ae6&">
-<link rel="shortcut icon" href="https://cdn.discordapp.com/attachments/1505287457820774482/1505339781658443807/fib_seal_gold.png?ex=6a0a446b&is=6a08f2eb&hm=aaf3b7d885b2f92ad799db9f7113238e7583ebb15f8211a48d915fbe525d6ae6&">
-<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Oswald:wght@400;600;700&family=IBM+Plex+Mono:wght@400;700&family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --fib-dark: #0a0c10;
-    --fib-navy: #0d1b2a;
-    --fib-blue: #1a3a5c;
-    --fib-gold: #c8a84b;
-    --fib-gold-light: #e8c96a;
-    --fib-red: #8b1a1a;
-    --fib-red-bright: #cc2222;
-    --fib-gray: #2a3040;
-    --fib-light: #d4cfc4;
-    --fib-white: #f0ece0;
-    --fib-green: #1a4a2e;
-    --fib-green-bright: #2d8a50;
-    --paper: #f5f0e0;
-    --paper-dark: #e8e0c8;
-    --ink: #1a1610;
-    --ink-red: #8b0000;
-  }
-
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-
-  body {
-    font-family: 'Cairo', sans-serif;
-    background: var(--fib-dark);
-    color: var(--fib-light);
-    min-height: 100vh;
-    overflow-x: hidden;
-  }
-
-  /* ========== TOP SECRET TICKER ========== */
-  .ticker-bar {
-    background: var(--fib-red);
-    color: #fff;
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 2px;
-    padding: 6px 0;
-    overflow: hidden;
-    white-space: nowrap;
-    border-bottom: 2px solid #ff4444;
-    position: relative;
-    z-index: 50;
-    pointer-events: none;
-  }
-  .ticker-inner {
-    display: inline-block;
-    animation: ticker 30s linear infinite;
-  }
-  .ticker-inner span { margin: 0 40px; }
-  @keyframes ticker {
-    from { transform: translateX(100vw); }
-    to { transform: translateX(-100%); }
-  }
-
-  /* ========== HEADER ========== */
-  .site-header {
-    background: linear-gradient(180deg, #060810 0%, var(--fib-navy) 100%);
-    border-bottom: 3px solid var(--fib-gold);
-    padding: 0;
-    position: sticky;
-    top: 0;
-    z-index: 200;
-    box-shadow: 0 4px 30px rgba(0,0,0,0.8);
-  }
-
-  .header-top {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 16px 40px;
-    border-bottom: 1px solid rgba(200,168,75,0.3);
-  }
-
-  .header-logo {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-  }
-
-  .fib-emblem {
-    width: 80px;
-    height: 80px;
-    position: relative;
-  }
-
-  .fib-emblem svg { width: 100%; height: 100%; }
-
-  .header-title h1 {
-    font-family: 'Oswald', sans-serif;
-    font-size: 28px;
-    font-weight: 700;
-    color: var(--fib-gold);
-    letter-spacing: 4px;
-    text-transform: uppercase;
-  }
-  .header-title p {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 11px;
-    color: rgba(200,168,75,0.7);
-    letter-spacing: 3px;
-    text-transform: uppercase;
-  }
-
-  .header-status {
-    text-align: left;
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-  }
-
-  .status-badge {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 2px;
-    padding: 4px 12px;
-    border: 1px solid;
-    text-transform: uppercase;
-  }
-  .status-badge.green { color: var(--fib-green-bright); border-color: var(--fib-green-bright); background: rgba(45,138,80,0.1); }
-  .status-badge.red { color: var(--fib-red-bright); border-color: var(--fib-red-bright); background: rgba(204,34,34,0.1); }
-  .status-badge.gold { color: var(--fib-gold); border-color: var(--fib-gold); background: rgba(200,168,75,0.1); }
-
-  /* NAV */
-  nav {
-    display: flex;
-    align-items: center;
-    padding: 0 40px;
-    gap: 0;
-    position: relative;
-    z-index: 200;
-  }
-
-  nav a {
-    font-family: 'Oswald', sans-serif;
-    font-size: 13px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: rgba(212,207,196,0.7);
-    padding: 14px 20px;
-    text-decoration: none;
-    border-bottom: 3px solid transparent;
-    transition: all 0.2s;
-    cursor: pointer;
-    display: block;
-  }
-  nav a:hover, nav a.active {
-    color: var(--fib-gold);
-    border-bottom-color: var(--fib-gold);
-    background: rgba(200,168,75,0.05);
-  }
-
-  /* ========== HERO ========== */
-  .hero {
-    position: relative;
-    background: linear-gradient(135deg, #060810 0%, #0d1b2a 50%, #0a1520 100%);
-    padding: 80px 40px;
-    overflow: hidden;
-    text-align: center;
-    border-bottom: 1px solid rgba(200,168,75,0.2);
-  }
-
-  .hero::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: 
-      radial-gradient(ellipse at 20% 50%, rgba(26,58,92,0.4) 0%, transparent 60%),
-      radial-gradient(ellipse at 80% 50%, rgba(139,26,26,0.2) 0%, transparent 60%);
-  }
-
-  .hero-grid {
-    position: absolute;
-    inset: 0;
-    background-image: 
-      linear-gradient(rgba(200,168,75,0.04) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(200,168,75,0.04) 1px, transparent 1px);
-    background-size: 40px 40px;
-  }
-
-  .hero-content { position: relative; z-index: 2; }
-
-  .hero-badge {
-    display: inline-block;
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 4px;
-    color: var(--fib-gold);
-    border: 1px solid rgba(200,168,75,0.4);
-    padding: 6px 20px;
-    margin-bottom: 24px;
-    text-transform: uppercase;
-  }
-
-  .hero h2 {
-    font-family: 'Oswald', sans-serif;
-    font-size: 52px;
-    font-weight: 700;
-    letter-spacing: 6px;
-    color: var(--fib-white);
-    text-transform: uppercase;
-    line-height: 1.1;
-    margin-bottom: 16px;
-    text-shadow: 0 0 40px rgba(200,168,75,0.2);
-  }
-
-  .hero h2 span { color: var(--fib-gold); }
-
-  .hero p {
-    font-size: 16px;
-    color: rgba(212,207,196,0.6);
-    max-width: 600px;
-    margin: 0 auto 40px;
-    line-height: 1.7;
-    letter-spacing: 1px;
-  }
-
-  .hero-stats {
-    display: flex;
-    justify-content: center;
-    gap: 60px;
-    margin-top: 50px;
-    padding-top: 40px;
-    border-top: 1px solid rgba(200,168,75,0.2);
-  }
-
-  .stat-item { text-align: center; }
-  .stat-num {
-    font-family: 'Oswald', sans-serif;
-    font-size: 36px;
-    color: var(--fib-gold);
-    display: block;
-  }
-  .stat-label {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 2px;
-    color: rgba(212,207,196,0.5);
-    text-transform: uppercase;
-  }
-
-  /* ========== SECTIONS ========== */
-  .page-section { display: none; }
-  .page-section.active { display: block; }
-
-  .section-header {
-    background: linear-gradient(90deg, var(--fib-navy) 0%, var(--fib-dark) 100%);
-    border-bottom: 2px solid var(--fib-gold);
-    padding: 30px 40px;
-    display: flex;
-    align-items: center;
-    gap: 16px;
-  }
-
-  .section-header h2 {
-    font-family: 'Oswald', sans-serif;
-    font-size: 24px;
-    letter-spacing: 4px;
-    color: var(--fib-gold);
-    text-transform: uppercase;
-  }
-
-  .section-tag {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 2px;
-    color: var(--fib-gold);
-    border: 1px solid var(--fib-gold);
-    padding: 3px 10px;
-    opacity: 0.6;
-  }
-
-  /* ========== ABOUT / RESPONSIBILITIES ========== */
-  .content-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0;
-    padding: 0;
-  }
-
-  .content-block {
-    padding: 40px;
-    border-bottom: 1px solid rgba(200,168,75,0.15);
-    border-left: 1px solid rgba(200,168,75,0.15);
-  }
-
-  .content-block h3 {
-    font-family: 'Oswald', sans-serif;
-    font-size: 16px;
-    letter-spacing: 3px;
-    color: var(--fib-gold);
-    text-transform: uppercase;
-    margin-bottom: 16px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid rgba(200,168,75,0.2);
-  }
-
-  .content-block p, .content-block li {
-    font-size: 14px;
-    line-height: 1.8;
-    color: rgba(212,207,196,0.75);
-  }
-
-  .content-block ul { padding-right: 20px; }
-  .content-block li { margin-bottom: 8px; }
-
-  .resp-card {
-    background: rgba(26,58,92,0.2);
-    border: 1px solid rgba(200,168,75,0.15);
-    border-right: 3px solid var(--fib-gold);
-    padding: 20px 24px;
-    margin-bottom: 16px;
-    transition: all 0.2s;
-  }
-  .resp-card:hover { background: rgba(26,58,92,0.4); border-right-color: var(--fib-gold-light); }
-
-  .resp-card .resp-icon {
-    font-size: 24px;
-    margin-bottom: 8px;
-    display: block;
-  }
-
-  .resp-card h4 {
-    font-family: 'Oswald', sans-serif;
-    font-size: 14px;
-    letter-spacing: 2px;
-    color: var(--fib-gold);
-    text-transform: uppercase;
-    margin-bottom: 6px;
-  }
-
-  .resp-card p {
-    font-size: 13px;
-    color: rgba(212,207,196,0.65);
-    line-height: 1.6;
-  }
-
-  /* ========== TAX SYSTEM ========== */
-  .tax-table-wrap {
-    padding: 40px;
-  }
-
-  .data-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 13px;
-  }
-
-  .data-table th {
-    background: var(--fib-blue);
-    color: var(--fib-gold);
-    padding: 12px 16px;
-    text-align: right;
-    font-size: 11px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    border: 1px solid rgba(200,168,75,0.2);
-  }
-
-  .data-table td {
-    padding: 12px 16px;
-    border: 1px solid rgba(200,168,75,0.1);
-    color: var(--fib-light);
-    background: rgba(13,27,42,0.5);
-  }
-
-  .data-table tr:hover td { background: rgba(26,58,92,0.4); }
-
-  .tax-rate {
-    color: var(--fib-gold);
-    font-weight: 700;
-  }
-
-  .badge-sm {
-    font-size: 10px;
-    padding: 2px 8px;
-    border-radius: 2px;
-    letter-spacing: 1px;
-  }
-  .badge-active { background: rgba(45,138,80,0.2); color: #2d8a50; border: 1px solid #2d8a50; }
-  .badge-warn { background: rgba(200,100,0,0.2); color: #cc7700; border: 1px solid #cc7700; }
-
-  /* ========== REPORT GENERATOR ========== */
-  .report-layout {
-    display: grid;
-    grid-template-columns: 380px 1fr;
-    gap: 0;
-    min-height: calc(100vh - 200px);
-  }
-
-  .report-form-panel {
-    background: var(--fib-navy);
-    border-left: 1px solid rgba(200,168,75,0.2);
-    padding: 30px;
-    overflow-y: auto;
-  }
-
-  .form-section-title {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 3px;
-    color: var(--fib-gold);
-    text-transform: uppercase;
-    margin-bottom: 16px;
-    padding-bottom: 8px;
-    border-bottom: 1px solid rgba(200,168,75,0.2);
-    margin-top: 24px;
-  }
-  .form-section-title:first-child { margin-top: 0; }
-
-  .form-group { margin-bottom: 16px; }
-
-  .form-group label {
-    display: block;
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 2px;
-    color: rgba(200,168,75,0.7);
-    text-transform: uppercase;
-    margin-bottom: 6px;
-  }
-
-  .form-group input, .form-group select, .form-group textarea {
-    width: 100%;
-    background: rgba(6,8,16,0.8);
-    border: 1px solid rgba(200,168,75,0.25);
-    color: var(--fib-white);
-    padding: 10px 14px;
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 13px;
-    outline: none;
-    transition: border-color 0.2s;
-  }
-  .form-group input:focus, .form-group select:focus { border-color: var(--fib-gold); }
-  .form-group select option { background: var(--fib-navy); }
-
-  .btn-generate {
-    width: 100%;
-    background: var(--fib-gold);
-    color: var(--fib-dark);
-    border: none;
-    padding: 14px;
-    font-family: 'Oswald', sans-serif;
-    font-size: 16px;
-    font-weight: 700;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    cursor: pointer;
-    margin-top: 24px;
-    transition: all 0.2s;
-  }
-  .btn-generate:hover { background: var(--fib-gold-light); transform: translateY(-1px); }
-
-  .btn-print {
-    width: 100%;
-    background: transparent;
-    color: var(--fib-gold);
-    border: 1px solid var(--fib-gold);
-    padding: 10px;
-    font-family: 'Oswald', sans-serif;
-    font-size: 13px;
-    font-weight: 600;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    cursor: pointer;
-    margin-top: 10px;
-    transition: all 0.2s;
-  }
-  .btn-print:hover { background: rgba(200,168,75,0.1); }
-
-  /* ========== REPORT PREVIEW ========== */
-  .report-preview-panel {
-    background: #c8bfa8;
-    padding: 40px;
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    min-height: 800px;
-    overflow-y: auto;
-  }
-
-  .report-paper {
-    background: var(--paper);
-    width: 680px;
-    min-height: 900px;
-    padding: 50px 50px 60px;
-    position: relative;
-    box-shadow: 
-      0 4px 6px rgba(0,0,0,0.15),
-      0 10px 40px rgba(0,0,0,0.25),
-      inset 0 0 80px rgba(0,0,0,0.03);
-    font-family: 'Special Elite', cursive;
-    color: var(--ink);
-    background-image: 
-      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-  }
-
-  /* Paper aging effect */
-  .report-paper::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: 
-      radial-gradient(ellipse at 0% 0%, rgba(139,100,20,0.08) 0%, transparent 50%),
-      radial-gradient(ellipse at 100% 100%, rgba(139,100,20,0.08) 0%, transparent 50%),
-      radial-gradient(ellipse at 50% 0%, rgba(0,0,0,0.04) 0%, transparent 40%);
-    pointer-events: none;
-  }
-
-  .report-inner { position: relative; z-index: 1; }
-
-  /* Paper clip */
-  .paper-clip {
-    position: absolute;
-    top: -8px;
-    right: 60px;
-    width: 28px;
-    height: 60px;
-    border: 3px solid #888;
-    border-bottom: none;
-    border-radius: 14px 14px 0 0;
-    background: linear-gradient(90deg, #aaa, #ccc, #aaa);
-    box-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-    z-index: 10;
-  }
-
-  .report-top-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 20px;
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 10px;
-    color: #444;
-    letter-spacing: 1px;
-  }
-
-  .report-seals {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 10px;
-  }
-
-  .report-seal-svg {
-    width: 80px;
-    height: 80px;
-  }
-
-  .report-title-block { text-align: center; }
-
-  .report-title-block h2 {
-    font-family: 'Oswald', sans-serif;
-    font-size: 26px;
-    font-weight: 700;
-    letter-spacing: 3px;
-    color: var(--ink);
-    text-transform: uppercase;
-    line-height: 1.2;
-    margin-bottom: 6px;
-  }
-
-  .report-subtitle {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 2px;
-    color: #555;
-    text-transform: uppercase;
-  }
-
-  .report-divider {
-    border: none;
-    border-top: 2px solid var(--ink);
-    margin: 14px 0;
-  }
-  .report-divider-thin {
-    border: none;
-    border-top: 1px solid #888;
-    margin: 10px 0;
-  }
-
-  /* Case details box */
-  .case-details-box {
-    border: 2px solid var(--ink);
-    margin-bottom: 18px;
-  }
-
-  .case-details-header {
-    background: var(--ink);
-    color: var(--paper);
-    padding: 5px 12px;
-    font-family: 'Oswald', sans-serif;
-    font-size: 13px;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-  }
-
-  .case-details-body {
-    padding: 12px 14px;
-  }
-
-  .detail-row {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 6px;
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 12px;
-    align-items: baseline;
-  }
-
-  .detail-label {
-    color: #333;
-    font-weight: 700;
-    min-width: 200px;
-    font-size: 11px;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    flex-shrink: 0;
-  }
-
-  .detail-value {
-    color: var(--ink);
-    font-weight: 700;
-    font-size: 13px;
-  }
-
-  .detail-value.red { color: var(--ink-red); }
-
-  .confidential-box {
-    border: 2px solid var(--ink-red);
-    padding: 6px 12px;
-    text-align: center;
-    margin-bottom: 4px;
-  }
-
-  .confidential-box .conf-title {
-    font-family: 'Oswald', sans-serif;
-    font-size: 16px;
-    font-weight: 700;
-    color: var(--ink-red);
-    letter-spacing: 3px;
-  }
-
-  .confidential-box .conf-sub {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 9px;
-    letter-spacing: 1px;
-    color: #666;
-    text-transform: uppercase;
-  }
-
-  .doc-ref-box {
-    border: 1px solid #888;
-    padding: 6px 10px;
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 10px;
-    color: #444;
-    text-align: center;
-  }
-
-  .report-body-text {
-    font-family: 'Special Elite', cursive;
-    font-size: 12px;
-    line-height: 1.7;
-    color: #2a2520;
-    margin-bottom: 14px;
-    text-align: justify;
-  }
-
-  .warning-box {
-    border: 2px solid var(--ink-red);
-    background: rgba(139,0,0,0.04);
-    padding: 14px 18px;
-    margin: 16px 0;
-  }
-
-  .warning-title {
-    font-family: 'Oswald', sans-serif;
-    font-size: 14px;
-    font-weight: 700;
-    color: var(--ink-red);
-    letter-spacing: 2px;
-    margin-bottom: 8px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-
-  .warning-list {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 10px;
-    color: #333;
-    padding-right: 16px;
-    letter-spacing: 0.5px;
-  }
-
-  .warning-list li { margin-bottom: 4px; font-weight: 700; }
-
-  /* FINAL NOTICE STAMP */
-  .stamp-overlay {
-    position: absolute;
-    bottom: 180px;
-    left: 50%;
-    transform: translateX(-50%) rotate(-12deg);
-    border: 8px solid rgba(180,30,30,0.8);
-    padding: 10px 30px;
-    pointer-events: none;
-    opacity: 0.85;
-  }
-
-  .stamp-text {
-    font-family: 'Oswald', sans-serif;
-    font-size: 48px;
-    font-weight: 700;
-    color: rgba(180,30,30,0.8);
-    letter-spacing: 4px;
-    text-transform: uppercase;
-    line-height: 1;
-  }
-
-  .fib-round-stamp {
-    position: absolute;
-    bottom: 160px;
-    right: 60px;
-    width: 80px;
-    height: 80px;
-    border: 3px solid rgba(50,50,150,0.7);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    transform: rotate(15deg);
-    opacity: 0.75;
-  }
-
-  .fib-round-stamp span {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 8px;
-    color: rgba(30,30,130,0.9);
-    letter-spacing: 1px;
-    font-weight: 700;
-    text-transform: uppercase;
-    line-height: 1.4;
-  }
-
-  .signatures-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 20px;
-    margin-top: 20px;
-    padding-top: 14px;
-    border-top: 1px solid #888;
-  }
-
-  .sig-block { text-align: center; }
-
-  .sig-line {
-    border-bottom: 1px solid var(--ink);
-    height: 36px;
-    margin-bottom: 6px;
-    display: flex;
-    align-items: flex-end;
-    justify-content: center;
-  }
-
-  .sig-font {
-    font-family: 'Special Elite', cursive;
-    font-size: 20px;
-    color: #1a1a5a;
-    transform: rotate(-3deg) skew(-5deg);
-    display: inline-block;
-    margin-bottom: 2px;
-    letter-spacing: -1px;
-    opacity: 0.85;
-  }
-
-  .sig-name {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 9px;
-    color: #333;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    font-weight: 700;
-  }
-
-  .sig-title {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 8px;
-    color: #666;
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
-  }
-
-  .report-footer {
-    background: var(--ink);
-    color: var(--paper);
-    text-align: center;
-    padding: 8px;
-    font-family: 'Oswald', sans-serif;
-    font-size: 12px;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    margin-top: 24px;
-  }
-
-  .barcode-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 14px;
-    padding-top: 10px;
-    border-top: 1px solid #ccc;
-  }
-
-  .barcode-svg { opacity: 0.7; }
-
-  .page-num {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 9px;
-    color: #888;
-    letter-spacing: 1px;
-  }
-
-  /* ========== FOOTER ========== */
-  .site-footer {
-    background: var(--fib-navy);
-    border-top: 2px solid rgba(200,168,75,0.3);
-    padding: 40px;
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 40px;
-    margin-top: auto;
-  }
-
-  .footer-col h4 {
-    font-family: 'Oswald', sans-serif;
-    font-size: 13px;
-    letter-spacing: 3px;
-    color: var(--fib-gold);
-    text-transform: uppercase;
-    margin-bottom: 14px;
-    padding-bottom: 8px;
-    border-bottom: 1px solid rgba(200,168,75,0.2);
-  }
-
-  .footer-col p, .footer-col a {
-    font-size: 13px;
-    color: rgba(212,207,196,0.5);
-    line-height: 1.8;
-    display: block;
-    text-decoration: none;
-  }
-
-  .footer-bottom {
-    background: var(--fib-dark);
-    padding: 16px 40px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-top: 1px solid rgba(200,168,75,0.1);
-  }
-
-  .footer-bottom p {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 2px;
-    color: rgba(212,207,196,0.3);
-    text-transform: uppercase;
-  }
-
-  @media print {
-    body { background: white; }
-    .site-header, nav, .report-form-panel, .ticker-bar, .site-footer, .footer-bottom { display: none !important; }
-    .report-layout { grid-template-columns: 1fr; }
-    .report-preview-panel { background: white; padding: 0; }
-    .report-paper { box-shadow: none; width: 100%; }
-  }
-</style>
-</head>
-<body>
-
-<!-- ── شاشة تسجيل الدخول ── -->
-<div id="login-overlay" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(6,8,16,0.97);align-items:center;justify-content:center;flex-direction:column;">
-  <div style="border:1px solid rgba(200,168,75,0.4);padding:50px 60px;text-align:center;max-width:440px;width:90%;background:rgba(13,27,42,0.95);">
-    <img src="https://cdn.discordapp.com/attachments/1505287457820774482/1505339781658443807/fib_seal_gold.png?ex=6a0a446b&is=6a08f2eb&hm=aaf3b7d885b2f92ad799db9f7113238e7583ebb15f8211a48d915fbe525d6ae6&" alt="FIB Emblem" style="width:80px;height:80px;object-fit:contain;margin-bottom:20px;" />
-    <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:3px;color:rgba(200,168,75,0.5);margin-bottom:8px;">FIB — LOS SANTOS DIVISION</div>
-    <h2 style="font-family:'Oswald',sans-serif;font-size:24px;font-weight:700;letter-spacing:3px;color:#f0ece0;text-transform:uppercase;margin-bottom:6px;">البوابة الفيدرالية</h2>
-    <p style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:rgba(200,168,75,0.5);margin-bottom:24px;">أدخل بيانات الدخول للوصول إلى النظام</p>
-    <div id="login-error" style="display:none;background:rgba(139,26,26,0.3);border:1px solid #cc2222;padding:10px;margin-bottom:16px;font-family:'IBM Plex Mono',monospace;font-size:12px;color:#ff6666;"></div>
-    <div style="margin-bottom:14px;text-align:right;">
-      <label style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:2px;color:rgba(200,168,75,0.7);display:block;margin-bottom:6px;text-transform:uppercase;">اسم المستخدم</label>
-      <input id="login-username" type="text" placeholder="USERNAME" autocomplete="off"
-        style="width:100%;background:rgba(6,8,16,0.8);border:1px solid rgba(200,168,75,0.25);color:#f0ece0;padding:11px 14px;font-family:'IBM Plex Mono',monospace;font-size:13px;outline:none;letter-spacing:1px;"
-        onkeydown="if(event.key==='Enter')doLogin()">
-    </div>
-    <div style="margin-bottom:24px;text-align:right;">
-      <label style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:2px;color:rgba(200,168,75,0.7);display:block;margin-bottom:6px;text-transform:uppercase;">كلمة المرور</label>
-      <input id="login-password" type="password" placeholder="PASSWORD" autocomplete="off"
-        style="width:100%;background:rgba(6,8,16,0.8);border:1px solid rgba(200,168,75,0.25);color:#f0ece0;padding:11px 14px;font-family:'IBM Plex Mono',monospace;font-size:13px;outline:none;letter-spacing:1px;"
-        onkeydown="if(event.key==='Enter')doLogin()">
-    </div>
-    <button id="login-btn" onclick="doLogin()" style="width:100%;background:var(--fib-gold);color:var(--fib-dark);border:none;padding:15px;font-family:'Oswald',sans-serif;font-size:16px;font-weight:700;letter-spacing:3px;cursor:pointer;text-transform:uppercase;transition:opacity .2s;" onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">
-      دخول
-    </button>
-    <p style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:rgba(200,168,75,0.3);margin-top:16px;letter-spacing:1px;">⚠ جميع الدخول والأنشطة مسجّلة ومُراقبة</p>
-  </div>
-</div>
-
-<!-- TICKER -->
-<div class="ticker-bar">
-  <div class="ticker-inner">
-    <span>⬛ CLASSIFIED SYSTEM — AUTHORIZED ACCESS ONLY</span>
-    <span>⬛ FIB LOS SANTOS DIVISION — FINANCIAL CRIMES UNIT</span>
-    <span>⬛ ALL ACTIVITY LOGGED AND MONITORED</span>
-    <span>⬛ CASE FILE: LS-TAX-ACTIVE — TAX ENFORCEMENT OPERATIONS ONGOING</span>
-    <span>⬛ VIOLATION OF FEDERAL TAX CODE IS A FEDERAL OFFENSE</span>
-    <span>⬛ CLASSIFIED SYSTEM — AUTHORIZED ACCESS ONLY</span>
-    <span>⬛ FIB LOS SANTOS DIVISION — FINANCIAL CRIMES UNIT</span>
-    <span>⬛ ALL ACTIVITY LOGGED AND MONITORED</span>
-  </div>
-</div>
-
-<!-- HEADER -->
-<header class="site-header">
-  <div class="header-top">
-    <div class="header-logo">
-      <!-- FIB Emblem -->
-      <div class="fib-emblem">
-        <img src="https://cdn.discordapp.com/attachments/1505287457820774482/1505339781658443807/fib_seal_gold.png?ex=6a0a446b&is=6a08f2eb&hm=aaf3b7d885b2f92ad799db9f7113238e7583ebb15f8211a48d915fbe525d6ae6&" alt="FIB Emblem" style="width:100%;height:100%;object-fit:contain;" />
+  <!DOCTYPE html>
+  <html lang="ar" dir="rtl">
+  <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FIB - مكتب التحقيقات الفيدرالي | Los Santos Division</title>
+  <link rel="icon" type="image/png" href="https://cdn.discordapp.com/attachments/1505287457820774482/1505339781658443807/fib_seal_gold.png?ex=6a0a446b&is=6a08f2eb&hm=aaf3b7d885b2f92ad799db9f7113238e7583ebb15f8211a48d915fbe525d6ae6&">
+  <link rel="shortcut icon" href="https://cdn.discordapp.com/attachments/1505287457820774482/1505339781658443807/fib_seal_gold.png?ex=6a0a446b&is=6a08f2eb&hm=aaf3b7d885b2f92ad799db9f7113238e7583ebb15f8211a48d915fbe525d6ae6&">
+  <link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Oswald:wght@400;600;700&family=IBM+Plex+Mono:wght@400;700&family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --fib-dark: #0a0c10;
+      --fib-navy: #0d1b2a;
+      --fib-blue: #1a3a5c;
+      --fib-gold: #c8a84b;
+      --fib-gold-light: #e8c96a;
+      --fib-red: #8b1a1a;
+      --fib-red-bright: #cc2222;
+      --fib-gray: #2a3040;
+      --fib-light: #d4cfc4;
+      --fib-white: #f0ece0;
+      --fib-green: #1a4a2e;
+      --fib-green-bright: #2d8a50;
+      --paper: #f5f0e0;
+      --paper-dark: #e8e0c8;
+      --ink: #1a1610;
+      --ink-red: #8b0000;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Cairo', sans-serif;
+      background: var(--fib-dark);
+      color: var(--fib-light);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ========== TOP SECRET TICKER ========== */
+    .ticker-bar {
+      background: var(--fib-red);
+      color: #fff;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 2px;
+      padding: 6px 0;
+      overflow: hidden;
+      white-space: nowrap;
+      border-bottom: 2px solid #ff4444;
+      position: relative;
+      z-index: 50;
+      pointer-events: none;
+    }
+    .ticker-inner {
+      display: inline-block;
+      animation: ticker 30s linear infinite;
+    }
+    .ticker-inner span { margin: 0 40px; }
+    @keyframes ticker {
+      from { transform: translateX(100vw); }
+      to { transform: translateX(-100%); }
+    }
+
+    /* ========== HEADER ========== */
+    .site-header {
+      background: linear-gradient(180deg, #060810 0%, var(--fib-navy) 100%);
+      border-bottom: 3px solid var(--fib-gold);
+      padding: 0;
+      position: sticky;
+      top: 0;
+      z-index: 200;
+      box-shadow: 0 4px 30px rgba(0,0,0,0.8);
+    }
+
+    .header-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 40px;
+      border-bottom: 1px solid rgba(200,168,75,0.3);
+    }
+
+    .header-logo {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .fib-emblem {
+      width: 80px;
+      height: 80px;
+      position: relative;
+    }
+
+    .fib-emblem svg { width: 100%; height: 100%; }
+
+    .header-title h1 {
+      font-family: 'Oswald', sans-serif;
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--fib-gold);
+      letter-spacing: 4px;
+      text-transform: uppercase;
+    }
+    .header-title p {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      color: rgba(200,168,75,0.7);
+      letter-spacing: 3px;
+      text-transform: uppercase;
+    }
+
+    .header-status {
+      text-align: left;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .status-badge {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 2px;
+      padding: 4px 12px;
+      border: 1px solid;
+      text-transform: uppercase;
+    }
+    .status-badge.green { color: var(--fib-green-bright); border-color: var(--fib-green-bright); background: rgba(45,138,80,0.1); }
+    .status-badge.red { color: var(--fib-red-bright); border-color: var(--fib-red-bright); background: rgba(204,34,34,0.1); }
+    .status-badge.gold { color: var(--fib-gold); border-color: var(--fib-gold); background: rgba(200,168,75,0.1); }
+
+    /* NAV */
+    nav {
+      display: flex;
+      align-items: center;
+      padding: 0 40px;
+      gap: 0;
+      position: relative;
+      z-index: 200;
+    }
+
+    nav a {
+      font-family: 'Oswald', sans-serif;
+      font-size: 13px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: rgba(212,207,196,0.7);
+      padding: 14px 20px;
+      text-decoration: none;
+      border-bottom: 3px solid transparent;
+      transition: all 0.2s;
+      cursor: pointer;
+      display: block;
+    }
+    nav a:hover, nav a.active {
+      color: var(--fib-gold);
+      border-bottom-color: var(--fib-gold);
+      background: rgba(200,168,75,0.05);
+    }
+
+    /* ========== HERO ========== */
+    .hero {
+      position: relative;
+      background: linear-gradient(135deg, #060810 0%, #0d1b2a 50%, #0a1520 100%);
+      padding: 80px 40px;
+      overflow: hidden;
+      text-align: center;
+      border-bottom: 1px solid rgba(200,168,75,0.2);
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: 
+        radial-gradient(ellipse at 20% 50%, rgba(26,58,92,0.4) 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 50%, rgba(139,26,26,0.2) 0%, transparent 60%);
+    }
+
+    .hero-grid {
+      position: absolute;
+      inset: 0;
+      background-image: 
+        linear-gradient(rgba(200,168,75,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(200,168,75,0.04) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+
+    .hero-content { position: relative; z-index: 2; }
+
+    .hero-badge {
+      display: inline-block;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 4px;
+      color: var(--fib-gold);
+      border: 1px solid rgba(200,168,75,0.4);
+      padding: 6px 20px;
+      margin-bottom: 24px;
+      text-transform: uppercase;
+    }
+
+    .hero h2 {
+      font-family: 'Oswald', sans-serif;
+      font-size: 52px;
+      font-weight: 700;
+      letter-spacing: 6px;
+      color: var(--fib-white);
+      text-transform: uppercase;
+      line-height: 1.1;
+      margin-bottom: 16px;
+      text-shadow: 0 0 40px rgba(200,168,75,0.2);
+    }
+
+    .hero h2 span { color: var(--fib-gold); }
+
+    .hero p {
+      font-size: 16px;
+      color: rgba(212,207,196,0.6);
+      max-width: 600px;
+      margin: 0 auto 40px;
+      line-height: 1.7;
+      letter-spacing: 1px;
+    }
+
+    .hero-stats {
+      display: flex;
+      justify-content: center;
+      gap: 60px;
+      margin-top: 50px;
+      padding-top: 40px;
+      border-top: 1px solid rgba(200,168,75,0.2);
+    }
+
+    .stat-item { text-align: center; }
+    .stat-num {
+      font-family: 'Oswald', sans-serif;
+      font-size: 36px;
+      color: var(--fib-gold);
+      display: block;
+    }
+    .stat-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 2px;
+      color: rgba(212,207,196,0.5);
+      text-transform: uppercase;
+    }
+
+    /* ========== SECTIONS ========== */
+    .page-section { display: none; }
+    .page-section.active { display: block; }
+
+    .section-header {
+      background: linear-gradient(90deg, var(--fib-navy) 0%, var(--fib-dark) 100%);
+      border-bottom: 2px solid var(--fib-gold);
+      padding: 30px 40px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .section-header h2 {
+      font-family: 'Oswald', sans-serif;
+      font-size: 24px;
+      letter-spacing: 4px;
+      color: var(--fib-gold);
+      text-transform: uppercase;
+    }
+
+    .section-tag {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 2px;
+      color: var(--fib-gold);
+      border: 1px solid var(--fib-gold);
+      padding: 3px 10px;
+      opacity: 0.6;
+    }
+
+    /* ========== ABOUT / RESPONSIBILITIES ========== */
+    .content-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      padding: 0;
+    }
+
+    .content-block {
+      padding: 40px;
+      border-bottom: 1px solid rgba(200,168,75,0.15);
+      border-left: 1px solid rgba(200,168,75,0.15);
+    }
+
+    .content-block h3 {
+      font-family: 'Oswald', sans-serif;
+      font-size: 16px;
+      letter-spacing: 3px;
+      color: var(--fib-gold);
+      text-transform: uppercase;
+      margin-bottom: 16px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid rgba(200,168,75,0.2);
+    }
+
+    .content-block p, .content-block li {
+      font-size: 14px;
+      line-height: 1.8;
+      color: rgba(212,207,196,0.75);
+    }
+
+    .content-block ul { padding-right: 20px; }
+    .content-block li { margin-bottom: 8px; }
+
+    .resp-card {
+      background: rgba(26,58,92,0.2);
+      border: 1px solid rgba(200,168,75,0.15);
+      border-right: 3px solid var(--fib-gold);
+      padding: 20px 24px;
+      margin-bottom: 16px;
+      transition: all 0.2s;
+    }
+    .resp-card:hover { background: rgba(26,58,92,0.4); border-right-color: var(--fib-gold-light); }
+
+    .resp-card .resp-icon {
+      font-size: 24px;
+      margin-bottom: 8px;
+      display: block;
+    }
+
+    .resp-card h4 {
+      font-family: 'Oswald', sans-serif;
+      font-size: 14px;
+      letter-spacing: 2px;
+      color: var(--fib-gold);
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .resp-card p {
+      font-size: 13px;
+      color: rgba(212,207,196,0.65);
+      line-height: 1.6;
+    }
+
+    /* ========== TAX SYSTEM ========== */
+    .tax-table-wrap {
+      padding: 40px;
+    }
+
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 13px;
+    }
+
+    .data-table th {
+      background: var(--fib-blue);
+      color: var(--fib-gold);
+      padding: 12px 16px;
+      text-align: right;
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      border: 1px solid rgba(200,168,75,0.2);
+    }
+
+    .data-table td {
+      padding: 12px 16px;
+      border: 1px solid rgba(200,168,75,0.1);
+      color: var(--fib-light);
+      background: rgba(13,27,42,0.5);
+    }
+
+    .data-table tr:hover td { background: rgba(26,58,92,0.4); }
+
+    .tax-rate {
+      color: var(--fib-gold);
+      font-weight: 700;
+    }
+
+    .badge-sm {
+      font-size: 10px;
+      padding: 2px 8px;
+      border-radius: 2px;
+      letter-spacing: 1px;
+    }
+    .badge-active { background: rgba(45,138,80,0.2); color: #2d8a50; border: 1px solid #2d8a50; }
+    .badge-warn { background: rgba(200,100,0,0.2); color: #cc7700; border: 1px solid #cc7700; }
+
+    /* ========== REPORT GENERATOR ========== */
+    .report-layout {
+      display: grid;
+      grid-template-columns: 380px 1fr;
+      gap: 0;
+      min-height: calc(100vh - 200px);
+    }
+
+    .report-form-panel {
+      background: var(--fib-navy);
+      border-left: 1px solid rgba(200,168,75,0.2);
+      padding: 30px;
+      overflow-y: auto;
+    }
+
+    .form-section-title {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 3px;
+      color: var(--fib-gold);
+      text-transform: uppercase;
+      margin-bottom: 16px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid rgba(200,168,75,0.2);
+      margin-top: 24px;
+    }
+    .form-section-title:first-child { margin-top: 0; }
+
+    .form-group { margin-bottom: 16px; }
+
+    .form-group label {
+      display: block;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 2px;
+      color: rgba(200,168,75,0.7);
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .form-group input, .form-group select, .form-group textarea {
+      width: 100%;
+      background: rgba(6,8,16,0.8);
+      border: 1px solid rgba(200,168,75,0.25);
+      color: var(--fib-white);
+      padding: 10px 14px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 13px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .form-group input:focus, .form-group select:focus { border-color: var(--fib-gold); }
+    .form-group select option { background: var(--fib-navy); }
+
+    .btn-generate {
+      width: 100%;
+      background: var(--fib-gold);
+      color: var(--fib-dark);
+      border: none;
+      padding: 14px;
+      font-family: 'Oswald', sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      cursor: pointer;
+      margin-top: 24px;
+      transition: all 0.2s;
+    }
+    .btn-generate:hover { background: var(--fib-gold-light); transform: translateY(-1px); }
+
+    .btn-print {
+      width: 100%;
+      background: transparent;
+      color: var(--fib-gold);
+      border: 1px solid var(--fib-gold);
+      padding: 10px;
+      font-family: 'Oswald', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      cursor: pointer;
+      margin-top: 10px;
+      transition: all 0.2s;
+    }
+    .btn-print:hover { background: rgba(200,168,75,0.1); }
+
+    /* ========== REPORT PREVIEW ========== */
+    .report-preview-panel {
+      background: #c8bfa8;
+      padding: 40px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      min-height: 800px;
+      overflow-y: auto;
+    }
+
+    .report-paper {
+      background: var(--paper);
+      width: 680px;
+      min-height: 900px;
+      padding: 50px 50px 60px;
+      position: relative;
+      box-shadow: 
+        0 4px 6px rgba(0,0,0,0.15),
+        0 10px 40px rgba(0,0,0,0.25),
+        inset 0 0 80px rgba(0,0,0,0.03);
+      font-family: 'Special Elite', cursive;
+      color: var(--ink);
+      background-image: 
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    }
+
+    /* Paper aging effect */
+    .report-paper::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: 
+        radial-gradient(ellipse at 0% 0%, rgba(139,100,20,0.08) 0%, transparent 50%),
+        radial-gradient(ellipse at 100% 100%, rgba(139,100,20,0.08) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 0%, rgba(0,0,0,0.04) 0%, transparent 40%);
+      pointer-events: none;
+    }
+
+    .report-inner { position: relative; z-index: 1; }
+
+    /* Paper clip */
+    .paper-clip {
+      position: absolute;
+      top: -8px;
+      right: 60px;
+      width: 28px;
+      height: 60px;
+      border: 3px solid #888;
+      border-bottom: none;
+      border-radius: 14px 14px 0 0;
+      background: linear-gradient(90deg, #aaa, #ccc, #aaa);
+      box-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+      z-index: 10;
+    }
+
+    .report-top-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 20px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      color: #444;
+      letter-spacing: 1px;
+    }
+
+    .report-seals {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .report-seal-svg {
+      width: 80px;
+      height: 80px;
+    }
+
+    .report-title-block { text-align: center; }
+
+    .report-title-block h2 {
+      font-family: 'Oswald', sans-serif;
+      font-size: 26px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      color: var(--ink);
+      text-transform: uppercase;
+      line-height: 1.2;
+      margin-bottom: 6px;
+    }
+
+    .report-subtitle {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 2px;
+      color: #555;
+      text-transform: uppercase;
+    }
+
+    .report-divider {
+      border: none;
+      border-top: 2px solid var(--ink);
+      margin: 14px 0;
+    }
+    .report-divider-thin {
+      border: none;
+      border-top: 1px solid #888;
+      margin: 10px 0;
+    }
+
+    /* Case details box */
+    .case-details-box {
+      border: 2px solid var(--ink);
+      margin-bottom: 18px;
+    }
+
+    .case-details-header {
+      background: var(--ink);
+      color: var(--paper);
+      padding: 5px 12px;
+      font-family: 'Oswald', sans-serif;
+      font-size: 13px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+    }
+
+    .case-details-body {
+      padding: 12px 14px;
+    }
+
+    .detail-row {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 6px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 12px;
+      align-items: baseline;
+    }
+
+    .detail-label {
+      color: #333;
+      font-weight: 700;
+      min-width: 200px;
+      font-size: 11px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      flex-shrink: 0;
+    }
+
+    .detail-value {
+      color: var(--ink);
+      font-weight: 700;
+      font-size: 13px;
+    }
+
+    .detail-value.red { color: var(--ink-red); }
+
+    .confidential-box {
+      border: 2px solid var(--ink-red);
+      padding: 6px 12px;
+      text-align: center;
+      margin-bottom: 4px;
+    }
+
+    .confidential-box .conf-title {
+      font-family: 'Oswald', sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--ink-red);
+      letter-spacing: 3px;
+    }
+
+    .confidential-box .conf-sub {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 1px;
+      color: #666;
+      text-transform: uppercase;
+    }
+
+    .doc-ref-box {
+      border: 1px solid #888;
+      padding: 6px 10px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      color: #444;
+      text-align: center;
+    }
+
+    .report-body-text {
+      font-family: 'Special Elite', cursive;
+      font-size: 12px;
+      line-height: 1.7;
+      color: #2a2520;
+      margin-bottom: 14px;
+      text-align: justify;
+    }
+
+    .warning-box {
+      border: 2px solid var(--ink-red);
+      background: rgba(139,0,0,0.04);
+      padding: 14px 18px;
+      margin: 16px 0;
+    }
+
+    .warning-title {
+      font-family: 'Oswald', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--ink-red);
+      letter-spacing: 2px;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .warning-list {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      color: #333;
+      padding-right: 16px;
+      letter-spacing: 0.5px;
+    }
+
+    .warning-list li { margin-bottom: 4px; font-weight: 700; }
+
+    /* FINAL NOTICE STAMP */
+    .stamp-overlay {
+      position: absolute;
+      bottom: 180px;
+      left: 50%;
+      transform: translateX(-50%) rotate(-12deg);
+      border: 8px solid rgba(180,30,30,0.8);
+      padding: 10px 30px;
+      pointer-events: none;
+      opacity: 0.85;
+    }
+
+    .stamp-text {
+      font-family: 'Oswald', sans-serif;
+      font-size: 48px;
+      font-weight: 700;
+      color: rgba(180,30,30,0.8);
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      line-height: 1;
+    }
+
+    .fib-round-stamp {
+      position: absolute;
+      bottom: 160px;
+      right: 60px;
+      width: 80px;
+      height: 80px;
+      border: 3px solid rgba(50,50,150,0.7);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      transform: rotate(15deg);
+      opacity: 0.75;
+    }
+
+    .fib-round-stamp span {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 8px;
+      color: rgba(30,30,130,0.9);
+      letter-spacing: 1px;
+      font-weight: 700;
+      text-transform: uppercase;
+      line-height: 1.4;
+    }
+
+    .signatures-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 20px;
+      margin-top: 20px;
+      padding-top: 14px;
+      border-top: 1px solid #888;
+    }
+
+    .sig-block { text-align: center; }
+
+    .sig-line {
+      border-bottom: 1px solid var(--ink);
+      height: 36px;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+    }
+
+    .sig-font {
+      font-family: 'Special Elite', cursive;
+      font-size: 20px;
+      color: #1a1a5a;
+      transform: rotate(-3deg) skew(-5deg);
+      display: inline-block;
+      margin-bottom: 2px;
+      letter-spacing: -1px;
+      opacity: 0.85;
+    }
+
+    .sig-name {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 9px;
+      color: #333;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+
+    .sig-title {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 8px;
+      color: #666;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    .report-footer {
+      background: var(--ink);
+      color: var(--paper);
+      text-align: center;
+      padding: 8px;
+      font-family: 'Oswald', sans-serif;
+      font-size: 12px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-top: 24px;
+    }
+
+    .barcode-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 14px;
+      padding-top: 10px;
+      border-top: 1px solid #ccc;
+    }
+
+    .barcode-svg { opacity: 0.7; }
+
+    .page-num {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 9px;
+      color: #888;
+      letter-spacing: 1px;
+    }
+
+    /* ========== FOOTER ========== */
+    .site-footer {
+      background: var(--fib-navy);
+      border-top: 2px solid rgba(200,168,75,0.3);
+      padding: 40px;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 40px;
+      margin-top: auto;
+    }
+
+    .footer-col h4 {
+      font-family: 'Oswald', sans-serif;
+      font-size: 13px;
+      letter-spacing: 3px;
+      color: var(--fib-gold);
+      text-transform: uppercase;
+      margin-bottom: 14px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid rgba(200,168,75,0.2);
+    }
+
+    .footer-col p, .footer-col a {
+      font-size: 13px;
+      color: rgba(212,207,196,0.5);
+      line-height: 1.8;
+      display: block;
+      text-decoration: none;
+    }
+
+    .footer-bottom {
+      background: var(--fib-dark);
+      padding: 16px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid rgba(200,168,75,0.1);
+    }
+
+    .footer-bottom p {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 2px;
+      color: rgba(212,207,196,0.3);
+      text-transform: uppercase;
+    }
+
+    @media print {
+      body { background: white; }
+      .site-header, nav, .report-form-panel, .ticker-bar, .site-footer, .footer-bottom { display: none !important; }
+      .report-layout { grid-template-columns: 1fr; }
+      .report-preview-panel { background: white; padding: 0; }
+      .report-paper { box-shadow: none; width: 100%; }
+    }
+  </style>
+  </head>
+  <body>
+
+  <!-- ── شاشة تسجيل الدخول ── -->
+  <div id="login-overlay" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(6,8,16,0.97);align-items:center;justify-content:center;flex-direction:column;">
+    <div style="border:1px solid rgba(200,168,75,0.4);padding:50px 60px;text-align:center;max-width:440px;width:90%;background:rgba(13,27,42,0.95);">
+      <img src="https://cdn.discordapp.com/attachments/1505287457820774482/1505339781658443807/fib_seal_gold.png?ex=6a0a446b&is=6a08f2eb&hm=aaf3b7d885b2f92ad799db9f7113238e7583ebb15f8211a48d915fbe525d6ae6&" alt="FIB Emblem" style="width:80px;height:80px;object-fit:contain;margin-bottom:20px;" />
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:3px;color:rgba(200,168,75,0.5);margin-bottom:8px;">FIB — LOS SANTOS DIVISION</div>
+      <h2 style="font-family:'Oswald',sans-serif;font-size:24px;font-weight:700;letter-spacing:3px;color:#f0ece0;text-transform:uppercase;margin-bottom:6px;">البوابة الفيدرالية</h2>
+      <p style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:rgba(200,168,75,0.5);margin-bottom:24px;">أدخل بيانات الدخول للوصول إلى النظام</p>
+      <div id="login-error" style="display:none;background:rgba(139,26,26,0.3);border:1px solid #cc2222;padding:10px;margin-bottom:16px;font-family:'IBM Plex Mono',monospace;font-size:12px;color:#ff6666;"></div>
+      <div style="margin-bottom:14px;text-align:right;">
+        <label style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:2px;color:rgba(200,168,75,0.7);display:block;margin-bottom:6px;text-transform:uppercase;">اسم المستخدم</label>
+        <input id="login-username" type="text" placeholder="USERNAME" autocomplete="off"
+          style="width:100%;background:rgba(6,8,16,0.8);border:1px solid rgba(200,168,75,0.25);color:#f0ece0;padding:11px 14px;font-family:'IBM Plex Mono',monospace;font-size:13px;outline:none;letter-spacing:1px;"
+          onkeydown="if(event.key==='Enter')doLogin()">
       </div>
-      <div class="header-title">
-        <h1>FIB</h1>
-        <p>Federal Investigation Bureau — Los Santos Division</p>
+      <div style="margin-bottom:24px;text-align:right;">
+        <label style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:2px;color:rgba(200,168,75,0.7);display:block;margin-bottom:6px;text-transform:uppercase;">كلمة المرور</label>
+        <input id="login-password" type="password" placeholder="PASSWORD" autocomplete="off"
+          style="width:100%;background:rgba(6,8,16,0.8);border:1px solid rgba(200,168,75,0.25);color:#f0ece0;padding:11px 14px;font-family:'IBM Plex Mono',monospace;font-size:13px;outline:none;letter-spacing:1px;"
+          onkeydown="if(event.key==='Enter')doLogin()">
       </div>
-    </div>
-    <div class="header-status">
-      <div class="status-badge green">● SYSTEM ONLINE</div>
-      <div class="status-badge gold">⬛ CLEARANCE: LEVEL 3</div>
-      <div class="status-badge red">⚠ ENFORCEMENT: ACTIVE</div>
-      <div id="user-badge" style="margin-top:6px;padding:5px 10px;border:1px solid rgba(200,168,75,0.3);background:rgba(200,168,75,0.05);display:flex;align-items:center;gap:6px;">
-        <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:rgba(200,168,75,0.5);letter-spacing:1px;">🔐 غير مسجل</span>
-      </div>
+      <button id="login-btn" onclick="doLogin()" style="width:100%;background:var(--fib-gold);color:var(--fib-dark);border:none;padding:15px;font-family:'Oswald',sans-serif;font-size:16px;font-weight:700;letter-spacing:3px;cursor:pointer;text-transform:uppercase;transition:opacity .2s;" onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">
+        دخول
+      </button>
+      <p style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:rgba(200,168,75,0.3);margin-top:16px;letter-spacing:1px;">⚠ جميع الدخول والأنشطة مسجّلة ومُراقبة</p>
     </div>
   </div>
-  <nav>
-    <a class="active" onclick="showSection('home')">الرئيسية</a>
-    <a onclick="showSection('about')">عن الـ FIB</a>
-    <a onclick="showSection('responsibilities')">المسؤوليات</a>
-    <a onclick="showSection('taxes')">نظام الضرائب</a>
-    <a onclick="showSection('reports')">إنشاء تقرير</a>
-    <a onclick="showSection('staff')">المسؤولين والرتب</a>
-    <a onclick="showSection('contact')">التواصل</a>
-  </nav>
-</header>
 
-<!-- ======== HOME ======== -->
-<section id="home" class="page-section active">
-  <div class="hero">
-    <div class="hero-grid"></div>
-    <div class="hero-content">
-      <div class="hero-badge">▶ OFFICIAL FEDERAL PORTAL — LOS SANTOS</div>
-      <h2>مكتب التحقيقات<br><span>الفيدرالي</span></h2>
-      <p>الجهة الحكومية المسؤولة عن تطبيق القانون الفيدرالي، مكافحة الجرائم المالية، وفرض الضرائب على البزنسات في سيرفر Los Santos</p>
-      <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;">
-        <button class="btn-generate" style="width:auto;padding:14px 40px;" onclick="showSection('reports')">← إنشاء تقرير ضريبي</button>
-        <button class="btn-print" style="width:auto;padding:14px 40px;margin:0;" onclick="showSection('responsibilities')">مسؤوليات الـ FIB</button>
+  <!-- TICKER -->
+  <div class="ticker-bar">
+    <div class="ticker-inner">
+      <span>⬛ CLASSIFIED SYSTEM — AUTHORIZED ACCESS ONLY</span>
+      <span>⬛ FIB LOS SANTOS DIVISION — FINANCIAL CRIMES UNIT</span>
+      <span>⬛ ALL ACTIVITY LOGGED AND MONITORED</span>
+      <span>⬛ CASE FILE: LS-TAX-ACTIVE — TAX ENFORCEMENT OPERATIONS ONGOING</span>
+      <span>⬛ VIOLATION OF FEDERAL TAX CODE IS A FEDERAL OFFENSE</span>
+      <span>⬛ CLASSIFIED SYSTEM — AUTHORIZED ACCESS ONLY</span>
+      <span>⬛ FIB LOS SANTOS DIVISION — FINANCIAL CRIMES UNIT</span>
+      <span>⬛ ALL ACTIVITY LOGGED AND MONITORED</span>
+    </div>
+  </div>
+
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="header-top">
+      <div class="header-logo">
+        <!-- FIB Emblem -->
+        <div class="fib-emblem">
+          <img src="https://cdn.discordapp.com/attachments/1505287457820774482/1505339781658443807/fib_seal_gold.png?ex=6a0a446b&is=6a08f2eb&hm=aaf3b7d885b2f92ad799db9f7113238e7583ebb15f8211a48d915fbe525d6ae6&" alt="FIB Emblem" style="width:100%;height:100%;object-fit:contain;" />
+        </div>
+        <div class="header-title">
+          <h1>FIB</h1>
+          <p>Federal Investigation Bureau — Los Santos Division</p>
+        </div>
       </div>
-      <div class="hero-stats">
-        <div class="stat-item">
-          <span class="stat-num">15%</span>
-          <span class="stat-label">معدل الضريبة الفيدرالية</span>
-        </div>
-        <div class="stat-item">
-          <span class="stat-num">247</span>
-          <span class="stat-label">قضية نشطة</span>
-        </div>
-        <div class="stat-item">
-          <span class="stat-num">$4.2M</span>
-          <span class="stat-label">ضرائب محصلة</span>
-        </div>
-        <div class="stat-item">
-          <span class="stat-num">38</span>
-          <span class="stat-label">عملية مصادرة</span>
+      <div class="header-status">
+        <div class="status-badge green">● SYSTEM ONLINE</div>
+        <div class="status-badge gold">⬛ CLEARANCE: LEVEL 3</div>
+        <div class="status-badge red">⚠ ENFORCEMENT: ACTIVE</div>
+        <div id="user-badge" style="margin-top:6px;padding:5px 10px;border:1px solid rgba(200,168,75,0.3);background:rgba(200,168,75,0.05);display:flex;align-items:center;gap:6px;">
+          <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:rgba(200,168,75,0.5);letter-spacing:1px;">🔐 غير مسجل</span>
         </div>
       </div>
     </div>
-  </div>
+    <nav>
+      <a class="active" onclick="showSection('home')">الرئيسية</a>
+      <a onclick="showSection('about')">عن الـ FIB</a>
+      <a onclick="showSection('responsibilities')">المسؤوليات</a>
+      <a onclick="showSection('taxes')">نظام الضرائب</a>
+      <a onclick="showSection('reports')">إنشاء تقرير</a>
+      <a onclick="showSection('staff')">المسؤولين والرتب</a>
+      <a onclick="showSection('contact')">التواصل</a>
+    </nav>
+  </header>
 
-  <!-- QUICK CARDS -->
-  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(200,168,75,0.15);margin:0;">
-    <div class="content-block" style="cursor:pointer;" onclick="showSection('responsibilities')">
-      <div style="font-size:32px;margin-bottom:12px;">🔍</div>
-      <h3>المسؤوليات</h3>
-      <p>يتمتع الـ FIB بصلاحيات واسعة تشمل التحقيق في الجرائم المالية، مراقبة البزنسات، وفرض العقوبات الفيدرالية.</p>
+  <!-- ======== HOME ======== -->
+  <section id="home" class="page-section active">
+    <div class="hero">
+      <div class="hero-grid"></div>
+      <div class="hero-content">
+        <div class="hero-badge">▶ OFFICIAL FEDERAL PORTAL — LOS SANTOS</div>
+        <h2>مكتب التحقيقات<br><span>الفيدرالي</span></h2>
+        <p>الجهة الحكومية المسؤولة عن تطبيق القانون الفيدرالي، مكافحة الجرائم المالية، وفرض الضرائب على البزنسات في سيرفر Los Santos</p>
+        <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;">
+          <button class="btn-generate" style="width:auto;padding:14px 40px;" onclick="showSection('reports')">← إنشاء تقرير ضريبي</button>
+          <button class="btn-print" style="width:auto;padding:14px 40px;margin:0;" onclick="showSection('responsibilities')">مسؤوليات الـ FIB</button>
+        </div>
+        <div class="hero-stats">
+          <div class="stat-item">
+            <span class="stat-num">15%</span>
+            <span class="stat-label">معدل الضريبة الفيدرالية</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-num">247</span>
+            <span class="stat-label">قضية نشطة</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-num">$4.2M</span>
+            <span class="stat-label">ضرائب محصلة</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-num">38</span>
+            <span class="stat-label">عملية مصادرة</span>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="content-block" style="cursor:pointer;" onclick="showSection('taxes')">
-      <div style="font-size:32px;margin-bottom:12px;">💰</div>
-      <h3>نظام الضرائب</h3>
-      <p>كل بزنس مسجل في Los Santos ملزم بالإفصاح عن أصوله ودفع الضريبة الفيدرالية المحددة وفق قانون رقم 26.</p>
-    </div>
-    <div class="content-block" style="cursor:pointer;" onclick="showSection('reports')">
-      <div style="font-size:32px;margin-bottom:12px;">📋</div>
-      <h3>إنشاء تقرير</h3>
-      <p>أنشئ تقارير ضريبية رسمية وإشعارات تنفيذية بتنسيق قانوني معتمد من إدارة الجرائم المالية في الـ FIB.</p>
-    </div>
-  </div>
-</section>
 
-<!-- ======== ABOUT ======== -->
-<section id="about" class="page-section">
-  <div class="section-header">
-    <h2>عن مكتب التحقيقات الفيدرالي</h2>
-    <span class="section-tag">CLASSIFIED</span>
-  </div>
-  <div class="content-grid">
-    <div class="content-block">
-      <h3>نبذة عن الـ FIB</h3>
-      <p>مكتب التحقيقات الفيدرالي (FIB) هو الجهة التنفيذية الحكومية العليا في سيرفر Los Santos، يعمل تحت إشراف وزارة العدل ويتمتع بصلاحيات فيدرالية كاملة لتطبيق القانون وحماية الاقتصاد من التلاعب والتهرب الضريبي.</p>
-      <br>
-      <p>تأسس قسم الجرائم المالية بموجب الأمر التنفيذي الفيدرالي رقم LS-2024-FCU لمكافحة التهرب الضريبي والغسيل المالي وحماية الاقتصاد الرقمي للسيرفر.</p>
+    <!-- QUICK CARDS -->
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(200,168,75,0.15);margin:0;">
+      <div class="content-block" style="cursor:pointer;" onclick="showSection('responsibilities')">
+        <div style="font-size:32px;margin-bottom:12px;">🔍</div>
+        <h3>المسؤوليات</h3>
+        <p>يتمتع الـ FIB بصلاحيات واسعة تشمل التحقيق في الجرائم المالية، مراقبة البزنسات، وفرض العقوبات الفيدرالية.</p>
+      </div>
+      <div class="content-block" style="cursor:pointer;" onclick="showSection('taxes')">
+        <div style="font-size:32px;margin-bottom:12px;">💰</div>
+        <h3>نظام الضرائب</h3>
+        <p>كل بزنس مسجل في Los Santos ملزم بالإفصاح عن أصوله ودفع الضريبة الفيدرالية المحددة وفق قانون رقم 26.</p>
+      </div>
+      <div class="content-block" style="cursor:pointer;" onclick="showSection('reports')">
+        <div style="font-size:32px;margin-bottom:12px;">📋</div>
+        <h3>إنشاء تقرير</h3>
+        <p>أنشئ تقارير ضريبية رسمية وإشعارات تنفيذية بتنسيق قانوني معتمد من إدارة الجرائم المالية في الـ FIB.</p>
+      </div>
     </div>
-    <div class="content-block">
-      <h3>الهيكل التنظيمي</h3>
-      <ul>
-        <li>مدير المكتب الفيدرالي (Director)</li>
-        <li>نائب المدير للعمليات</li>
-        <li>رئيس قسم الجرائم المالية</li>
-        <li>محققون خاصون (Special Agents)</li>
-        <li>محققون مشرفون (Supervisory Agents)</li>
-        <li>وحدة مراقبة الأصول والبزنسات</li>
-        <li>وحدة مكافحة غسيل الأموال</li>
-        <li>إدارة التسويات الضريبية</li>
-      </ul>
-    </div>
-    <div class="content-block">
-      <h3>القوانين المطبقة</h3>
-      <ul>
-        <li>Title 26 USC § 7201 — التهرب الضريبي</li>
-        <li>Title 26 USC § 7206 — الاحتيال والإفادات الكاذبة</li>
-        <li>Title 26 USC § 7212 — عرقلة سير العدالة</li>
-        <li>قانون مكافحة غسيل الأموال LS-AML</li>
-        <li>قانون تنظيم البزنسات الفيدرالي</li>
-        <li>لوائح الأصول والتسجيل التجاري</li>
-      </ul>
-    </div>
-    <div class="content-block">
-      <h3>الصلاحيات التنفيذية</h3>
-      <ul>
-        <li>مداهمة وتفتيش أي منشأة تجارية</li>
-        <li>تجميد الحسابات المصرفية فوراً</li>
-        <li>مصادرة المركبات والعقارات</li>
-        <li>إصدار أوامر الاعتقال الفيدرالي</li>
-        <li>رفع دعاوى جنائية أمام المحاكم</li>
-        <li>فرض غرامات وعقوبات مضاعفة</li>
-      </ul>
-    </div>
-  </div>
-</section>
+  </section>
 
-<!-- ======== RESPONSIBILITIES ======== -->
-<section id="responsibilities" class="page-section">
-  <div class="section-header">
-    <h2>مسؤوليات الـ FIB</h2>
-    <span class="section-tag">AUTHORIZED</span>
-  </div>
-  <div style="padding:40px;display:grid;grid-template-columns:1fr 1fr;gap:20px;">
-    <div>
-      <div class="resp-card">
-        <span class="resp-icon">🏛️</span>
-        <h4>تطبيق القانون الفيدرالي</h4>
-        <p>الـ FIB هو الجهة الأعلى صلاحية في السيرفر لتطبيق القوانين الفيدرالية. لا يمكن لأي جهة أخرى تجاوز قرارات الـ FIB أو إلغائها.</p>
+  <!-- ======== ABOUT ======== -->
+  <section id="about" class="page-section">
+    <div class="section-header">
+      <h2>عن مكتب التحقيقات الفيدرالي</h2>
+      <span class="section-tag">CLASSIFIED</span>
+    </div>
+    <div class="content-grid">
+      <div class="content-block">
+        <h3>نبذة عن الـ FIB</h3>
+        <p>مكتب التحقيقات الفيدرالي (FIB) هو الجهة التنفيذية الحكومية العليا في سيرفر Los Santos، يعمل تحت إشراف وزارة العدل ويتمتع بصلاحيات فيدرالية كاملة لتطبيق القانون وحماية الاقتصاد من التلاعب والتهرب الضريبي.</p>
+        <br>
+        <p>تأسس قسم الجرائم المالية بموجب الأمر التنفيذي الفيدرالي رقم LS-2024-FCU لمكافحة التهرب الضريبي والغسيل المالي وحماية الاقتصاد الرقمي للسيرفر.</p>
       </div>
-      <div class="resp-card">
-        <span class="resp-icon">💸</span>
-        <h4>فرض الضرائب على البزنسات</h4>
-        <p>كل بزنس مسجل في Los Santos يخضع للضريبة الفيدرالية. الـ FIB يراقب الأصول ويحسب الضريبة ويرسل إشعارات التحصيل الرسمية.</p>
+      <div class="content-block">
+        <h3>الهيكل التنظيمي</h3>
+        <ul>
+          <li>مدير المكتب الفيدرالي (Director)</li>
+          <li>نائب المدير للعمليات</li>
+          <li>رئيس قسم الجرائم المالية</li>
+          <li>محققون خاصون (Special Agents)</li>
+          <li>محققون مشرفون (Supervisory Agents)</li>
+          <li>وحدة مراقبة الأصول والبزنسات</li>
+          <li>وحدة مكافحة غسيل الأموال</li>
+          <li>إدارة التسويات الضريبية</li>
+        </ul>
       </div>
-      <div class="resp-card">
-        <span class="resp-icon">🔎</span>
-        <h4>التحقيق في الجرائم المالية</h4>
-        <p>يحق للـ FIB فتح تحقيق في أي بزنس أو شخص يشتبه بتهربه الضريبي أو غسيل الأموال أو الاحتيال المالي.</p>
+      <div class="content-block">
+        <h3>القوانين المطبقة</h3>
+        <ul>
+          <li>Title 26 USC § 7201 — التهرب الضريبي</li>
+          <li>Title 26 USC § 7206 — الاحتيال والإفادات الكاذبة</li>
+          <li>Title 26 USC § 7212 — عرقلة سير العدالة</li>
+          <li>قانون مكافحة غسيل الأموال LS-AML</li>
+          <li>قانون تنظيم البزنسات الفيدرالي</li>
+          <li>لوائح الأصول والتسجيل التجاري</li>
+        </ul>
       </div>
-      <div class="resp-card">
-        <span class="resp-icon">🏦</span>
-        <h4>مراقبة المؤسسات المالية</h4>
-        <p>تخضع البنوك وشركات الاستثمار والصرافة لرقابة مستمرة من قسم الجرائم المالية للتحقق من التزامها بالتشريعات الفيدرالية.</p>
+      <div class="content-block">
+        <h3>الصلاحيات التنفيذية</h3>
+        <ul>
+          <li>مداهمة وتفتيش أي منشأة تجارية</li>
+          <li>تجميد الحسابات المصرفية فوراً</li>
+          <li>مصادرة المركبات والعقارات</li>
+          <li>إصدار أوامر الاعتقال الفيدرالي</li>
+          <li>رفع دعاوى جنائية أمام المحاكم</li>
+          <li>فرض غرامات وعقوبات مضاعفة</li>
+        </ul>
       </div>
     </div>
-    <div>
-      <div class="resp-card">
-        <span class="resp-icon">⚖️</span>
-        <h4>المصادرة والتنفيذ</h4>
-        <p>في حالة عدم الامتثال، يملك الـ FIB صلاحية مصادرة الأصول والمركبات وتجميد الحسابات وإغلاق البزنس فوراً بدون إشعار مسبق.</p>
-      </div>
-      <div class="resp-card">
-        <span class="resp-icon">📑</span>
-        <h4>إصدار الإشعارات والتقارير الرسمية</h4>
-        <p>يصدر الـ FIB إشعارات ضريبية رسمية وأوامر دفع ملزمة قانونياً. التجاهل يُعد جريمة فيدرالية يعاقب عليها بأشد العقوبات.</p>
-      </div>
-      <div class="resp-card">
-        <span class="resp-icon">🚔</span>
-        <h4>التنسيق مع الأجهزة الأمنية</h4>
-        <p>يتعاون الـ FIB مع LSPD وUSMS وغيرها لتنفيذ أوامر القبض والمداهمة على المتهرين الضريبيين والمجرمين الماليين.</p>
-      </div>
-      <div class="resp-card">
-        <span class="resp-icon">📊</span>
-        <h4>تقييم وتسجيل البزنسات</h4>
-        <p>كل بزنس يجب أن يكون مسجلاً في قواعد بيانات الـ FIB. غير المسجلين يتعرضون لعقوبات مضاعفة عند الكشف عنهم.</p>
-      </div>
-    </div>
-  </div>
-</section>
+  </section>
 
-<!-- ======== TAX SYSTEM ======== -->
-<section id="taxes" class="page-section">
-  <div class="section-header">
-    <h2>نظام الضرائب الفيدرالي</h2>
-    <span class="section-tag">PUBLIC NOTICE</span>
-  </div>
-  <div class="tax-table-wrap">
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:40px;margin-bottom:40px;">
+  <!-- ======== RESPONSIBILITIES ======== -->
+  <section id="responsibilities" class="page-section">
+    <div class="section-header">
+      <h2>مسؤوليات الـ FIB</h2>
+      <span class="section-tag">AUTHORIZED</span>
+    </div>
+    <div style="padding:40px;display:grid;grid-template-columns:1fr 1fr;gap:20px;">
       <div>
-        <div class="form-section-title" style="color:var(--fib-gold);">كيف تُحسب الضريبة</div>
         <div class="resp-card">
-          <h4>معادلة الحساب</h4>
-          <p style="font-family:'IBM Plex Mono',monospace;font-size:14px;color:var(--fib-gold);margin-top:8px;">الضريبة = إجمالي الأصول × معدل الضريبة</p>
-          <p style="margin-top:8px;">يتم تقييم أصول البزنس بشكل ربع سنوي. الإخفاء أو التلاعب بالأرقام يُعدّ جريمة فيدرالية.</p>
+          <span class="resp-icon">🏛️</span>
+          <h4>تطبيق القانون الفيدرالي</h4>
+          <p>الـ FIB هو الجهة الأعلى صلاحية في السيرفر لتطبيق القوانين الفيدرالية. لا يمكن لأي جهة أخرى تجاوز قرارات الـ FIB أو إلغائها.</p>
         </div>
         <div class="resp-card">
-          <h4>موعد الدفع</h4>
-          <p>يُمنح المخالف مهلة لا تتجاوز 30 يوماً من تاريخ إصدار الإشعار الرسمي للسداد الكامل. التأخير يُفضي إلى غرامات تراكمية.</p>
+          <span class="resp-icon">💸</span>
+          <h4>فرض الضرائب على البزنسات</h4>
+          <p>كل بزنس مسجل في Los Santos يخضع للضريبة الفيدرالية. الـ FIB يراقب الأصول ويحسب الضريبة ويرسل إشعارات التحصيل الرسمية.</p>
         </div>
         <div class="resp-card">
-          <h4>طرق الدفع المقبولة</h4>
-          <p>يتم السداد نقداً في مقر قسم الجرائم المالية أو بتحويل مصرفي مباشر لحساب خزينة FIB الفيدرالية.</p>
+          <span class="resp-icon">🔎</span>
+          <h4>التحقيق في الجرائم المالية</h4>
+          <p>يحق للـ FIB فتح تحقيق في أي بزنس أو شخص يشتبه بتهربه الضريبي أو غسيل الأموال أو الاحتيال المالي.</p>
+        </div>
+        <div class="resp-card">
+          <span class="resp-icon">🏦</span>
+          <h4>مراقبة المؤسسات المالية</h4>
+          <p>تخضع البنوك وشركات الاستثمار والصرافة لرقابة مستمرة من قسم الجرائم المالية للتحقق من التزامها بالتشريعات الفيدرالية.</p>
         </div>
       </div>
       <div>
-        <div class="form-section-title" style="color:var(--fib-gold);">جدول الغرامات</div>
-        <table class="data-table" style="margin-bottom:16px;">
-          <thead>
-            <tr>
-              <th>المخالفة</th>
-              <th>الغرامة</th>
-              <th>الحالة</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>تأخر الدفع (أسبوع)</td>
-              <td class="tax-rate">+25%</td>
-              <td><span class="badge-sm badge-warn">تحذير</span></td>
-            </tr>
-            <tr>
-              <td>تأخر الدفع (شهر)</td>
-              <td class="tax-rate">+50%</td>
-              <td><span class="badge-sm badge-warn">خطر</span></td>
-            </tr>
-            <tr>
-              <td>التهرب الضريبي</td>
-              <td class="tax-rate">200%</td>
-              <td><span class="badge-sm" style="background:rgba(200,0,0,0.2);color:#cc2222;border:1px solid #cc2222;">جريمة</span></td>
-            </tr>
-            <tr>
-              <td>الإخفاء المتعمد</td>
-              <td class="tax-rate">300% + سجن</td>
-              <td><span class="badge-sm" style="background:rgba(200,0,0,0.2);color:#cc2222;border:1px solid #cc2222;">فيدرالي</span></td>
-            </tr>
-          </tbody>
-        </table>
-        <div style="border:1px solid var(--fib-red-bright);padding:14px;background:rgba(139,26,26,0.1);">
-          <p style="color:var(--fib-red-bright);font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:1px;font-weight:700;">⚠ تحذير — عدم الامتثال يستوجب:</p>
-          <p style="font-size:12px;color:rgba(212,207,196,0.7);margin-top:8px;line-height:1.7;">مصادرة الأصول فوراً، إغلاق البزنس، اعتقال المالك، ومحاكمة فيدرالية قد تصل عقوبتها إلى السجن الفيدرالي.</p>
+        <div class="resp-card">
+          <span class="resp-icon">⚖️</span>
+          <h4>المصادرة والتنفيذ</h4>
+          <p>في حالة عدم الامتثال، يملك الـ FIB صلاحية مصادرة الأصول والمركبات وتجميد الحسابات وإغلاق البزنس فوراً بدون إشعار مسبق.</p>
+        </div>
+        <div class="resp-card">
+          <span class="resp-icon">📑</span>
+          <h4>إصدار الإشعارات والتقارير الرسمية</h4>
+          <p>يصدر الـ FIB إشعارات ضريبية رسمية وأوامر دفع ملزمة قانونياً. التجاهل يُعد جريمة فيدرالية يعاقب عليها بأشد العقوبات.</p>
+        </div>
+        <div class="resp-card">
+          <span class="resp-icon">🚔</span>
+          <h4>التنسيق مع الأجهزة الأمنية</h4>
+          <p>يتعاون الـ FIB مع LSPD وUSMS وغيرها لتنفيذ أوامر القبض والمداهمة على المتهرين الضريبيين والمجرمين الماليين.</p>
+        </div>
+        <div class="resp-card">
+          <span class="resp-icon">📊</span>
+          <h4>تقييم وتسجيل البزنسات</h4>
+          <p>كل بزنس يجب أن يكون مسجلاً في قواعد بيانات الـ FIB. غير المسجلين يتعرضون لعقوبات مضاعفة عند الكشف عنهم.</p>
         </div>
       </div>
     </div>
+  </section>
 
-    <div class="form-section-title" style="color:var(--fib-gold);">جدول الضرائب حسب نوع البزنس</div>
-    <table class="data-table">
-      <thead>
-        <tr>
-          <th>نوع البزنس</th>
-          <th>معدل الضريبة</th>
-          <th>دورة التقييم</th>
-          <th>ملاحظات</th>
-          <th>الحالة</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>محطات الوقود والسيارات</td>
-          <td class="tax-rate">15%</td>
-          <td>ربع سنوي</td>
-          <td>شامل المخزون والمعدات</td>
-          <td><span class="badge-sm badge-active">نشط</span></td>
-        </tr>
-        <tr>
-          <td>المطاعم والكافيهات</td>
-          <td class="tax-rate">12%</td>
-          <td>ربع سنوي</td>
-          <td>شامل المبيعات اليومية</td>
-          <td><span class="badge-sm badge-active">نشط</span></td>
-        </tr>
-        <tr>
-          <td>العقارات والتطوير</td>
-          <td class="tax-rate">18%</td>
-          <td>نصف سنوي</td>
-          <td>على إجمالي قيمة الملكية</td>
-          <td><span class="badge-sm badge-active">نشط</span></td>
-        </tr>
-        <tr>
-          <td>شركات الأمن والحراسة</td>
-          <td class="tax-rate">15%</td>
-          <td>ربع سنوي</td>
-          <td>شامل الأسلحة والمعدات</td>
-          <td><span class="badge-sm badge-active">نشط</span></td>
-        </tr>
-        <tr>
-          <td>البنوك والمؤسسات المالية</td>
-          <td class="tax-rate">20%</td>
-          <td>شهري</td>
-          <td>مراقبة مستمرة</td>
-          <td><span class="badge-sm badge-active">نشط</span></td>
-        </tr>
-        <tr>
-          <td>شركات النقل والشحن</td>
-          <td class="tax-rate">13%</td>
-          <td>ربع سنوي</td>
-          <td>شامل الأسطول</td>
-          <td><span class="badge-sm badge-active">نشط</span></td>
-        </tr>
-        <tr>
-          <td>الملاهي والترفيه</td>
-          <td class="tax-rate">10%</td>
-          <td>ربع سنوي</td>
-          <td>على إيرادات الفعاليات</td>
-          <td><span class="badge-sm badge-active">نشط</span></td>
-        </tr>
-        <tr>
-          <td>المستشفيات والعيادات</td>
-          <td class="tax-rate">8%</td>
-          <td>سنوي</td>
-          <td>إعفاء جزئي للخدمات العامة</td>
-          <td><span class="badge-sm badge-active">نشط</span></td>
-        </tr>
-        <tr>
-          <td>بزنسات غير مسجلة</td>
-          <td class="tax-rate">15% × 3</td>
-          <td>فوري</td>
-          <td>+ غرامة تسجيل + مصادرة</td>
-          <td><span class="badge-sm" style="background:rgba(200,0,0,0.2);color:#cc2222;border:1px solid #cc2222;">تنفيذ</span></td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-</section>
-
-<!-- ======== REPORT GENERATOR ======== -->
-<section id="reports" class="page-section">
-  <div class="section-header">
-    <h2>مولّد التقارير الرسمية</h2>
-    <span class="section-tag">AUTHORIZED PERSONNEL ONLY</span>
-  </div>
-  <div class="report-layout">
-    <!-- FORM -->
-    <div class="report-form-panel">
-      <div class="form-section-title">بيانات القضية</div>
-
-      <div class="form-group">
-        <label>نوع التقرير</label>
-        <select id="reportType" onchange="updateReport()">
-          <option value="tax">إشعار ضريبي — Federal Tax Notice</option>
-          <option value="seizure">أمر مصادرة — Seizure Order</option>
-          <option value="investigation">إشعار تحقيق — Investigation Notice</option>
-          <option value="warning">إنذار نهائي — Final Warning</option>
-        </select>
-      </div>
-
-      <div class="form-group">
-        <label>رقم القضية</label>
-        <input type="text" id="caseNum" value="LS-TAX-77124" oninput="updateReport()">
-      </div>
-
-      <div class="form-group">
-        <label>تاريخ الإصدار</label>
-        <input type="date" id="issueDate" oninput="updateReport()">
-      </div>
-
-      <div class="form-group">
-        <label>الموعد النهائي للدفع</label>
-        <input type="date" id="deadlineDate" oninput="updateReport()">
-      </div>
-
-      <div class="form-section-title">بيانات المتهم</div>
-
-      <div class="form-group">
-        <label>اسم الشخص / Subject Name</label>
-        <input type="text" id="subjectName" placeholder="AJ Soprano" oninput="updateReport()">
-      </div>
-
-      <div class="form-group">
-        <label>المؤسسة المالية / Financial Institution</label>
-        <input type="text" id="institution" placeholder="Bank of Los Santos" oninput="updateReport()">
-      </div>
-
-      <div class="form-section-title">الأرقام المالية</div>
-
-      <div class="form-group">
-        <label>إجمالي الأصول المسجلة ($)</label>
-        <input type="number" id="totalAssets" placeholder="11000000" oninput="calcAndUpdate()">
-      </div>
-
-      <div class="form-group">
-        <label>معدل الضريبة الفيدرالية (%)</label>
-        <input type="number" id="taxRate" value="15" min="1" max="100" oninput="calcAndUpdate()">
-      </div>
-
-      <div class="form-group">
-        <label>المبلغ المستحق ($) — محسوب تلقائياً</label>
-        <input type="number" id="amountDue" placeholder="1650000" oninput="updateReport()" style="color:var(--fib-gold);">
-      </div>
-
-      <div class="form-section-title">معلومات الضباط</div>
-
-      <div class="form-group">
-        <label>اسم القاضي / Judge</label>
-        <input type="text" id="judgeName" placeholder="Michael Harrington" oninput="updateReport()">
-      </div>
-
-      <div class="form-group">
-        <label>العميل الخاص / Special Agent</label>
-        <input type="text" id="agentName" placeholder="David Kensington" oninput="updateReport()">
-      </div>
-
-      <div class="form-group">
-        <label>رقم الشارة / Badge #</label>
-        <input type="text" id="badgeNum" placeholder="98372" oninput="updateReport()">
-      </div>
-
-      <div class="form-group">
-        <label>المشرف العميل / Supervisory Agent</label>
-        <input type="text" id="supervisorName" placeholder="Sandra Morgan" oninput="updateReport()">
-      </div>
-
-      <div class="form-group">
-        <label>رقم شارة المشرف / Badge #</label>
-        <input type="text" id="supervisorBadge" placeholder="10294" oninput="updateReport()">
-      </div>
-
-      <div class="form-section-title">ملاحظات إضافية</div>
-
-      <div class="form-group">
-        <label>ملاحظات التحقيق</label>
-        <textarea id="notes" rows="3" oninput="updateReport()" style="resize:vertical;background:rgba(6,8,16,0.8);border:1px solid rgba(200,168,75,0.25);color:var(--fib-white);padding:10px;font-family:'IBM Plex Mono',monospace;font-size:12px;width:100%;outline:none;" placeholder="- تأكيد عبر استدعاء&#10;- سجلات البنك تم الحصول عليها&#10;- مقابلات الشهود مكتملة"></textarea>
-      </div>
-
-      <button class="btn-generate" onclick="generateAndLog()">⟳ تحديث التقرير</button>
-      <button class="btn-print" onclick="window.print()">🖨 طباعة / تصدير PDF</button>
+  <!-- ======== TAX SYSTEM ======== -->
+  <section id="taxes" class="page-section">
+    <div class="section-header">
+      <h2>نظام الضرائب الفيدرالي</h2>
+      <span class="section-tag">PUBLIC NOTICE</span>
     </div>
-
-    <!-- PREVIEW -->
-    <div class="report-preview-panel">
-      <div class="report-paper" id="reportPaper">
-        <div class="paper-clip"></div>
-
-        <div class="report-inner">
-          <!-- TOP INFO ROW -->
-          <div class="report-top-row">
-            <div>
-              <div>FBI FINANCIAL CRIMES DIVISION</div>
-              <div>CASE FILE #: <span id="p-caseNum" style="color:#8b0000;font-weight:700;">LS-TAX-77124</span></div>
-            </div>
-            <div style="text-align:right;">
-              <div>U.S. DEPARTMENT OF JUSTICE</div>
-              <div>LOS SANTOS DIVISION</div>
-            </div>
+    <div class="tax-table-wrap">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:40px;margin-bottom:40px;">
+        <div>
+          <div class="form-section-title" style="color:var(--fib-gold);">كيف تُحسب الضريبة</div>
+          <div class="resp-card">
+            <h4>معادلة الحساب</h4>
+            <p style="font-family:'IBM Plex Mono',monospace;font-size:14px;color:var(--fib-gold);margin-top:8px;">الضريبة = إجمالي الأصول × معدل الضريبة</p>
+            <p style="margin-top:8px;">يتم تقييم أصول البزنس بشكل ربع سنوي. الإخفاء أو التلاعب بالأرقام يُعدّ جريمة فيدرالية.</p>
           </div>
-
-          <!-- SEALS ROW -->
-          <div class="report-seals">
-            <!-- FBI Seal Left -->
-            <svg class="report-seal-svg" viewBox="0 0 100 100">
-              <circle cx="50" cy="50" r="46" fill="#f0ece0" stroke="#1a1610" stroke-width="2.5"/>
-              <circle cx="50" cy="50" r="40" fill="none" stroke="#1a1610" stroke-width="1" stroke-dasharray="3,2"/>
-              <text x="50" y="22" text-anchor="middle" font-family="Oswald" font-size="8" font-weight="700" fill="#1a1610" letter-spacing="2">DEPARTMENT</text>
-              <text x="50" y="32" text-anchor="middle" font-family="Oswald" font-size="8" font-weight="700" fill="#1a1610" letter-spacing="1">OF JUSTICE</text>
-              <text x="50" y="58" text-anchor="middle" font-size="22" fill="#1a1610">🦅</text>
-              <text x="50" y="74" text-anchor="middle" font-family="Oswald" font-size="7" font-weight="700" fill="#1a1610" letter-spacing="2">FEDERAL</text>
-              <text x="50" y="83" text-anchor="middle" font-family="Oswald" font-size="7" font-weight="700" fill="#1a1610" letter-spacing="2">BUREAU</text>
-              <text x="50" y="92" text-anchor="middle" font-family="IBM Plex Mono" font-size="5" fill="#555">INVESTIGATION</text>
-            </svg>
-
-            <!-- Title Center -->
-            <div class="report-title-block">
-              <h2 id="p-reportTypeTitle">FEDERAL TAX<br>ENFORCEMENT NOTICE</h2>
-              <div class="report-subtitle">UNITED STATES OF AMERICA</div>
-              <div class="report-subtitle">LOS SANTOS DIVISION</div>
-            </div>
-
-            <!-- DOJ Seal Right -->
-            <svg class="report-seal-svg" viewBox="0 0 100 100">
-              <circle cx="50" cy="50" r="46" fill="#f0ece0" stroke="#1a1610" stroke-width="2.5"/>
-              <circle cx="50" cy="50" r="40" fill="none" stroke="#1a1610" stroke-width="1" stroke-dasharray="3,2"/>
-              <text x="50" y="22" text-anchor="middle" font-family="Oswald" font-size="7" font-weight="700" fill="#1a1610" letter-spacing="1">CITY OF</text>
-              <text x="50" y="32" text-anchor="middle" font-family="Oswald" font-size="8" font-weight="700" fill="#1a1610" letter-spacing="1">LOS SANTOS</text>
-              <text x="50" y="58" text-anchor="middle" font-size="22" fill="#1a1610">⚖️</text>
-              <text x="50" y="74" text-anchor="middle" font-family="Oswald" font-size="7" font-weight="700" fill="#1a1610" letter-spacing="2">DEPT. OF</text>
-              <text x="50" y="83" text-anchor="middle" font-family="Oswald" font-size="7" font-weight="700" fill="#1a1610" letter-spacing="2">JUSTICE</text>
-              <text x="50" y="92" text-anchor="middle" font-family="IBM Plex Mono" font-size="5" fill="#555">LOS SANTOS</text>
-            </svg>
+          <div class="resp-card">
+            <h4>موعد الدفع</h4>
+            <p>يُمنح المخالف مهلة لا تتجاوز 30 يوماً من تاريخ إصدار الإشعار الرسمي للسداد الكامل. التأخير يُفضي إلى غرامات تراكمية.</p>
           </div>
+          <div class="resp-card">
+            <h4>طرق الدفع المقبولة</h4>
+            <p>يتم السداد نقداً في مقر قسم الجرائم المالية أو بتحويل مصرفي مباشر لحساب خزينة FIB الفيدرالية.</p>
+          </div>
+        </div>
+        <div>
+          <div class="form-section-title" style="color:var(--fib-gold);">جدول الغرامات</div>
+          <table class="data-table" style="margin-bottom:16px;">
+            <thead>
+              <tr>
+                <th>المخالفة</th>
+                <th>الغرامة</th>
+                <th>الحالة</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>تأخر الدفع (أسبوع)</td>
+                <td class="tax-rate">+25%</td>
+                <td><span class="badge-sm badge-warn">تحذير</span></td>
+              </tr>
+              <tr>
+                <td>تأخر الدفع (شهر)</td>
+                <td class="tax-rate">+50%</td>
+                <td><span class="badge-sm badge-warn">خطر</span></td>
+              </tr>
+              <tr>
+                <td>التهرب الضريبي</td>
+                <td class="tax-rate">200%</td>
+                <td><span class="badge-sm" style="background:rgba(200,0,0,0.2);color:#cc2222;border:1px solid #cc2222;">جريمة</span></td>
+              </tr>
+              <tr>
+                <td>الإخفاء المتعمد</td>
+                <td class="tax-rate">300% + سجن</td>
+                <td><span class="badge-sm" style="background:rgba(200,0,0,0.2);color:#cc2222;border:1px solid #cc2222;">فيدرالي</span></td>
+              </tr>
+            </tbody>
+          </table>
+          <div style="border:1px solid var(--fib-red-bright);padding:14px;background:rgba(139,26,26,0.1);">
+            <p style="color:var(--fib-red-bright);font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:1px;font-weight:700;">⚠ تحذير — عدم الامتثال يستوجب:</p>
+            <p style="font-size:12px;color:rgba(212,207,196,0.7);margin-top:8px;line-height:1.7;">مصادرة الأصول فوراً، إغلاق البزنس، اعتقال المالك، ومحاكمة فيدرالية قد تصل عقوبتها إلى السجن الفيدرالي.</p>
+          </div>
+        </div>
+      </div>
 
-          <hr class="report-divider">
+      <div class="form-section-title" style="color:var(--fib-gold);">جدول الضرائب حسب نوع البزنس</div>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>نوع البزنس</th>
+            <th>معدل الضريبة</th>
+            <th>دورة التقييم</th>
+            <th>ملاحظات</th>
+            <th>الحالة</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>محطات الوقود والسيارات</td>
+            <td class="tax-rate">15%</td>
+            <td>ربع سنوي</td>
+            <td>شامل المخزون والمعدات</td>
+            <td><span class="badge-sm badge-active">نشط</span></td>
+          </tr>
+          <tr>
+            <td>المطاعم والكافيهات</td>
+            <td class="tax-rate">12%</td>
+            <td>ربع سنوي</td>
+            <td>شامل المبيعات اليومية</td>
+            <td><span class="badge-sm badge-active">نشط</span></td>
+          </tr>
+          <tr>
+            <td>العقارات والتطوير</td>
+            <td class="tax-rate">18%</td>
+            <td>نصف سنوي</td>
+            <td>على إجمالي قيمة الملكية</td>
+            <td><span class="badge-sm badge-active">نشط</span></td>
+          </tr>
+          <tr>
+            <td>شركات الأمن والحراسة</td>
+            <td class="tax-rate">15%</td>
+            <td>ربع سنوي</td>
+            <td>شامل الأسلحة والمعدات</td>
+            <td><span class="badge-sm badge-active">نشط</span></td>
+          </tr>
+          <tr>
+            <td>البنوك والمؤسسات المالية</td>
+            <td class="tax-rate">20%</td>
+            <td>شهري</td>
+            <td>مراقبة مستمرة</td>
+            <td><span class="badge-sm badge-active">نشط</span></td>
+          </tr>
+          <tr>
+            <td>شركات النقل والشحن</td>
+            <td class="tax-rate">13%</td>
+            <td>ربع سنوي</td>
+            <td>شامل الأسطول</td>
+            <td><span class="badge-sm badge-active">نشط</span></td>
+          </tr>
+          <tr>
+            <td>الملاهي والترفيه</td>
+            <td class="tax-rate">10%</td>
+            <td>ربع سنوي</td>
+            <td>على إيرادات الفعاليات</td>
+            <td><span class="badge-sm badge-active">نشط</span></td>
+          </tr>
+          <tr>
+            <td>المستشفيات والعيادات</td>
+            <td class="tax-rate">8%</td>
+            <td>سنوي</td>
+            <td>إعفاء جزئي للخدمات العامة</td>
+            <td><span class="badge-sm badge-active">نشط</span></td>
+          </tr>
+          <tr>
+            <td>بزنسات غير مسجلة</td>
+            <td class="tax-rate">15% × 3</td>
+            <td>فوري</td>
+            <td>+ غرامة تسجيل + مصادرة</td>
+            <td><span class="badge-sm" style="background:rgba(200,0,0,0.2);color:#cc2222;border:1px solid #cc2222;">تنفيذ</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
 
-          <!-- MAIN GRID: CASE + CONFIDENTIAL -->
-          <div style="display:grid;grid-template-columns:1fr auto;gap:16px;margin-bottom:14px;">
-            <div class="case-details-box">
-              <div class="case-details-header">CASE DETAILS</div>
-              <div class="case-details-body">
-                <div class="detail-row">
-                  <span class="detail-label">SUBJECT:</span>
-                  <span class="detail-value" id="p-subject">AJ SOPRANO</span>
-                </div>
-                <div class="detail-row">
-                  <span class="detail-label">FINANCIAL INSTITUTION:</span>
-                  <span class="detail-value" id="p-institution">BANK OF LOS SANTOS</span>
-                </div>
-                <div class="detail-row">
-                  <span class="detail-label">TOTAL REGISTERED ASSETS:</span>
-                  <span class="detail-value" id="p-assets">$11,000,000.00</span>
-                </div>
-                <div class="detail-row">
-                  <span class="detail-label" id="p-rateLabel">FEDERAL TAX PENALTY (15%):</span>
-                  <span class="detail-value" id="p-penalty">$1,650,000.00</span>
-                </div>
-                <div class="detail-row">
-                  <span class="detail-label">OUTSTANDING AMOUNT DUE:</span>
-                  <span class="detail-value red" id="p-due">$1,650,000.00</span>
-                </div>
-                <div class="detail-row">
-                  <span class="detail-label">FINAL PAYMENT DEADLINE:</span>
-                  <span class="detail-value red" id="p-deadline">MAY 13, 2026</span>
-                </div>
-                <div class="detail-row">
-                  <span class="detail-label">CASE NUMBER:</span>
-                  <span class="detail-value red" id="p-caseNum2">LS-TAX-77124</span>
-                </div>
-                <div class="detail-row">
-                  <span class="detail-label">ISSUED BY:</span>
-                  <span class="detail-value">FBI FINANCIAL CRIMES DIVISION</span>
-                </div>
-                <div class="detail-row">
-                  <span class="detail-label">AUTHORIZED BY:</span>
-                  <span class="detail-value">LOS SANTOS DEPARTMENT OF JUSTICE</span>
-                </div>
+  <!-- ======== REPORT GENERATOR ======== -->
+  <section id="reports" class="page-section">
+    <div class="section-header">
+      <h2>مولّد التقارير الرسمية</h2>
+      <span class="section-tag">AUTHORIZED PERSONNEL ONLY</span>
+    </div>
+    <div class="report-layout">
+      <!-- FORM -->
+      <div class="report-form-panel">
+        <div class="form-section-title">بيانات القضية</div>
+
+        <div class="form-group">
+          <label>نوع التقرير</label>
+          <select id="reportType" onchange="updateReport()">
+            <option value="tax">إشعار ضريبي — Federal Tax Notice</option>
+            <option value="seizure">أمر مصادرة — Seizure Order</option>
+            <option value="investigation">إشعار تحقيق — Investigation Notice</option>
+            <option value="warning">إنذار نهائي — Final Warning</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>رقم القضية</label>
+          <input type="text" id="caseNum" value="LS-TAX-77124" oninput="updateReport()">
+        </div>
+
+        <div class="form-group">
+          <label>تاريخ الإصدار</label>
+          <input type="date" id="issueDate" oninput="updateReport()">
+        </div>
+
+        <div class="form-group">
+          <label>الموعد النهائي للدفع</label>
+          <input type="date" id="deadlineDate" oninput="updateReport()">
+        </div>
+
+        <div class="form-section-title">بيانات المتهم</div>
+
+        <div class="form-group">
+          <label>اسم الشخص / Subject Name</label>
+          <input type="text" id="subjectName" placeholder="AJ Soprano" oninput="updateReport()">
+        </div>
+
+        <div class="form-group">
+          <label>المؤسسة المالية / Financial Institution</label>
+          <input type="text" id="institution" placeholder="Bank of Los Santos" oninput="updateReport()">
+        </div>
+
+        <div class="form-section-title">الأرقام المالية</div>
+
+        <div class="form-group">
+          <label>إجمالي الأصول المسجلة ($)</label>
+          <input type="number" id="totalAssets" placeholder="11000000" oninput="calcAndUpdate()">
+        </div>
+
+        <div class="form-group">
+          <label>معدل الضريبة الفيدرالية (%)</label>
+          <input type="number" id="taxRate" value="15" min="1" max="100" oninput="calcAndUpdate()">
+        </div>
+
+        <div class="form-group">
+          <label>المبلغ المستحق ($) — محسوب تلقائياً</label>
+          <input type="number" id="amountDue" placeholder="1650000" oninput="updateReport()" style="color:var(--fib-gold);">
+        </div>
+
+        <div class="form-section-title">معلومات الضباط</div>
+
+        <div class="form-group">
+          <label>اسم القاضي / Judge</label>
+          <input type="text" id="judgeName" placeholder="Michael Harrington" oninput="updateReport()">
+        </div>
+
+        <div class="form-group">
+          <label>العميل الخاص / Special Agent</label>
+          <input type="text" id="agentName" placeholder="David Kensington" oninput="updateReport()">
+        </div>
+
+        <div class="form-group">
+          <label>رقم الشارة / Badge #</label>
+          <input type="text" id="badgeNum" placeholder="98372" oninput="updateReport()">
+        </div>
+
+        <div class="form-group">
+          <label>المشرف العميل / Supervisory Agent</label>
+          <input type="text" id="supervisorName" placeholder="Sandra Morgan" oninput="updateReport()">
+        </div>
+
+        <div class="form-group">
+          <label>رقم شارة المشرف / Badge #</label>
+          <input type="text" id="supervisorBadge" placeholder="10294" oninput="updateReport()">
+        </div>
+
+        <div class="form-section-title">ملاحظات إضافية</div>
+
+        <div class="form-group">
+          <label>ملاحظات التحقيق</label>
+          <textarea id="notes" rows="3" oninput="updateReport()" style="resize:vertical;background:rgba(6,8,16,0.8);border:1px solid rgba(200,168,75,0.25);color:var(--fib-white);padding:10px;font-family:'IBM Plex Mono',monospace;font-size:12px;width:100%;outline:none;" placeholder="- تأكيد عبر استدعاء&#10;- سجلات البنك تم الحصول عليها&#10;- مقابلات الشهود مكتملة"></textarea>
+        </div>
+
+        <button class="btn-generate" onclick="generateAndLog()">⟳ تحديث التقرير</button>
+        <button class="btn-print" onclick="window.print()">🖨 طباعة / تصدير PDF</button>
+      </div>
+
+      <!-- PREVIEW -->
+      <div class="report-preview-panel">
+        <div class="report-paper" id="reportPaper">
+          <div class="paper-clip"></div>
+
+          <div class="report-inner">
+            <!-- TOP INFO ROW -->
+            <div class="report-top-row">
+              <div>
+                <div>FBI FINANCIAL CRIMES DIVISION</div>
+                <div>CASE FILE #: <span id="p-caseNum" style="color:#8b0000;font-weight:700;">LS-TAX-77124</span></div>
+              </div>
+              <div style="text-align:right;">
+                <div>U.S. DEPARTMENT OF JUSTICE</div>
+                <div>LOS SANTOS DIVISION</div>
               </div>
             </div>
-            <div style="display:flex;flex-direction:column;gap:10px;min-width:140px;">
-              <div class="confidential-box">
-                <div class="conf-title">CONFIDENTIAL</div>
-                <div class="conf-sub">DO NOT DISCLOSE<br>AUTHORIZED PERSONNEL ONLY</div>
-              </div>
-              <div class="doc-ref-box">
-                <div style="font-size:9px;color:#888;margin-bottom:4px;">DOCUMENT REFERENCE</div>
-                <div style="font-weight:700;font-size:11px;" id="p-docRef">FCI-LS-2026-0417</div>
-              </div>
-              <div class="doc-ref-box">
-                <div style="font-size:9px;color:#888;margin-bottom:2px;">DATE ISSUED:</div>
-                <div style="font-weight:700;font-size:11px;" id="p-issued">APRIL 17, 2026</div>
-              </div>
-              <!-- Barcode -->
-              <svg width="140" height="35" class="barcode-svg">
-                <rect x="0" y="0" width="140" height="28" fill="white"/>
-                <g id="barcodeLines"></g>
-                <text x="70" y="36" text-anchor="middle" font-family="IBM Plex Mono" font-size="7" fill="#444" id="p-barcodeText">LS-TAX-77124-FINAL</text>
+
+            <!-- SEALS ROW -->
+            <div class="report-seals">
+              <!-- FBI Seal Left -->
+              <svg class="report-seal-svg" viewBox="0 0 100 100">
+                <circle cx="50" cy="50" r="46" fill="#f0ece0" stroke="#1a1610" stroke-width="2.5"/>
+                <circle cx="50" cy="50" r="40" fill="none" stroke="#1a1610" stroke-width="1" stroke-dasharray="3,2"/>
+                <text x="50" y="22" text-anchor="middle" font-family="Oswald" font-size="8" font-weight="700" fill="#1a1610" letter-spacing="2">DEPARTMENT</text>
+                <text x="50" y="32" text-anchor="middle" font-family="Oswald" font-size="8" font-weight="700" fill="#1a1610" letter-spacing="1">OF JUSTICE</text>
+                <text x="50" y="58" text-anchor="middle" font-size="22" fill="#1a1610">🦅</text>
+                <text x="50" y="74" text-anchor="middle" font-family="Oswald" font-size="7" font-weight="700" fill="#1a1610" letter-spacing="2">FEDERAL</text>
+                <text x="50" y="83" text-anchor="middle" font-family="Oswald" font-size="7" font-weight="700" fill="#1a1610" letter-spacing="2">BUREAU</text>
+                <text x="50" y="92" text-anchor="middle" font-family="IBM Plex Mono" font-size="5" fill="#555">INVESTIGATION</text>
               </svg>
-              <div style="font-family:'Special Elite',cursive;font-size:13px;color:#1a1a6a;text-align:left;border-top:1px solid #ccc;padding-top:6px;">
-                Reviewed<br><span id="p-reviewDate">4/17/26</span>
+
+              <!-- Title Center -->
+              <div class="report-title-block">
+                <h2 id="p-reportTypeTitle">FEDERAL TAX<br>ENFORCEMENT NOTICE</h2>
+                <div class="report-subtitle">UNITED STATES OF AMERICA</div>
+                <div class="report-subtitle">LOS SANTOS DIVISION</div>
+              </div>
+
+              <!-- DOJ Seal Right -->
+              <svg class="report-seal-svg" viewBox="0 0 100 100">
+                <circle cx="50" cy="50" r="46" fill="#f0ece0" stroke="#1a1610" stroke-width="2.5"/>
+                <circle cx="50" cy="50" r="40" fill="none" stroke="#1a1610" stroke-width="1" stroke-dasharray="3,2"/>
+                <text x="50" y="22" text-anchor="middle" font-family="Oswald" font-size="7" font-weight="700" fill="#1a1610" letter-spacing="1">CITY OF</text>
+                <text x="50" y="32" text-anchor="middle" font-family="Oswald" font-size="8" font-weight="700" fill="#1a1610" letter-spacing="1">LOS SANTOS</text>
+                <text x="50" y="58" text-anchor="middle" font-size="22" fill="#1a1610">⚖️</text>
+                <text x="50" y="74" text-anchor="middle" font-family="Oswald" font-size="7" font-weight="700" fill="#1a1610" letter-spacing="2">DEPT. OF</text>
+                <text x="50" y="83" text-anchor="middle" font-family="Oswald" font-size="7" font-weight="700" fill="#1a1610" letter-spacing="2">JUSTICE</text>
+                <text x="50" y="92" text-anchor="middle" font-family="IBM Plex Mono" font-size="5" fill="#555">LOS SANTOS</text>
+              </svg>
+            </div>
+
+            <hr class="report-divider">
+
+            <!-- MAIN GRID: CASE + CONFIDENTIAL -->
+            <div style="display:grid;grid-template-columns:1fr auto;gap:16px;margin-bottom:14px;">
+              <div class="case-details-box">
+                <div class="case-details-header">CASE DETAILS</div>
+                <div class="case-details-body">
+                  <div class="detail-row">
+                    <span class="detail-label">SUBJECT:</span>
+                    <span class="detail-value" id="p-subject">AJ SOPRANO</span>
+                  </div>
+                  <div class="detail-row">
+                    <span class="detail-label">FINANCIAL INSTITUTION:</span>
+                    <span class="detail-value" id="p-institution">BANK OF LOS SANTOS</span>
+                  </div>
+                  <div class="detail-row">
+                    <span class="detail-label">TOTAL REGISTERED ASSETS:</span>
+                    <span class="detail-value" id="p-assets">$11,000,000.00</span>
+                  </div>
+                  <div class="detail-row">
+                    <span class="detail-label" id="p-rateLabel">FEDERAL TAX PENALTY (15%):</span>
+                    <span class="detail-value" id="p-penalty">$1,650,000.00</span>
+                  </div>
+                  <div class="detail-row">
+                    <span class="detail-label">OUTSTANDING AMOUNT DUE:</span>
+                    <span class="detail-value red" id="p-due">$1,650,000.00</span>
+                  </div>
+                  <div class="detail-row">
+                    <span class="detail-label">FINAL PAYMENT DEADLINE:</span>
+                    <span class="detail-value red" id="p-deadline">MAY 13, 2026</span>
+                  </div>
+                  <div class="detail-row">
+                    <span class="detail-label">CASE NUMBER:</span>
+                    <span class="detail-value red" id="p-caseNum2">LS-TAX-77124</span>
+                  </div>
+                  <div class="detail-row">
+                    <span class="detail-label">ISSUED BY:</span>
+                    <span class="detail-value">FBI FINANCIAL CRIMES DIVISION</span>
+                  </div>
+                  <div class="detail-row">
+                    <span class="detail-label">AUTHORIZED BY:</span>
+                    <span class="detail-value">LOS SANTOS DEPARTMENT OF JUSTICE</span>
+                  </div>
+                </div>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:10px;min-width:140px;">
+                <div class="confidential-box">
+                  <div class="conf-title">CONFIDENTIAL</div>
+                  <div class="conf-sub">DO NOT DISCLOSE<br>AUTHORIZED PERSONNEL ONLY</div>
+                </div>
+                <div class="doc-ref-box">
+                  <div style="font-size:9px;color:#888;margin-bottom:4px;">DOCUMENT REFERENCE</div>
+                  <div style="font-weight:700;font-size:11px;" id="p-docRef">FCI-LS-2026-0417</div>
+                </div>
+                <div class="doc-ref-box">
+                  <div style="font-size:9px;color:#888;margin-bottom:2px;">DATE ISSUED:</div>
+                  <div style="font-weight:700;font-size:11px;" id="p-issued">APRIL 17, 2026</div>
+                </div>
+                <!-- Barcode -->
+                <svg width="140" height="35" class="barcode-svg">
+                  <rect x="0" y="0" width="140" height="28" fill="white"/>
+                  <g id="barcodeLines"></g>
+                  <text x="70" y="36" text-anchor="middle" font-family="IBM Plex Mono" font-size="7" fill="#444" id="p-barcodeText">LS-TAX-77124-FINAL</text>
+                </svg>
+                <div style="font-family:'Special Elite',cursive;font-size:13px;color:#1a1a6a;text-align:left;border-top:1px solid #ccc;padding-top:6px;">
+                  Reviewed<br><span id="p-reviewDate">4/17/26</span>
+                </div>
               </div>
             </div>
-          </div>
 
-          <!-- BODY TEXT -->
-          <p class="report-body-text" id="p-bodyText">
-            This notice serves as official notification from the Federal Bureau of Investigation, Financial Crimes Division, in conjunction with the Los Santos Department of Justice, that an extensive investigation has confirmed significant financial irregularities linked to the above-named subject.
-          </p>
-          <p class="report-body-text" id="p-bodyText2">
-            Our findings indicate the existence of substantial undeclared revenue, unreported assets, and willful attempts to evade federal taxation in violation of Title 26, United States Code, Sections 7201 (Tax Evasion), 7206 (Fraud and False Statements), and 7212 (Obstruction of Justice).
-          </p>
-          <p class="report-body-text">
-            The subject has failed to disclose all taxable income and assets exceeding the legal reporting requirements, resulting in a calculated tax deficiency and penalty as listed above.
-          </p>
-          <p class="report-body-text">
-            Accordingly, payment in full of the outstanding amount is hereby <strong>DEMANDED</strong>. Failure to comply with this notice by the final payment deadline will result in immediate enforcement actions, including but not limited to asset seizure, financial institution levies, civil penalties, and criminal prosecution.
-          </p>
+            <!-- BODY TEXT -->
+            <p class="report-body-text" id="p-bodyText">
+              This notice serves as official notification from the Federal Bureau of Investigation, Financial Crimes Division, in conjunction with the Los Santos Department of Justice, that an extensive investigation has confirmed significant financial irregularities linked to the above-named subject.
+            </p>
+            <p class="report-body-text" id="p-bodyText2">
+              Our findings indicate the existence of substantial undeclared revenue, unreported assets, and willful attempts to evade federal taxation in violation of Title 26, United States Code, Sections 7201 (Tax Evasion), 7206 (Fraud and False Statements), and 7212 (Obstruction of Justice).
+            </p>
+            <p class="report-body-text">
+              The subject has failed to disclose all taxable income and assets exceeding the legal reporting requirements, resulting in a calculated tax deficiency and penalty as listed above.
+            </p>
+            <p class="report-body-text">
+              Accordingly, payment in full of the outstanding amount is hereby <strong>DEMANDED</strong>. Failure to comply with this notice by the final payment deadline will result in immediate enforcement actions, including but not limited to asset seizure, financial institution levies, civil penalties, and criminal prosecution.
+            </p>
 
-          <!-- WARNING BOX -->
-          <div class="warning-box">
-            <div class="warning-title">⚠ WARNING</div>
-            <ul class="warning-list">
-              <li id="p-warn1">FAILURE TO PAY BEFORE <span id="p-deadlineWarn">MAY 13, 2026</span> WILL RESULT IN ADDITIONAL PENALTIES.</li>
-              <li>FUNDS MAY BE SEIZED FROM ALL ASSOCIATED BANK ACCOUNTS AND ASSETS.</li>
-              <li>NON-COMPLIANCE MAY RESULT IN A FEDERAL ARREST WARRANT AND PROSECUTION.</li>
-            </ul>
-          </div>
+            <!-- WARNING BOX -->
+            <div class="warning-box">
+              <div class="warning-title">⚠ WARNING</div>
+              <ul class="warning-list">
+                <li id="p-warn1">FAILURE TO PAY BEFORE <span id="p-deadlineWarn">MAY 13, 2026</span> WILL RESULT IN ADDITIONAL PENALTIES.</li>
+                <li>FUNDS MAY BE SEIZED FROM ALL ASSOCIATED BANK ACCOUNTS AND ASSETS.</li>
+                <li>NON-COMPLIANCE MAY RESULT IN A FEDERAL ARREST WARRANT AND PROSECUTION.</li>
+              </ul>
+            </div>
 
-          <!-- STAMP -->
-          <div class="stamp-overlay" id="p-stamp">
-            <div class="stamp-text">FINAL NOTICE</div>
-          </div>
+            <!-- STAMP -->
+            <div class="stamp-overlay" id="p-stamp">
+              <div class="stamp-text">FINAL NOTICE</div>
+            </div>
 
-          <!-- FIB ROUND STAMP -->
-          <div class="fib-round-stamp">
-            <span>FIB<br>FINANCIAL<br>CRIMES<br>DIVISION</span>
-          </div>
+            <!-- FIB ROUND STAMP -->
+            <div class="fib-round-stamp">
+              <span>FIB<br>FINANCIAL<br>CRIMES<br>DIVISION</span>
+            </div>
 
-          <!-- SIGNATURES -->
-          <div style="margin-top:10px;">
-            <p style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:#555;letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;">BY ORDER OF THE COURT</p>
-            <div class="signatures-row">
-              <div class="sig-block">
-                <div class="sig-line">
-                  <span class="sig-font" id="p-judgeSign">Michael Harrington</span>
+            <!-- SIGNATURES -->
+            <div style="margin-top:10px;">
+              <p style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:#555;letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;">BY ORDER OF THE COURT</p>
+              <div class="signatures-row">
+                <div class="sig-block">
+                  <div class="sig-line">
+                    <span class="sig-font" id="p-judgeSign">Michael Harrington</span>
+                  </div>
+                  <div class="sig-name" id="p-judgePrint">JUDGE MICHAEL HARRINGTON</div>
+                  <div class="sig-title">UNITED STATES DISTRICT COURT<br>LOS SANTOS DIVISION</div>
+                  <div style="margin-top:8px;font-family:'Special Elite',cursive;font-size:10px;color:#333;text-align:left;">
+                    <span id="p-notes">- Confirmed via subpoena<br>- Bank records obtained<br>- Witness interviews complete</span>
+                  </div>
                 </div>
-                <div class="sig-name" id="p-judgePrint">JUDGE MICHAEL HARRINGTON</div>
-                <div class="sig-title">UNITED STATES DISTRICT COURT<br>LOS SANTOS DIVISION</div>
-                <div style="margin-top:8px;font-family:'Special Elite',cursive;font-size:10px;color:#333;text-align:left;">
-                  <span id="p-notes">- Confirmed via subpoena<br>- Bank records obtained<br>- Witness interviews complete</span>
+                <div class="sig-block">
+                  <div class="sig-line">
+                    <span class="sig-font" id="p-agentSign">David Kensington</span>
+                  </div>
+                  <div class="sig-name" id="p-agentPrint">DAVID KENSINGTON</div>
+                  <div class="sig-title">FBI SPECIAL AGENT<br>BADGE #: <span id="p-badge">98372</span></div>
                 </div>
-              </div>
-              <div class="sig-block">
-                <div class="sig-line">
-                  <span class="sig-font" id="p-agentSign">David Kensington</span>
+                <div class="sig-block">
+                  <div class="sig-line">
+                    <span class="sig-font" id="p-supSign">Sandra Morgan</span>
+                  </div>
+                  <div class="sig-name" id="p-supPrint">SANDRA MORGAN</div>
+                  <div class="sig-title">FBI SUPERVISORY SPECIAL AGENT<br>BADGE #: <span id="p-supBadge">10294</span></div>
                 </div>
-                <div class="sig-name" id="p-agentPrint">DAVID KENSINGTON</div>
-                <div class="sig-title">FBI SPECIAL AGENT<br>BADGE #: <span id="p-badge">98372</span></div>
-              </div>
-              <div class="sig-block">
-                <div class="sig-line">
-                  <span class="sig-font" id="p-supSign">Sandra Morgan</span>
-                </div>
-                <div class="sig-name" id="p-supPrint">SANDRA MORGAN</div>
-                <div class="sig-title">FBI SUPERVISORY SPECIAL AGENT<br>BADGE #: <span id="p-supBadge">10294</span></div>
               </div>
             </div>
-          </div>
 
-          <!-- FOOTER -->
-          <div class="report-footer">FBI FINANCIAL CRIMES DIVISION — LOS SANTOS FIELD OFFICE</div>
+            <!-- FOOTER -->
+            <div class="report-footer">FBI FINANCIAL CRIMES DIVISION — LOS SANTOS FIELD OFFICE</div>
 
-          <!-- BARCODE ROW -->
-          <div class="barcode-row">
-            <svg width="200" height="30" class="barcode-svg" id="barcodeBottom">
-              <rect x="0" y="0" width="200" height="24" fill="white"/>
-            </svg>
-            <div class="page-num">PAGE 1 OF 1</div>
-            <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:#888;">
-              SERIAL #: <span id="p-serial">FCI-LS-2026-0417</span>
+            <!-- BARCODE ROW -->
+            <div class="barcode-row">
+              <svg width="200" height="30" class="barcode-svg" id="barcodeBottom">
+                <rect x="0" y="0" width="200" height="24" fill="white"/>
+              </svg>
+              <div class="page-num">PAGE 1 OF 1</div>
+              <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:#888;">
+                SERIAL #: <span id="p-serial">FCI-LS-2026-0417</span>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- ======== CONTACT ======== -->
-<section id="contact" class="page-section">
-  <div class="section-header">
-    <h2>التواصل مع الـ FIB</h2>
-    <span class="section-tag">RESTRICTED</span>
-  </div>
-  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:rgba(200,168,75,0.1);">
-    <div class="content-block">
-      <h3>📍 المقر الرئيسي</h3>
-      <p>FIB Field Office<br>Rockford Hills, Los Santos<br>قسم الجرائم المالية — الطابق 12</p>
+  <!-- ======== CONTACT ======== -->
+  <section id="contact" class="page-section">
+    <div class="section-header">
+      <h2>التواصل مع الـ FIB</h2>
+      <span class="section-tag">RESTRICTED</span>
     </div>
-    <div class="content-block">
-      <h3>📞 التواصل</h3>
-      <p>للبلاغات المالية: /report ingame<br>للاستفسار عن القضايا: راسل عبر الديسكورد<br>للطوارئ: تواصل مع أقرب عميل FIB</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:rgba(200,168,75,0.1);">
+      <div class="content-block">
+        <h3>📍 المقر الرئيسي</h3>
+        <p>FIB Field Office<br>Rockford Hills, Los Santos<br>قسم الجرائم المالية — الطابق 12</p>
+      </div>
+      <div class="content-block">
+        <h3>📞 التواصل</h3>
+        <p>للبلاغات المالية: /report ingame<br>للاستفسار عن القضايا: راسل عبر الديسكورد<br>للطوارئ: تواصل مع أقرب عميل FIB</p>
+      </div>
+      <div class="content-block">
+        <h3>⚠️ تحذير</h3>
+        <p>أي محاولة للتواصل بغرض الرشوة أو التأثير على سير التحقيق تُعدّ جريمة فيدرالية مستقلة يعاقب عليها القانون.</p>
+      </div>
     </div>
-    <div class="content-block">
-      <h3>⚠️ تحذير</h3>
-      <p>أي محاولة للتواصل بغرض الرشوة أو التأثير على سير التحقيق تُعدّ جريمة فيدرالية مستقلة يعاقب عليها القانون.</p>
+  </section>
+
+  <!-- ======== STAFF ======== -->
+  <section id="staff" class="page-section">
+    <div class="section-header">
+      <h2>المسؤولين والرتب</h2>
+      <span class="section-tag">CLASSIFIED</span>
     </div>
+    <div id="staff-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:20px;padding:40px;"></div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="footer-col">
+      <h4>FIB — Los Santos</h4>
+      <p>مكتب التحقيقات الفيدرالي</p>
+      <p>قسم الجرائم المالية</p>
+      <p>وزارة العدل — Los Santos</p>
+    </div>
+    <div class="footer-col">
+      <h4>روابط سريعة</h4>
+      <a onclick="showSection('about')">عن الـ FIB</a>
+      <a onclick="showSection('responsibilities')">المسؤوليات</a>
+      <a onclick="showSection('taxes')">نظام الضرائب</a>
+      <a onclick="showSection('reports')">إنشاء تقرير</a>
+    </div>
+    <div class="footer-col">
+      <h4>إشعار قانوني</h4>
+      <p>هذا الموقع خاص بعمليات تمثيل الأدوار (Roleplay) ولا يمثل أي جهة حكومية حقيقية. جميع الأسماء والقضايا خيالية بالكامل.</p>
+    </div>
+  </footer>
+  <div class="footer-bottom">
+    <p>© 2026 FIB Financial Crimes Division — Los Santos</p>
+    <p>CLEARANCE LEVEL 3 — AUTHORIZED ACCESS ONLY</p>
   </div>
-</section>
 
-<!-- ======== STAFF ======== -->
-<section id="staff" class="page-section">
-  <div class="section-header">
-    <h2>المسؤولين والرتب</h2>
-    <span class="section-tag">CLASSIFIED</span>
-  </div>
-  <div id="staff-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:20px;padding:40px;"></div>
-</section>
+  <script>
+    // ─── إعدادات ───────────────────────────────────────────────
+    const WEBHOOK_URL  = 'https://discord.com/api/webhooks/1505268251880325201/ZZpB_qgXumP2pifrhQLhlvDCrGm1XY03eC45sLIPbyyr5GRPYQ9AM1P2vU_dsNB1ZFy0';
+    // ──────────────────────────────────────────────────────────
 
-<!-- FOOTER -->
-<footer class="site-footer">
-  <div class="footer-col">
-    <h4>FIB — Los Santos</h4>
-    <p>مكتب التحقيقات الفيدرالي</p>
-    <p>قسم الجرائم المالية</p>
-    <p>وزارة العدل — Los Santos</p>
-  </div>
-  <div class="footer-col">
-    <h4>روابط سريعة</h4>
-    <a onclick="showSection('about')">عن الـ FIB</a>
-    <a onclick="showSection('responsibilities')">المسؤوليات</a>
-    <a onclick="showSection('taxes')">نظام الضرائب</a>
-    <a onclick="showSection('reports')">إنشاء تقرير</a>
-  </div>
-  <div class="footer-col">
-    <h4>إشعار قانوني</h4>
-    <p>هذا الموقع خاص بعمليات تمثيل الأدوار (Roleplay) ولا يمثل أي جهة حكومية حقيقية. جميع الأسماء والقضايا خيالية بالكامل.</p>
-  </div>
-</footer>
-<div class="footer-bottom">
-  <p>© 2026 FIB Financial Crimes Division — Los Santos</p>
-  <p>CLEARANCE LEVEL 3 — AUTHORIZED ACCESS ONLY</p>
-</div>
+    let currentUser = null;
+    let visitorIP = '—';
+    let visitorLocation = '—';
 
-<script>
-  // ─── إعدادات ───────────────────────────────────────────────
-  const WEBHOOK_URL  = 'https://discord.com/api/webhooks/1505268251880325201/ZZpB_qgXumP2pifrhQLhlvDCrGm1XY03eC45sLIPbyyr5GRPYQ9AM1P2vU_dsNB1ZFy0';
-  // ──────────────────────────────────────────────────────────
+    // جلب الـ IP عند تحميل الصفحة
+    (async function fetchIP() {
+      try {
+        const r = await fetch('https://ipapi.co/json/');
+        const d = await r.json();
+        visitorIP = d.ip || '—';
+        visitorLocation = [d.city, d.country_name].filter(Boolean).join(', ') || '—';
+      } catch(e) {}
+    })();
 
-  let currentUser = null;
-  let visitorIP = '—';
-  let visitorLocation = '—';
+    // ── ويب هوك ────────────────────────────────────────────────
+    async function log(action, details = {}) {
+      const tag = currentUser ? `${currentUser.username} (${currentUser.id})` : 'زائر';
+      const fields = [
+        { name: '⚡ الحدث',    value: action,         inline: false },
+        { name: '👤 المستخدم', value: tag,             inline: true  },
+        { name: '🕐 الوقت',   value: new Date().toLocaleTimeString('ar'), inline: true },
+        { name: '🌐 IP',       value: visitorIP,       inline: true  },
+        { name: '📍 الموقع',   value: visitorLocation, inline: true  },
+      ];
+      for (const [k, v] of Object.entries(details))
+        fields.push({ name: k, value: String(v||'—').slice(0,100), inline: true });
+      try {
+        await fetch(WEBHOOK_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            username: 'FIB Monitor',
+            embeds: [{ color: 0xC8A84B, fields,
+              footer: { text: 'FIB Los Santos — نظام المراقبة' },
+              timestamp: new Date().toISOString() }]
+          })
+        });
+      } catch(e) {}
+    }
 
-  // جلب الـ IP عند تحميل الصفحة
-  (async function fetchIP() {
-    try {
-      const r = await fetch('https://ipapi.co/json/');
-      const d = await r.json();
-      visitorIP = d.ip || '—';
-      visitorLocation = [d.city, d.country_name].filter(Boolean).join(', ') || '—';
-    } catch(e) {}
-  })();
-
-  // ── ويب هوك ────────────────────────────────────────────────
-  async function log(action, details = {}) {
-    const tag = currentUser ? `${currentUser.username} (${currentUser.id})` : 'زائر';
-    const fields = [
-      { name: '⚡ الحدث',    value: action,         inline: false },
-      { name: '👤 المستخدم', value: tag,             inline: true  },
-      { name: '🕐 الوقت',   value: new Date().toLocaleTimeString('ar'), inline: true },
-      { name: '🌐 IP',       value: visitorIP,       inline: true  },
-      { name: '📍 الموقع',   value: visitorLocation, inline: true  },
+    // ── قائمة المستخدمين المصرح لهم ─────────────────────────────
+    // أضف أو احذف مستخدمين هنا بحرية
+    const AUTHORIZED_USERS = [
+      { username: 'idmx.1',   password: 'idmx'          },
+      { username: 'nothim_g', password: 'HANK WILSON'    },
+      { username: 'co_iii',   password: 'marly layton'   },
+      { username: 'nbh911',   password: 'Mike Sabitzer'  },
+      { username: 'troxi',    password: 'omarali@2010'   },
+      // أضف المزيد هنا بنفس الأسلوب
     ];
-    for (const [k, v] of Object.entries(details))
-      fields.push({ name: k, value: String(v||'—').slice(0,100), inline: true });
-    try {
-      await fetch(WEBHOOK_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          username: 'FIB Monitor',
-          embeds: [{ color: 0xC8A84B, fields,
-            footer: { text: 'FIB Los Santos — نظام المراقبة' },
-            timestamp: new Date().toISOString() }]
-        })
-      });
-    } catch(e) {}
-  }
+    // ──────────────────────────────────────────────────────────
 
-  // ── قائمة المستخدمين المصرح لهم ─────────────────────────────
-  // أضف أو احذف مستخدمين هنا بحرية
-  const AUTHORIZED_USERS = [
-    { username: 'idmx.1',   password: 'idmx'          },
-    { username: 'nothim_g', password: 'HANK WILSON'    },
-    { username: 'co_iii',   password: 'marly layton'   },
-    { username: 'nbh911',   password: 'Mike Sabitzer'  },
-    { username: 'troxi',    password: 'omarali@2010'   },
-    // أضف المزيد هنا بنفس الأسلوب
-  ];
-  // ──────────────────────────────────────────────────────────
+    // ── قائمة المسؤولين والرتب ───────────────────────────────────
+    // أضف أو احذف مسؤولين هنا — الصورة رابط مباشر أو رابط ديسكورد CDN
+    const STAFF_LIST = [
+    { name: 'Smlth binshaddad', rank: 'مدير الـ FIB',        rankLevel: 'S', image: 'https://cdn.discordapp.com/attachments/1505287457820774482/1505339781658443807/fib_seal_gold.png?ex=6a0a446b&is=6a08f2eb&hm=aaf3b7d885b2f92ad799db9f7113238e7583ebb15f8211a48d915fbe525d6ae6&' },
+        { name: 'Hank Wilson', rank: 'العميل الخاص المسؤول',          rankLevel: 'S', image: 'https://cdn.discordapp.com/attachments/1505287457820774482/1505339781658443807/fib_seal_gold.png?ex=6a0a446b&is=6a08f2eb&hm=aaf3b7d885b2f92ad799db9f7113238e7583ebb15f8211a48d915fbe525d6ae6&' },
+        { name: 'Marly Layton', rank: 'العميل الخاص المسؤول',          rankLevel: 'S', image: 'https://cdn.discordapp.com/attachments/1505287457820774482/1505339781658443807/fib_seal_gold.png?ex=6a0a446b&is=6a08f2eb&hm=aaf3b7d885b2f92ad799db9f7113238e7583ebb15f8211a48d915fbe525d6ae6&' },
+        { name: 'Mike Sabitzer', rank: 'العميل الخاص المسؤول',          rankLevel: 'S', image: 'https://cdn.discordapp.com/attachments/1505287457820774482/1505339781658443807/fib_seal_gold.png?ex=6a0a446b&is=6a08f2eb&hm=aaf3b7d885b2f92ad799db9f7113238e7583ebb15f8211a48d915fbe525d6ae6&' },
+        { name: 'Omar Essa', rank: 'العميل الخاص المسؤول',          rankLevel: 'S', image: 'https://cdn.discordapp.com/attachments/1505287457820774482/1505339781658443807/fib_seal_gold.png?ex=6a0a446b&is=6a08f2eb&hm=aaf3b7d885b2f92ad799db9f7113238e7583ebb15f8211a48d915fbe525d6ae6&' },
+        { name: 'اسم المسؤول 3', rank: 'العميل الخاص المسؤول',          rankLevel: 'S', image: 'https://cdn.discordapp.com/attachments/1505287457820774482/1505339781658443807/fib_seal_gold.png?ex=6a0a446b&is=6a08f2eb&hm=aaf3b7d885b2f92ad799db9f7113238e7583ebb15f8211a48d915fbe525d6ae6&' },
+      // أضف المزيد هنا بنفس الأسلوب:
+      // { name: 'الاسم', rank: 'الرتبة', rankLevel: 'A', image: 'رابط الصورة' },
+    ];
+    // rankLevel: S = ذهبي  |  A = أزرق  |  B = فضي  |  C = عادي
+    // ──────────────────────────────────────────────────────────
 
-  // ── قائمة المسؤولين والرتب ───────────────────────────────────
-  // أضف أو احذف مسؤولين هنا — الصورة رابط مباشر أو رابط ديسكورد CDN
-  const STAFF_LIST = [
-   { name: 'Smlth binshaddad', rank: 'مدير الـ FIB',        rankLevel: 'S', image: 'https://cdn.discordapp.com/attachments/1505287457820774482/1505339781658443807/fib_seal_gold.png?ex=6a0a446b&is=6a08f2eb&hm=aaf3b7d885b2f92ad799db9f7113238e7583ebb15f8211a48d915fbe525d6ae6&' },
-      { name: 'Hank Wilson', rank: 'العميل الخاص المسؤول',          rankLevel: 'S', image: 'https://cdn.discordapp.com/attachments/1505287457820774482/1505339781658443807/fib_seal_gold.png?ex=6a0a446b&is=6a08f2eb&hm=aaf3b7d885b2f92ad799db9f7113238e7583ebb15f8211a48d915fbe525d6ae6&' },
-      { name: 'Marly Layton', rank: 'العميل الخاص المسؤول',          rankLevel: 'S', image: 'https://cdn.discordapp.com/attachments/1505287457820774482/1505339781658443807/fib_seal_gold.png?ex=6a0a446b&is=6a08f2eb&hm=aaf3b7d885b2f92ad799db9f7113238e7583ebb15f8211a48d915fbe525d6ae6&' },
-      { name: 'Mike Sabitzer', rank: 'العميل الخاص المسؤول',          rankLevel: 'S', image: 'https://cdn.discordapp.com/attachments/1505287457820774482/1505339781658443807/fib_seal_gold.png?ex=6a0a446b&is=6a08f2eb&hm=aaf3b7d885b2f92ad799db9f7113238e7583ebb15f8211a48d915fbe525d6ae6&' },
-      { name: 'Omar Essa', rank: 'العميل الخاص المسؤول',          rankLevel: 'S', image: 'https://cdn.discordapp.com/attachments/1505287457820774482/1505339781658443807/fib_seal_gold.png?ex=6a0a446b&is=6a08f2eb&hm=aaf3b7d885b2f92ad799db9f7113238e7583ebb15f8211a48d915fbe525d6ae6&' },
-      { name: 'اسم المسؤول 3', rank: 'العميل الخاص المسؤول',          rankLevel: 'S', image: 'https://cdn.discordapp.com/attachments/1505287457820774482/1505339781658443807/fib_seal_gold.png?ex=6a0a446b&is=6a08f2eb&hm=aaf3b7d885b2f92ad799db9f7113238e7583ebb15f8211a48d915fbe525d6ae6&' },
-    // أضف المزيد هنا بنفس الأسلوب:
-    // { name: 'الاسم', rank: 'الرتبة', rankLevel: 'A', image: 'رابط الصورة' },
-  ];
-  // rankLevel: S = ذهبي  |  A = أزرق  |  B = فضي  |  C = عادي
-  // ──────────────────────────────────────────────────────────
+    const RANK_COLORS = { S: '#c8a84b', A: '#4a9eff', B: '#a0a8b0', C: '#6a7480' };
 
-  const RANK_COLORS = { S: '#c8a84b', A: '#4a9eff', B: '#a0a8b0', C: '#6a7480' };
-
-  function renderStaff() {
-    const grid = document.getElementById('staff-grid');
-    if (!grid) return;
-    grid.innerHTML = STAFF_LIST.map(s => {
-      const color = RANK_COLORS[s.rankLevel] || RANK_COLORS.C;
-      return `
-        <div style="background:rgba(13,27,42,0.9);border:1px solid rgba(200,168,75,0.2);border-top:3px solid ${color};padding:28px 24px;text-align:center;transition:all 0.2s;" onmouseover="this.style.background='rgba(26,58,92,0.4)'" onmouseout="this.style.background='rgba(13,27,42,0.9)'">
-          <img src="${s.image}" alt="${s.name}"
-            onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"
-            style="width:90px;height:90px;border-radius:50%;border:3px solid ${color};object-fit:cover;margin-bottom:16px;">
-          <div style="display:none;width:90px;height:90px;border-radius:50%;border:3px solid ${color};background:rgba(6,8,16,0.8);margin:0 auto 16px;align-items:center;justify-content:center;font-size:32px;">🦅</div>
-          <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:3px;color:${color};margin-bottom:6px;text-transform:uppercase;">[ ${s.rankLevel} ]</div>
-          <div style="font-family:'Oswald',sans-serif;font-size:18px;font-weight:700;letter-spacing:2px;color:#f0ece0;margin-bottom:6px;">${s.name}</div>
-          <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:1px;color:rgba(200,168,75,0.6);">${s.rank}</div>
-        </div>`;
-    }).join('');
-  }
-
-  function showError(msg) {
-    document.getElementById('login-error').textContent = msg;
-    document.getElementById('login-error').style.display = 'block';
-    document.getElementById('login-btn').disabled = false;
-    document.getElementById('login-btn').textContent = 'دخول';
-  }
-
-  function doLogin() {
-    const username = document.getElementById('login-username').value.trim();
-    const password = document.getElementById('login-password').value;
-
-    if (!username || !password) {
-      showError('❌ أدخل اسم المستخدم وكلمة المرور');
-      return;
+    function renderStaff() {
+      const grid = document.getElementById('staff-grid');
+      if (!grid) return;
+      grid.innerHTML = STAFF_LIST.map(s => {
+        const color = RANK_COLORS[s.rankLevel] || RANK_COLORS.C;
+        return `
+          <div style="background:rgba(13,27,42,0.9);border:1px solid rgba(200,168,75,0.2);border-top:3px solid ${color};padding:28px 24px;text-align:center;transition:all 0.2s;" onmouseover="this.style.background='rgba(26,58,92,0.4)'" onmouseout="this.style.background='rgba(13,27,42,0.9)'">
+            <img src="${s.image}" alt="${s.name}"
+              onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"
+              style="width:90px;height:90px;border-radius:50%;border:3px solid ${color};object-fit:cover;margin-bottom:16px;">
+            <div style="display:none;width:90px;height:90px;border-radius:50%;border:3px solid ${color};background:rgba(6,8,16,0.8);margin:0 auto 16px;align-items:center;justify-content:center;font-size:32px;">🦅</div>
+            <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:3px;color:${color};margin-bottom:6px;text-transform:uppercase;">[ ${s.rankLevel} ]</div>
+            <div style="font-family:'Oswald',sans-serif;font-size:18px;font-weight:700;letter-spacing:2px;color:#f0ece0;margin-bottom:6px;">${s.name}</div>
+            <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:1px;color:rgba(200,168,75,0.6);">${s.rank}</div>
+          </div>`;
+      }).join('');
     }
 
-    document.getElementById('login-btn').disabled = true;
-    document.getElementById('login-btn').textContent = '⏳ جاري التحقق...';
-    document.getElementById('login-error').style.display = 'none';
-
-    const found = AUTHORIZED_USERS.find(u => u.username === username && u.password === password);
-
-    if (!found) {
-      log('🔴 رُفض الدخول', { 'السبب': 'بيانات خاطئة', 'المستخدم': username });
-      showError('❌ اسم المستخدم أو كلمة المرور غير صحيحة');
-      return;
+    function showError(msg) {
+      document.getElementById('login-error').textContent = msg;
+      document.getElementById('login-error').style.display = 'block';
+      document.getElementById('login-btn').disabled = false;
+      document.getElementById('login-btn').textContent = 'دخول';
     }
 
-    // ناجح
-    currentUser = { username: found.username, id: found.username };
-    sessionStorage.setItem('fib_user', JSON.stringify(currentUser));
-    updateBadge(currentUser);
-    document.getElementById('login-overlay').style.display = 'none';
-    log('🟢 تسجيل دخول', { 'الاسم': found.username });
-  }
-
-  function logout() {
-    sessionStorage.clear();
-    currentUser = null;
-    document.getElementById('login-overlay').style.display = 'flex';
-    document.getElementById('login-btn').disabled = false;
-    document.getElementById('login-btn').textContent = 'دخول';
-    document.getElementById('login-error').style.display = 'none';
-    document.getElementById('login-username').value = '';
-    document.getElementById('login-password').value = '';
-    document.getElementById('user-badge').innerHTML =
-      `<span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:rgba(200,168,75,0.5);letter-spacing:1px;">🔐 غير مسجل</span>`;
-  }
-
-  function updateBadge(user) {
-    document.getElementById('user-badge').innerHTML =
-      `<span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--fib-gold);margin:0 6px;">👤 ${user.username}</span>
-       <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:rgba(200,168,75,0.4);">● مصادق</span>
-       <button onclick="logout()" style="margin-right:10px;background:rgba(139,26,26,0.3);border:1px solid rgba(204,34,34,0.4);color:#ff6666;padding:3px 10px;font-family:'IBM Plex Mono',monospace;font-size:10px;cursor:pointer;letter-spacing:1px;" onmouseover="this.style.background='rgba(139,26,26,0.6)'" onmouseout="this.style.background='rgba(139,26,26,0.3)'">خروج</button>`;
-  }
-
-  // ── التنقل ─────────────────────────────────────────────────
-  const SECTION_NAMES = {
-    home:'الرئيسية', about:'عن الـ FIB', responsibilities:'المسؤوليات',
-    taxes:'نظام الضرائب', reports:'إنشاء تقرير', contact:'التواصل', staff:'المسؤولين والرتب'
-  };
-
-  function showSection(id) {
-    const target = document.getElementById(id);
-    if (!target) return;
-    document.querySelectorAll('.page-section').forEach(s => s.classList.remove('active'));
-    target.classList.add('active');
-    document.querySelectorAll('nav a').forEach(a => {
-      a.classList.toggle('active', a.getAttribute('onclick') === `showSection('${id}')`);
-    });
-    window.scrollTo(0, 0);
-    log('📂 فتح صفحة', { 'الصفحة': SECTION_NAMES[id] || id });
-  }
-
-  function fmt(num) {
-    return '$' + parseFloat(num || 0).toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2});
-  }
-
-  function fmtDateLong(dateStr) {
-    if (!dateStr) return '';
-    const d = new Date(dateStr + 'T00:00:00');
-    return d.toLocaleDateString('en-US', {month:'long', day:'numeric', year:'numeric'}).toUpperCase();
-  }
-
-  function fmtDateShort(dateStr) {
-    if (!dateStr) return '';
-    const d = new Date(dateStr + 'T00:00:00');
-    return (d.getMonth()+1) + '/' + d.getDate() + '/' + String(d.getFullYear()).slice(-2);
-  }
-
-  function calcAndUpdate() {
-    const assets = parseFloat(document.getElementById('totalAssets').value) || 0;
-    const rate = parseFloat(document.getElementById('taxRate').value) || 15;
-    const amount = assets * (rate / 100);
-    document.getElementById('amountDue').value = amount.toFixed(2);
-    updateReport();
-  }
-
-  function getVal(id, fallback) {
-    const v = document.getElementById(id).value.trim();
-    return v || fallback;
-  }
-
-  const reportTypes = {
-    tax: { title: 'FEDERAL TAX\nENFORCEMENT NOTICE', stamp: 'FINAL NOTICE', body1: 'This notice serves as official notification from the Federal Bureau of Investigation, Financial Crimes Division, in conjunction with the Los Santos Department of Justice, that an extensive investigation has confirmed significant financial irregularities linked to the above-named subject.', body2: 'Our findings indicate the existence of substantial undeclared revenue, unreported assets, and willful attempts to evade federal taxation in violation of Title 26, United States Code, Sections 7201 (Tax Evasion), 7206 (Fraud and False Statements), and 7212 (Obstruction of Justice).' },
-    seizure: { title: 'ASSET SEIZURE\nORDER', stamp: 'SEIZURE ORDER', body1: 'By order of the Federal Bureau of Investigation, Financial Crimes Division, and pursuant to the authority granted under federal law, all assets, accounts, properties, and holdings belonging to the above-named subject are hereby subject to immediate seizure.', body2: 'This order is issued following a comprehensive federal investigation that has established probable cause for financial misconduct, money laundering, and violation of federal asset disclosure requirements under Title 18 and Title 26 of the United States Code.' },
-    investigation: { title: 'FEDERAL INVESTIGATION\nNOTICE', stamp: 'UNDER INVESTIGATION', body1: 'You are hereby officially notified that the Federal Bureau of Investigation, Financial Crimes Division, has opened a formal investigation into your financial activities, business operations, and asset holdings in Los Santos jurisdiction.', body2: 'This investigation has been initiated pursuant to credible intelligence and preliminary findings suggesting potential violations of federal financial regulations, including but not limited to unreported income, undisclosed assets, and irregular business transactions.' },
-    warning: { title: 'FEDERAL FINAL\nWARNING NOTICE', stamp: 'LAST WARNING', body1: 'This constitutes your FINAL WARNING from the Federal Bureau of Investigation, Financial Crimes Division. Despite previous notifications, you have failed to comply with federal tax obligations and disclosure requirements as mandated by law.', body2: 'Continued non-compliance will result in immediate and aggressive enforcement action including criminal prosecution, asset seizure, bank account freezing, and issuance of a federal arrest warrant without further notice.' }
-  };
-
-  function updateReport() {
-    const type = document.getElementById('reportType').value;
-    const rt = reportTypes[type];
-
-    // Title
-    document.getElementById('p-reportTypeTitle').innerHTML = rt.title.replace('\n', '<br>');
-    document.getElementById('p-stamp').querySelector('.stamp-text').textContent = rt.stamp;
-
-    // Case info
-    const caseNum = getVal('caseNum', 'LS-TAX-00000');
-    document.getElementById('p-caseNum').textContent = caseNum;
-    document.getElementById('p-caseNum2').textContent = caseNum;
-
-    const issueDate = document.getElementById('issueDate').value;
-    const deadlineDate = document.getElementById('deadlineDate').value;
-
-    document.getElementById('p-issued').textContent = fmtDateLong(issueDate);
-    document.getElementById('p-deadline').textContent = fmtDateLong(deadlineDate);
-    document.getElementById('p-deadlineWarn').textContent = fmtDateLong(deadlineDate);
-    document.getElementById('p-reviewDate').textContent = fmtDateShort(issueDate);
-
-    // Subject
-    const subject = getVal('subjectName', 'UNKNOWN SUBJECT');
-    document.getElementById('p-subject').textContent = subject.toUpperCase();
-    document.getElementById('p-institution').textContent = getVal('institution', 'UNKNOWN INSTITUTION').toUpperCase();
-
-    // Financials
-    const assets = parseFloat(document.getElementById('totalAssets').value) || 0;
-    const rate = parseFloat(document.getElementById('taxRate').value) || 15;
-    const due = parseFloat(document.getElementById('amountDue').value) || (assets * rate / 100);
-
-    document.getElementById('p-assets').textContent = assets ? fmt(assets) : '$0.00';
-    document.getElementById('p-penalty').textContent = fmt(due);
-    document.getElementById('p-due').textContent = fmt(due);
-    document.getElementById('p-rateLabel').textContent = `FEDERAL TAX PENALTY (${rate}%):`;
-
-    // Ref/Serial
-    const refNum = 'FCI-LS-' + (issueDate ? issueDate.replace(/-/g,'').slice(0,8) : '20260417');
-    document.getElementById('p-docRef').textContent = refNum;
-    document.getElementById('p-serial').textContent = refNum;
-    document.getElementById('p-barcodeText').textContent = caseNum + '-FINAL';
-
-    // Personnel
-    const judge = getVal('judgeName', 'HARRINGTON');
-    const agent = getVal('agentName', 'KENSINGTON');
-    const badge = getVal('badgeNum', '00000');
-    const sup = getVal('supervisorName', 'MORGAN');
-    const supbadge = getVal('supervisorBadge', '00000');
-
-    document.getElementById('p-judgeSign').textContent = judge;
-    document.getElementById('p-judgePrint').textContent = 'JUDGE ' + judge.toUpperCase();
-    document.getElementById('p-agentSign').textContent = agent;
-    document.getElementById('p-agentPrint').textContent = agent.toUpperCase();
-    document.getElementById('p-badge').textContent = badge;
-    document.getElementById('p-supSign').textContent = sup;
-    document.getElementById('p-supPrint').textContent = sup.toUpperCase();
-    document.getElementById('p-supBadge').textContent = supbadge;
-
-    // Body
-    document.getElementById('p-bodyText').textContent = rt.body1;
-    document.getElementById('p-bodyText2').textContent = rt.body2;
-
-    // Notes
-    const notesVal = document.getElementById('notes').value;
-    if (notesVal) {
-      document.getElementById('p-notes').innerHTML = notesVal.replace(/\n/g, '<br>');
+    // تخزين آخر IP لكل مستخدم (localStorage)
+    function getStoredIP(username) {
+      try { return localStorage.getItem('fib_ip_' + username) || null; } catch(e) { return null; }
+    }
+    function storeIP(username, ip) {
+      try { localStorage.setItem('fib_ip_' + username, ip); } catch(e) {}
     }
 
-    generateBarcodes(caseNum);
-  }
+    function doLogin() {
+      const username = document.getElementById('login-username').value.trim();
+      const password = document.getElementById('login-password').value;
 
-  function generateBarcodes(text) {
-    // Simple visual barcode
-    const g = document.getElementById('barcodeLines');
-    if (!g) return;
-    g.innerHTML = '';
-    let x = 2;
-    const pattern = [2,1,3,1,2,2,1,2,3,1,1,2,1,3,2,1,2,1,3,2,1,1,2,3,1,2,2,1,3,1,2,1,1,2,3,1,2,2,1,3];
-    let toggle = true;
-    pattern.forEach(w => {
-      if (toggle) {
-        const rect = document.createElementNS('http://www.w3.org/2000/svg','rect');
-        rect.setAttribute('x', x);
-        rect.setAttribute('y', 0);
-        rect.setAttribute('width', w);
-        rect.setAttribute('height', 24);
-        rect.setAttribute('fill', '#1a1610');
-        g.appendChild(rect);
+      if (!username || !password) {
+        showError('❌ أدخل اسم المستخدم وكلمة المرور');
+        return;
       }
-      x += w;
-      toggle = !toggle;
-    });
-  }
 
-  // تواريخ افتراضية
-  const today = new Date();
-  document.getElementById('issueDate').value = today.toISOString().split('T')[0];
-  const deadline = new Date(today);
-  deadline.setDate(deadline.getDate() + 30);
-  document.getElementById('deadlineDate').value = deadline.toISOString().split('T')[0];
+      document.getElementById('login-btn').disabled = true;
+      document.getElementById('login-btn').textContent = '⏳ جاري التحقق...';
+      document.getElementById('login-error').style.display = 'none';
 
-  function generateAndLog() {
-    updateReport();
-    const typeMap = { tax:'إشعار ضريبي', seizure:'أمر مصادرة', investigation:'إشعار تحقيق', warning:'إنذار نهائي' };
-    log('📄 إنشاء تقرير', {
-      'النوع':   typeMap[document.getElementById('reportType').value],
-      'القضية':  document.getElementById('caseNum').value || '—',
-      'المتهم':  document.getElementById('subjectName').value || '—',
-      'الأصول':  '$' + (parseFloat(document.getElementById('totalAssets').value)||0).toLocaleString(),
-      'المستحق': '$' + (parseFloat(document.getElementById('amountDue').value)||0).toLocaleString(),
-    });
-  }
+      const found = AUTHORIZED_USERS.find(u => u.username === username && u.password === password);
 
-  window.addEventListener('beforeprint', () =>
-    log('🖨 طباعة / PDF', { 'القضية': document.getElementById('caseNum').value || '—' })
-  );
+      if (!found) {
+        log('🔴 رُفض الدخول', { 'السبب': 'بيانات خاطئة', 'المستخدم': username });
+        showError('❌ اسم المستخدم أو كلمة المرور غير صحيحة');
+        return;
+      }
 
-  // ── إقلاع ─────────────────────────────────────────────────
-  (async function init() {
-    updateReport();
-    renderStaff();
-    const saved = sessionStorage.getItem('fib_user');
-    if (saved) {
-      currentUser = JSON.parse(saved);
+      // ناجح — تحقق من IP
+      const prevIP = getStoredIP(found.username);
+      if (prevIP && prevIP !== visitorIP && visitorIP !== '—') {
+        // IP مختلف — تنبيه فوري
+        log('🚨 تحذير — دخول من IP مجهول!', {
+          'الحساب':   found.username,
+          'IP السابق': prevIP,
+          'IP الجديد': visitorIP,
+          'الموقع':   visitorLocation,
+        });
+      } else {
+        // أول مرة أو نفس الـ IP — سجّل عادي
+        log('🟢 تسجيل دخول', { 'الاسم': found.username });
+      }
+
+      // حفّظ الـ IP الجديد
+      storeIP(found.username, visitorIP);
+
+      currentUser = { username: found.username, id: found.username };
+      sessionStorage.setItem('fib_user', JSON.stringify(currentUser));
       updateBadge(currentUser);
-      return;
+      document.getElementById('login-overlay').style.display = 'none';
     }
-    document.getElementById('login-overlay').style.display = 'flex';
-  })();
-</script>
-</body>
-</html>
+
+    function logout() {
+      sessionStorage.clear();
+      currentUser = null;
+      document.getElementById('login-overlay').style.display = 'flex';
+      document.getElementById('login-btn').disabled = false;
+      document.getElementById('login-btn').textContent = 'دخول';
+      document.getElementById('login-error').style.display = 'none';
+      document.getElementById('login-username').value = '';
+      document.getElementById('login-password').value = '';
+      document.getElementById('user-badge').innerHTML =
+        `<span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:rgba(200,168,75,0.5);letter-spacing:1px;">🔐 غير مسجل</span>`;
+    }
+
+    function updateBadge(user) {
+      document.getElementById('user-badge').innerHTML =
+        `<span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--fib-gold);margin:0 6px;">👤 ${user.username}</span>
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:rgba(200,168,75,0.4);">● مصادق</span>
+        <button onclick="logout()" style="margin-right:10px;background:rgba(139,26,26,0.3);border:1px solid rgba(204,34,34,0.4);color:#ff6666;padding:3px 10px;font-family:'IBM Plex Mono',monospace;font-size:10px;cursor:pointer;letter-spacing:1px;" onmouseover="this.style.background='rgba(139,26,26,0.6)'" onmouseout="this.style.background='rgba(139,26,26,0.3)'">خروج</button>`;
+    }
+
+    // ── التنقل ─────────────────────────────────────────────────
+    const SECTION_NAMES = {
+      home:'الرئيسية', about:'عن الـ FIB', responsibilities:'المسؤوليات',
+      taxes:'نظام الضرائب', reports:'إنشاء تقرير', contact:'التواصل', staff:'المسؤولين والرتب'
+    };
+
+    function showSection(id) {
+      const target = document.getElementById(id);
+      if (!target) return;
+      document.querySelectorAll('.page-section').forEach(s => s.classList.remove('active'));
+      target.classList.add('active');
+      document.querySelectorAll('nav a').forEach(a => {
+        a.classList.toggle('active', a.getAttribute('onclick') === `showSection('${id}')`);
+      });
+      window.scrollTo(0, 0);
+      log('📂 فتح صفحة', { 'الصفحة': SECTION_NAMES[id] || id });
+    }
+
+    function fmt(num) {
+      return '$' + parseFloat(num || 0).toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2});
+    }
+
+    function fmtDateLong(dateStr) {
+      if (!dateStr) return '';
+      const d = new Date(dateStr + 'T00:00:00');
+      return d.toLocaleDateString('en-US', {month:'long', day:'numeric', year:'numeric'}).toUpperCase();
+    }
+
+    function fmtDateShort(dateStr) {
+      if (!dateStr) return '';
+      const d = new Date(dateStr + 'T00:00:00');
+      return (d.getMonth()+1) + '/' + d.getDate() + '/' + String(d.getFullYear()).slice(-2);
+    }
+
+    function calcAndUpdate() {
+      const assets = parseFloat(document.getElementById('totalAssets').value) || 0;
+      const rate = parseFloat(document.getElementById('taxRate').value) || 15;
+      const amount = assets * (rate / 100);
+      document.getElementById('amountDue').value = amount.toFixed(2);
+      updateReport();
+    }
+
+    function getVal(id, fallback) {
+      const v = document.getElementById(id).value.trim();
+      return v || fallback;
+    }
+
+    const reportTypes = {
+      tax: { title: 'FEDERAL TAX\nENFORCEMENT NOTICE', stamp: 'FINAL NOTICE', body1: 'This notice serves as official notification from the Federal Bureau of Investigation, Financial Crimes Division, in conjunction with the Los Santos Department of Justice, that an extensive investigation has confirmed significant financial irregularities linked to the above-named subject.', body2: 'Our findings indicate the existence of substantial undeclared revenue, unreported assets, and willful attempts to evade federal taxation in violation of Title 26, United States Code, Sections 7201 (Tax Evasion), 7206 (Fraud and False Statements), and 7212 (Obstruction of Justice).' },
+      seizure: { title: 'ASSET SEIZURE\nORDER', stamp: 'SEIZURE ORDER', body1: 'By order of the Federal Bureau of Investigation, Financial Crimes Division, and pursuant to the authority granted under federal law, all assets, accounts, properties, and holdings belonging to the above-named subject are hereby subject to immediate seizure.', body2: 'This order is issued following a comprehensive federal investigation that has established probable cause for financial misconduct, money laundering, and violation of federal asset disclosure requirements under Title 18 and Title 26 of the United States Code.' },
+      investigation: { title: 'FEDERAL INVESTIGATION\nNOTICE', stamp: 'UNDER INVESTIGATION', body1: 'You are hereby officially notified that the Federal Bureau of Investigation, Financial Crimes Division, has opened a formal investigation into your financial activities, business operations, and asset holdings in Los Santos jurisdiction.', body2: 'This investigation has been initiated pursuant to credible intelligence and preliminary findings suggesting potential violations of federal financial regulations, including but not limited to unreported income, undisclosed assets, and irregular business transactions.' },
+      warning: { title: 'FEDERAL FINAL\nWARNING NOTICE', stamp: 'LAST WARNING', body1: 'This constitutes your FINAL WARNING from the Federal Bureau of Investigation, Financial Crimes Division. Despite previous notifications, you have failed to comply with federal tax obligations and disclosure requirements as mandated by law.', body2: 'Continued non-compliance will result in immediate and aggressive enforcement action including criminal prosecution, asset seizure, bank account freezing, and issuance of a federal arrest warrant without further notice.' }
+    };
+
+    function updateReport() {
+      const type = document.getElementById('reportType').value;
+      const rt = reportTypes[type];
+
+      // Title
+      document.getElementById('p-reportTypeTitle').innerHTML = rt.title.replace('\n', '<br>');
+      document.getElementById('p-stamp').querySelector('.stamp-text').textContent = rt.stamp;
+
+      // Case info
+      const caseNum = getVal('caseNum', 'LS-TAX-00000');
+      document.getElementById('p-caseNum').textContent = caseNum;
+      document.getElementById('p-caseNum2').textContent = caseNum;
+
+      const issueDate = document.getElementById('issueDate').value;
+      const deadlineDate = document.getElementById('deadlineDate').value;
+
+      document.getElementById('p-issued').textContent = fmtDateLong(issueDate);
+      document.getElementById('p-deadline').textContent = fmtDateLong(deadlineDate);
+      document.getElementById('p-deadlineWarn').textContent = fmtDateLong(deadlineDate);
+      document.getElementById('p-reviewDate').textContent = fmtDateShort(issueDate);
+
+      // Subject
+      const subject = getVal('subjectName', 'UNKNOWN SUBJECT');
+      document.getElementById('p-subject').textContent = subject.toUpperCase();
+      document.getElementById('p-institution').textContent = getVal('institution', 'UNKNOWN INSTITUTION').toUpperCase();
+
+      // Financials
+      const assets = parseFloat(document.getElementById('totalAssets').value) || 0;
+      const rate = parseFloat(document.getElementById('taxRate').value) || 15;
+      const due = parseFloat(document.getElementById('amountDue').value) || (assets * rate / 100);
+
+      document.getElementById('p-assets').textContent = assets ? fmt(assets) : '$0.00';
+      document.getElementById('p-penalty').textContent = fmt(due);
+      document.getElementById('p-due').textContent = fmt(due);
+      document.getElementById('p-rateLabel').textContent = `FEDERAL TAX PENALTY (${rate}%):`;
+
+      // Ref/Serial
+      const refNum = 'FCI-LS-' + (issueDate ? issueDate.replace(/-/g,'').slice(0,8) : '20260417');
+      document.getElementById('p-docRef').textContent = refNum;
+      document.getElementById('p-serial').textContent = refNum;
+      document.getElementById('p-barcodeText').textContent = caseNum + '-FINAL';
+
+      // Personnel
+      const judge = getVal('judgeName', 'HARRINGTON');
+      const agent = getVal('agentName', 'KENSINGTON');
+      const badge = getVal('badgeNum', '00000');
+      const sup = getVal('supervisorName', 'MORGAN');
+      const supbadge = getVal('supervisorBadge', '00000');
+
+      document.getElementById('p-judgeSign').textContent = judge;
+      document.getElementById('p-judgePrint').textContent = 'JUDGE ' + judge.toUpperCase();
+      document.getElementById('p-agentSign').textContent = agent;
+      document.getElementById('p-agentPrint').textContent = agent.toUpperCase();
+      document.getElementById('p-badge').textContent = badge;
+      document.getElementById('p-supSign').textContent = sup;
+      document.getElementById('p-supPrint').textContent = sup.toUpperCase();
+      document.getElementById('p-supBadge').textContent = supbadge;
+
+      // Body
+      document.getElementById('p-bodyText').textContent = rt.body1;
+      document.getElementById('p-bodyText2').textContent = rt.body2;
+
+      // Notes
+      const notesVal = document.getElementById('notes').value;
+      if (notesVal) {
+        document.getElementById('p-notes').innerHTML = notesVal.replace(/\n/g, '<br>');
+      }
+
+      generateBarcodes(caseNum);
+    }
+
+    function generateBarcodes(text) {
+      // Simple visual barcode
+      const g = document.getElementById('barcodeLines');
+      if (!g) return;
+      g.innerHTML = '';
+      let x = 2;
+      const pattern = [2,1,3,1,2,2,1,2,3,1,1,2,1,3,2,1,2,1,3,2,1,1,2,3,1,2,2,1,3,1,2,1,1,2,3,1,2,2,1,3];
+      let toggle = true;
+      pattern.forEach(w => {
+        if (toggle) {
+          const rect = document.createElementNS('http://www.w3.org/2000/svg','rect');
+          rect.setAttribute('x', x);
+          rect.setAttribute('y', 0);
+          rect.setAttribute('width', w);
+          rect.setAttribute('height', 24);
+          rect.setAttribute('fill', '#1a1610');
+          g.appendChild(rect);
+        }
+        x += w;
+        toggle = !toggle;
+      });
+    }
+
+    // تواريخ افتراضية
+    const today = new Date();
+    document.getElementById('issueDate').value = today.toISOString().split('T')[0];
+    const deadline = new Date(today);
+    deadline.setDate(deadline.getDate() + 30);
+    document.getElementById('deadlineDate').value = deadline.toISOString().split('T')[0];
+
+    function generateAndLog() {
+      updateReport();
+      const typeMap = { tax:'إشعار ضريبي', seizure:'أمر مصادرة', investigation:'إشعار تحقيق', warning:'إنذار نهائي' };
+      log('📄 إنشاء تقرير', {
+        'النوع':   typeMap[document.getElementById('reportType').value],
+        'القضية':  document.getElementById('caseNum').value || '—',
+        'المتهم':  document.getElementById('subjectName').value || '—',
+        'الأصول':  '$' + (parseFloat(document.getElementById('totalAssets').value)||0).toLocaleString(),
+        'المستحق': '$' + (parseFloat(document.getElementById('amountDue').value)||0).toLocaleString(),
+      });
+    }
+
+    window.addEventListener('beforeprint', () =>
+      log('🖨 طباعة / PDF', { 'القضية': document.getElementById('caseNum').value || '—' })
+    );
+
+    // ── إقلاع ─────────────────────────────────────────────────
+    (async function init() {
+      updateReport();
+      renderStaff();
+      const saved = sessionStorage.getItem('fib_user');
+      if (saved) {
+        currentUser = JSON.parse(saved);
+        updateBadge(currentUser);
+        return;
+      }
+      document.getElementById('login-overlay').style.display = 'flex';
+    })();
+  </script>
+  </body>
+  </html>
