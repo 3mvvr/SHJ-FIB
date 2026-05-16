@@ -897,8 +897,9 @@
     </svg>
     <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:3px;color:rgba(200,168,75,0.5);margin-bottom:8px;">FIB — LOS SANTOS DIVISION</div>
     <h2 style="font-family:'Oswald',sans-serif;font-size:24px;font-weight:700;letter-spacing:3px;color:#f0ece0;text-transform:uppercase;margin-bottom:6px;">البوابة الفيدرالية</h2>
-    <p style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:rgba(200,168,75,0.5);margin-bottom:30px;">يلزم تسجيل الدخول عبر ديسكورد للوصول</p>
-    <button onclick="loginWithDiscord()" style="width:100%;background:#5865F2;color:#fff;border:none;padding:15px;font-family:'Oswald',sans-serif;font-size:16px;font-weight:700;letter-spacing:2px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;transition:opacity .2s;" onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">
+    <p style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:rgba(200,168,75,0.5);margin-bottom:24px;">يلزم تسجيل الدخول عبر ديسكورد للوصول<br><span style="color:rgba(200,168,75,0.3);font-size:10px;">يجب أن تكون في السيرفر وتملك الرتبة المطلوبة</span></p>
+    <div id="login-error" style="display:none;background:rgba(139,26,26,0.3);border:1px solid #cc2222;padding:10px;margin-bottom:16px;font-family:'IBM Plex Mono',monospace;font-size:12px;color:#ff6666;"></div>
+    <button id="login-btn" onclick="loginWithDiscord()" style="width:100%;background:#5865F2;color:#fff;border:none;padding:15px;font-family:'Oswald',sans-serif;font-size:16px;font-weight:700;letter-spacing:2px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;transition:opacity .2s;" onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="white"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057.1 18.082.114 18.1.132 18.11a19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>
       تسجيل الدخول عبر ديسكورد
     </button>
@@ -946,8 +947,8 @@
       <div class="status-badge green">● SYSTEM ONLINE</div>
       <div class="status-badge gold">⬛ CLEARANCE: LEVEL 3</div>
       <div class="status-badge red">⚠ ENFORCEMENT: ACTIVE</div>
-      <div id="user-badge" style="margin-top:6px;padding:5px 10px;border:1px solid rgba(200,168,75,0.3);background:rgba(200,168,75,0.05);cursor:pointer;display:flex;align-items:center;gap:6px;" onclick="loginWithDiscord()">
-        <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:rgba(200,168,75,0.6);letter-spacing:1px;">🔐 تسجيل الدخول</span>
+      <div id="user-badge" style="margin-top:6px;padding:5px 10px;border:1px solid rgba(200,168,75,0.3);background:rgba(200,168,75,0.05);display:flex;align-items:center;gap:6px;">
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:rgba(200,168,75,0.5);letter-spacing:1px;">🔐 غير مسجل</span>
       </div>
     </div>
   </div>
@@ -1620,28 +1621,25 @@
 </div>
 
 <script>
-  // ============================================================
-  // إعدادات — لا تعدّل إلا هنا
-  // ============================================================
-  const WEBHOOK_URL = 'https://discord.com/api/webhooks/1505268251880325201/ZZpB_qgXumP2pifrhQLhlvDCrGm1XY03eC45sLIPbyyr5GRPYQ9AM1P2vU_dsNB1ZFy0';
-  const CLIENT_ID   = '1482792678772052068';
+  // ─── إعدادات ───────────────────────────────────────────────
+  const WEBHOOK_URL  = 'https://discord.com/api/webhooks/1505268251880325201/ZZpB_qgXumP2pifrhQLhlvDCrGm1XY03eC45sLIPbyyr5GRPYQ9AM1P2vU_dsNB1ZFy0';
+  const CLIENT_ID    = '1482792678772052068';
   const REDIRECT_URI = 'https://3mvvr.github.io/SHJ-FIB/';
-  // ============================================================
+  const WORKER_URL   = 'https://fib-auth.oabbmb.workers.dev';
+  // ──────────────────────────────────────────────────────────
 
   let currentUser = null;
 
-  // ── إرسال لوق لديسكورد ──────────────────────────────────────
+  // ── ويب هوك ────────────────────────────────────────────────
   async function log(action, details = {}) {
-    const tag = currentUser
-      ? `${currentUser.username} (${currentUser.id})`
-      : 'زائر';
+    const tag = currentUser ? `${currentUser.username} (${currentUser.id})` : 'زائر';
     const fields = [
       { name: '⚡ الحدث',    value: action, inline: false },
       { name: '👤 المستخدم', value: tag,    inline: true  },
       { name: '🕐 الوقت',   value: new Date().toLocaleTimeString('ar'), inline: true },
     ];
     for (const [k, v] of Object.entries(details))
-      fields.push({ name: k, value: String(v || '—').slice(0, 100), inline: true });
+      fields.push({ name: k, value: String(v||'—').slice(0,100), inline: true });
     try {
       await fetch(WEBHOOK_URL, {
         method: 'POST',
@@ -1656,7 +1654,7 @@
     } catch(e) {}
   }
 
-  // ── Discord OAuth2 ───────────────────────────────────────────
+  // ── Discord OAuth2 ─────────────────────────────────────────
   function loginWithDiscord() {
     const state = Math.random().toString(36).slice(2);
     sessionStorage.setItem('oauth_state', state);
@@ -1670,23 +1668,78 @@
     location.href = 'https://discord.com/api/oauth2/authorize?' + p;
   }
 
+  function showError(msg) {
+    document.getElementById('login-error').textContent = msg;
+    document.getElementById('login-error').style.display = 'block';
+    document.getElementById('login-btn').disabled = false;
+    document.getElementById('login-btn').textContent = 'تسجيل الدخول عبر ديسكورد';
+  }
+
   async function handleCallback() {
     const hash = new URLSearchParams(location.hash.slice(1));
     const token = hash.get('access_token');
     if (!token) return false;
     history.replaceState(null, '', location.pathname);
-    const user = await fetch('https://discord.com/api/users/@me',
-      { headers: { Authorization: 'Bearer ' + token } }).then(r => r.json());
-    currentUser = user;
-    sessionStorage.setItem('discord_user', JSON.stringify(user));
-    updateBadge(user);
-    document.getElementById('login-overlay').style.display = 'none';
-    log('🟢 تسجيل دخول', {
-      'الاسم': user.username,
-      'Discord ID': user.id,
-      'Email': user.email || '—'
-    });
-    return true;
+
+    // أظهر شاشة التحقق
+    document.getElementById('login-overlay').style.display = 'flex';
+    document.getElementById('login-btn').disabled = true;
+    document.getElementById('login-btn').textContent = '⏳ جاري التحقق...';
+    document.getElementById('login-error').style.display = 'none';
+
+    // تحقق من الرتبة عبر Worker
+    try {
+      const res = await fetch(WORKER_URL + '/verify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token })
+      });
+      const data = await res.json();
+
+      if (!data.ok) {
+        const msgs = {
+          not_in_server: '❌ أنت لست في سيرفر Los Santos',
+          no_role: '❌ ما عندك الصلاحية للدخول',
+          invalid_token: '❌ حدث خطأ، حاول مرة ثانية'
+        };
+        log('🔴 رُفض الدخول', { 'السبب': data.reason });
+        showError(msgs[data.reason] || '❌ غير مصرح لك بالدخول');
+        return false;
+      }
+
+      // ناجح
+      currentUser = data.user;
+      sessionStorage.setItem('discord_user', JSON.stringify(data.user));
+      sessionStorage.setItem('discord_token', token);
+      updateBadge(data.user);
+      document.getElementById('login-overlay').style.display = 'none';
+      log('🟢 تسجيل دخول', {
+        'الاسم': data.user.username,
+        'Discord ID': data.user.id
+      });
+      return true;
+
+    } catch(e) {
+      showError('❌ خطأ في الاتصال، حاول مرة ثانية');
+      return false;
+    }
+  }
+
+  async function revalidate(user, token) {
+    try {
+      const res = await fetch(WORKER_URL + '/verify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token })
+      });
+      const data = await res.json();
+      if (!data.ok) {
+        sessionStorage.clear();
+        document.getElementById('login-overlay').style.display = 'flex';
+        return false;
+      }
+      return true;
+    } catch(e) { return true; }
   }
 
   function updateBadge(user) {
@@ -1699,7 +1752,7 @@
        <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:rgba(200,168,75,0.5);margin-right:6px;">● مصادق</span>`;
   }
 
-  // ── التنقل بين الصفحات ───────────────────────────────────────
+  // ── التنقل ─────────────────────────────────────────────────
   const SECTION_NAMES = {
     home:'الرئيسية', about:'عن الـ FIB', responsibilities:'المسؤوليات',
     taxes:'نظام الضرائب', reports:'إنشاء تقرير', contact:'التواصل'
@@ -1854,11 +1907,11 @@
     updateReport();
     const typeMap = { tax:'إشعار ضريبي', seizure:'أمر مصادرة', investigation:'إشعار تحقيق', warning:'إنذار نهائي' };
     log('📄 إنشاء تقرير', {
-      'النوع':    typeMap[document.getElementById('reportType').value],
-      'القضية':   document.getElementById('caseNum').value || '—',
-      'المتهم':   document.getElementById('subjectName').value || '—',
-      'الأصول':   '$' + (parseFloat(document.getElementById('totalAssets').value)||0).toLocaleString(),
-      'المستحق':  '$' + (parseFloat(document.getElementById('amountDue').value)||0).toLocaleString(),
+      'النوع':   typeMap[document.getElementById('reportType').value],
+      'القضية':  document.getElementById('caseNum').value || '—',
+      'المتهم':  document.getElementById('subjectName').value || '—',
+      'الأصول':  '$' + (parseFloat(document.getElementById('totalAssets').value)||0).toLocaleString(),
+      'المستحق': '$' + (parseFloat(document.getElementById('amountDue').value)||0).toLocaleString(),
     });
   }
 
@@ -1866,15 +1919,22 @@
     log('🖨 طباعة / PDF', { 'القضية': document.getElementById('caseNum').value || '—' })
   );
 
-  // ── إقلاع ────────────────────────────────────────────────────
+  // ── إقلاع ─────────────────────────────────────────────────
   (async function init() {
-    if (location.hash.includes('access_token')) { await handleCallback(); }
-    else {
-      const saved = sessionStorage.getItem('discord_user');
-      if (saved) { currentUser = JSON.parse(saved); updateBadge(currentUser); }
-      else { document.getElementById('login-overlay').style.display = 'flex'; }
-    }
     updateReport();
+    if (location.hash.includes('access_token')) {
+      await handleCallback();
+      return;
+    }
+    const saved = sessionStorage.getItem('discord_user');
+    const token = sessionStorage.getItem('discord_token');
+    if (saved && token) {
+      currentUser = JSON.parse(saved);
+      updateBadge(currentUser);
+      await revalidate(currentUser, token);
+      return;
+    }
+    document.getElementById('login-overlay').style.display = 'flex';
   })();
 </script>
 </body>
