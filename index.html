@@ -48,6 +48,9 @@
     overflow: hidden;
     white-space: nowrap;
     border-bottom: 2px solid #ff4444;
+    position: relative;
+    z-index: 50;
+    pointer-events: none;
   }
   .ticker-inner {
     display: inline-block;
@@ -66,7 +69,7 @@
     padding: 0;
     position: sticky;
     top: 0;
-    z-index: 100;
+    z-index: 200;
     box-shadow: 0 4px 30px rgba(0,0,0,0.8);
   }
 
@@ -133,6 +136,8 @@
     align-items: center;
     padding: 0 40px;
     gap: 0;
+    position: relative;
+    z-index: 200;
   }
 
   nav a {
@@ -1687,9 +1692,12 @@
   // ── قائمة المسؤولين والرتب ───────────────────────────────────
   // أضف أو احذف مسؤولين هنا — الصورة رابط مباشر أو رابط ديسكورد CDN
   const STAFF_LIST = [
-    { name: 'اسم المسؤول 1', rank: 'مدير القسم',        rankLevel: 'S', image: 'https://i.imgur.com/example1.png' },
-    { name: 'اسم المسؤول 2', rank: 'عميل أول',          rankLevel: 'A', image: 'https://i.imgur.com/example2.png' },
-    { name: 'اسم المسؤول 3', rank: 'عميل خاص',          rankLevel: 'B', image: 'https://i.imgur.com/example3.png' },
+   { name: 'Smlth binshaddad', rank: 'مدير الـ FIB',        rankLevel: 'S', image: 'https://cdn.discordapp.com/attachments/1489711767008448573/1505315428933697707/high.webp?ex=6a0a2dbd&is=6a08dc3d&hm=7bd51082522869765dc1a9e1bd9e995cb0ee36af930a78e473823a7dc8941203&' },
+      { name: 'اسم المسؤول 2', rank: 'نائب المدير',          rankLevel: 'A', image: 'https://i.imgur.com/example2.png' },
+      { name: 'اسم المسؤول 3', rank: 'مساعد نائب المدير',          rankLevel: 'B', image: 'https://i.imgur.com/example3.png' },
+      { name: 'اسم المسؤول 3', rank: 'العميل الخاص المسؤول',          rankLevel: 'B', image: 'https://i.imgur.com/example3.png' },
+      { name: 'اسم المسؤول 3', rank: 'مساعد العميل الخاص المسؤول',          rankLevel: 'B', image: 'https://i.imgur.com/example3.png' },
+      { name: 'اسم المسؤول 3', rank: 'عملاء خاصون مشرفون',          rankLevel: 'B', image: 'https://i.imgur.com/example3.png' },
     // أضف المزيد هنا بنفس الأسلوب:
     // { name: 'الاسم', rank: 'الرتبة', rankLevel: 'A', image: 'رابط الصورة' },
   ];
@@ -1715,6 +1723,8 @@
         </div>`;
     }).join('');
   }
+
+  function showError(msg) {
     document.getElementById('login-error').textContent = msg;
     document.getElementById('login-error').style.display = 'block';
     document.getElementById('login-btn').disabled = false;
