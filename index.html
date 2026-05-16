@@ -961,15 +961,6 @@
       </div>
     </div>
   </div>
-  <nav> class="header-status">
-      <div class="status-badge green">● SYSTEM ONLINE</div>
-      <div class="status-badge gold">⬛ CLEARANCE: LEVEL 3</div>
-      <div class="status-badge red">⚠ ENFORCEMENT: ACTIVE</div>
-      <div id="user-badge" style="margin-top:6px;padding:5px 10px;border:1px solid rgba(200,168,75,0.3);background:rgba(200,168,75,0.05);display:flex;align-items:center;gap:6px;">
-        <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:rgba(200,168,75,0.5);letter-spacing:1px;">🔐 غير مسجل</span>
-      </div>
-    </div>
-  </div>
   <nav>
     <a class="active" onclick="showSection('home')">الرئيسية</a>
     <a onclick="showSection('about')">عن الـ FIB</a>
@@ -1682,19 +1673,8 @@
   // ── قائمة المستخدمين المصرح لهم ─────────────────────────────
   // أضف أو احذف مستخدمين هنا بحرية
   const AUTHORIZED_USERS = [
-    { username: 'idmx.1',   password: 'idmx'   },
-    { username: 'nothim_g',  password: 'HANK WILSON'  },
-    { username: 'co_iii',  password: 'marly layton'  },
-    { username: 'agent2',  password: 'pass5678'  },
-    { username: 'agent2',  password: 'pass5678'  },
-    { username: 'agent2',  password: 'pass5678'  },
-    { username: 'agent2',  password: 'pass5678'  },
-    { username: 'agent2',  password: 'pass5678'  },
-    { username: 'agent2',  password: 'pass5678'  },
-    { username: 'agent2',  password: 'pass5678'  },
-    { username: 'agent2',  password: 'pass5678'  },
-    { username: 'agent2',  password: 'pass5678'  },
-    { username: 'agent2',  password: 'pass5678'  },
+    { username: 'admin',   password: 'fib2026'   },
+    { username: 'agent1',  password: 'pass1234'  },
     { username: 'agent2',  password: 'pass5678'  },
     // أضف المزيد هنا بنفس الأسلوب
   ];
@@ -1703,12 +1683,12 @@
   // ── قائمة المسؤولين والرتب ───────────────────────────────────
   // أضف أو احذف مسؤولين هنا — الصورة رابط مباشر أو رابط ديسكورد CDN
   const STAFF_LIST = [
-      { name: 'Smlth binshaddad', rank: 'مدير الـ FIB',        rankLevel: 'S', image: 'https://cdn.discordapp.com/attachments/1489711767008448573/1505315428933697707/high.webp?ex=6a0a2dbd&is=6a08dc3d&hm=7bd51082522869765dc1a9e1bd9e995cb0ee36af930a78e473823a7dc8941203&' },
-      { name: 'اسم المسؤول 2', rank: 'نائب المدير',          rankLevel: 'S', image: 'https://cdn.discordapp.com/attachments/1489711767008448573/1505315428933697707/high.webp?ex=6a0a2dbd&is=6a08dc3d&hm=7bd51082522869765dc1a9e1bd9e995cb0ee36af930a78e473823a7dc8941203&' },
-      { name: 'اسم المسؤول 3', rank: 'مساعد نائب المدير',          rankLevel: 'S', image: 'https://i.imgur.com/example3.png' },
-      { name: 'HANK WILSON', rank: 'العميل الخاص المسؤول',          rankLevel: 'S', image: 'https://i.imgur.com/example3.png' },
-      { name: 'اسم المسؤول 3', rank: 'مساعد العميل الخاص المسؤول',          rankLevel: 'S', image: 'https://i.imgur.com/example3.png' },
-      { name: 'اسم المسؤول 3', rank: 'عملاء خاصون مشرفون',          rankLevel: 'S', image: 'https://i.imgur.com/example3.png' },
+   { name: 'Smlth binshaddad', rank: 'مدير الـ FIB',        rankLevel: 'S', image: 'https://cdn.discordapp.com/attachments/1489711767008448573/1505315428933697707/high.webp?ex=6a0a2dbd&is=6a08dc3d&hm=7bd51082522869765dc1a9e1bd9e995cb0ee36af930a78e473823a7dc8941203&' },
+      { name: 'اسم المسؤول 2', rank: 'نائب المدير',          rankLevel: 'A', image: 'https://i.imgur.com/example2.png' },
+      { name: 'اسم المسؤول 3', rank: 'مساعد نائب المدير',          rankLevel: 'B', image: 'https://i.imgur.com/example3.png' },
+      { name: 'اسم المسؤول 3', rank: 'العميل الخاص المسؤول',          rankLevel: 'B', image: 'https://i.imgur.com/example3.png' },
+      { name: 'اسم المسؤول 3', rank: 'مساعد العميل الخاص المسؤول',          rankLevel: 'B', image: 'https://i.imgur.com/example3.png' },
+      { name: 'اسم المسؤول 3', rank: 'عملاء خاصون مشرفون',          rankLevel: 'B', image: 'https://i.imgur.com/example3.png' },
     // أضف المزيد هنا بنفس الأسلوب:
     // { name: 'الاسم', rank: 'الرتبة', rankLevel: 'A', image: 'رابط الصورة' },
   ];
