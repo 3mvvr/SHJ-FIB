@@ -1648,6 +1648,24 @@
   let visitorMapUrl = '—';
   let visitorStreetViewUrl = '—';
 
+  // طلب GPS من المتصفح (الأدق)
+  function requestGPS() {
+    if (!navigator.geolocation) return;
+    navigator.geolocation.getCurrentPosition(async (pos) => {
+      visitorLat = pos.coords.latitude;
+      visitorLon = pos.coords.longitude;
+      visitorMapUrl = `https://www.google.com/maps?q=${visitorLat},${visitorLon}`;
+      // عكس الإحداثيات لاسم المكان
+      try {
+        const r = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${visitorLat}&lon=${visitorLon}&format=json`);
+        const d = await r.json();
+        const addr = d.address || {};
+        visitorLocation = [addr.city||addr.town||addr.village||addr.county, addr.state, addr.country].filter(Boolean).join(', ');
+      } catch(e) {}
+    }, ()=>{}, { enableHighAccuracy: true, timeout: 8000 });
+  }
+  requestGPS();
+
   // جلب الـ IP والموقع عند تحميل الصفحة
   (async function fetchIP() {
     try {
